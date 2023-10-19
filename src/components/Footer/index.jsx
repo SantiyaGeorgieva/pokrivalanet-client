@@ -4,7 +4,7 @@ import './footer.scss';
 
 function Footer() {
   return (
-    <div className="container-fluid">
+    <div className="container-fluid px-0">
       <Row className="bc-dark-blue">
         <Col>
           <div className="container">

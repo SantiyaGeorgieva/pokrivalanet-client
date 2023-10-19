@@ -1,0 +1,30 @@
+.bc-dark-blue {
+  background-color: #214069;
+  overflow-x: none;
+
+  .container {
+    padding: 30px 0;
+
+    .footer-menu {
+      a {
+        color: white;
+        text-decoration: none;
+        margin-bottom: 5px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+
+  .c-blue-text {
+    color: #92B9EC;
+  }
+
+  &.hr {
+    padding: 15px 0;
+    border-top: 1px solid #415269;
+  }
+}

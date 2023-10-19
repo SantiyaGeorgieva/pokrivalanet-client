@@ -1,0 +1,25 @@
+.bc-blue {
+  background-color: #407AC7;
+
+  .active {
+    >.col>a {
+      font-weight: bold;
+    }
+  }
+
+  .col {
+    line-height: 100%;
+    padding: 10px 0;
+
+    a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      width: 107px;
+    }
+  }
+}

@@ -2,8 +2,9 @@ import React from 'react';
 import { Route, Routes } from 'react-router';
 import './App.css';
 import Home from './pages/Home';
-import Contact from './pages/Contact';
+import AwningsAndShades from './pages/AwningsAndShades';
 import UnderConstruction from './pages/UnderConstruction';
+import Contact from './pages/Contact';
 
 function App() {
 
@@ -13,7 +14,7 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route exact path="/truck-covers" element={<UnderConstruction />} preventScrollReset={true} />
         <Route exact path="/windproof-curtains" element={<UnderConstruction />} preventScrollReset={true} />
-        <Route exact path="/awnings-and-shades" element={<UnderConstruction />} />
+        <Route exact path="/awnings-and-shades" element={<AwningsAndShades />} />
         <Route exact path="/covers-for-fishponds-and-lagoons" element={<UnderConstruction />} />
         <Route exact path="/curtains-for-cow-farms" element={<UnderConstruction />} />
         <Route exact path="/industrial-products" element={<UnderConstruction />} />

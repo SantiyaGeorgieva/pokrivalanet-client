@@ -54,6 +54,7 @@ function Contact() {
 
   const addInputValues = (value) => {
     let values2 = [...values, value];
+    console.log('values2', values2);
     setValues(values2);
   }
 
@@ -114,6 +115,7 @@ function Contact() {
       setTextInputsError(false);
     }
 
+    addInputValues();
     console.log('a', values);
 
     if (!hasNameError && !hasEmailError && !hasSubjectError && !hasMessageError && !hasTextInputError && !hasTextInputsError) {
@@ -177,7 +179,7 @@ function Contact() {
         <Hr text="Контакти" />
         <Row className="d-flex align-items-center justify-content-center">
           <Col md="4">
-            <Form onSubmit={handleSubmit} method="post">
+            <Form onSubmit={handleSubmit} method="POST">
               <FormGroup className="text-start mb-2">
                 <Label for="exampleEmail">Имена</Label>
                 <Input type="text" name="name" onChange={e => setName(e.target.value)} value={name} invalid={hasNameError} />
@@ -207,7 +209,7 @@ function Contact() {
               </FormGroup>
               <FormGroup className="text-start mb-2" disabled>
                 <div className="d-flex">
-                  <Input className="bc-gray" id="mainCaptcha" name="mainCaptchaText" value={mainCaptchaText} onChange={e => setMainCaptchaText(e.target.value)} />
+                  <Input className="bc-gray" id="mainCaptcha" name="mainCaptchaText" value={mainCaptchaText} onChange={e => setMainCaptchaText(e.target.value)} disabled />
                   <Button color="link" onClick={onRefresh}>
                     <i className="fa-solid fa-arrows-rotate ms-2 mt-2"></i>
                   </Button>

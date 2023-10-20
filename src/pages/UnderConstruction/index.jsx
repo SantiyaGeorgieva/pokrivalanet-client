@@ -1,6 +1,6 @@
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import underConstruction from '../../images/underconstruction.jpg'
+import underConstruction from '../../images/underconstruction.jpg';
 
 function UnderConstruction() {
   return (

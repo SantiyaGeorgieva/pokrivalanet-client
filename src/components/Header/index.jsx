@@ -1,6 +1,6 @@
 import { Button, Col, DropdownItem, DropdownMenu, DropdownToggle, Nav, Navbar, Row, UncontrolledDropdown } from "reactstrap";
 import Logo from '../../images/logo.png'
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import './header.scss';
 import { useState } from "react";
 import { links } from "../../constants";
@@ -84,7 +84,14 @@ function Header() {
               {links.map((element, i) => {
                 return (
                   <Col key={i}>
-                    <Link to={element.to} onClick={() => setIsActive(true)}>{element.name}</Link>
+                    <NavLink
+                      to={element.to}
+                      className={({ isActive }) =>
+                        isActive ? 'fw-bold' : ''
+                      }
+                    >
+                      {element.name}
+                    </NavLink>
                   </Col>
                 )
               })}

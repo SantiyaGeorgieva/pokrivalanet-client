@@ -29,8 +29,8 @@ export default class HomeSlider extends Component {
       <div className="container my-5">
         <Slider {...settings}>
           <Row className="d-flex bc-light-gray m-0">
-            <Col md="4" className="d-flex flex-column align-items-center justify-content-center text-start column-image">
-              <h4 className="mb-5 ms-4">Покривала и брезенти&nbsp;&nbsp;&nbsp; за транспортни средства</h4>
+            <Col md="4" className="d-flex flex-column align-items-center justify-content-center text-start column-image px-0">
+              <h4 className="mb-5 ms-4">Покривала и брезенти&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; за транспортни средства</h4>
               {/* <p className="ms-4 mb-0">Подсигурете надеждна защита на товарите по време на превоз.</p>
               <p className="ms-4">Заложете на висококачествения PVC материал и прецизната изработка.</p> */}
             </Col>

@@ -1,5 +1,10 @@
 .bc-light-gray {
   background-color: #EEEEEE;
+  margin: 0;
+
+  >div {
+    padding: 0;
+  }
 }
 
 .slick-list {

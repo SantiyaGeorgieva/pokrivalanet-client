@@ -28,8 +28,8 @@ function Footer() {
               <Col md="4" className="d-flex align-items-end justify-content-center">
                 <div className="d-flex align-items-center social-icons">
                   <p className="mb-0 me-2 text-light">Намерете ни</p>
-                  <Link to="https://www.facebook.com/brezentiruse" target="_blank">
-                    <i className="fa-brands fa-facebook fs-4 me-2 my-2 text-light"></i>
+                  <Link to="https://www.facebook.com/brezentiruse" target="_blank" className="mb-0">
+                    <i className="fa-brands fa-facebook fs-4 me-2 text-light"></i>
                   </Link>
                   <Link to="https://www.facebook.com/CreativeIdeaGroup/?fref=ts" target="_blank">
                     <i className="fa-brands fa-facebook fs-4 text-light"></i>

@@ -1,0 +1,44 @@
+.light-rectangle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 705px;
+  height: 225px;
+  background-color: #fff;
+  border-radius: 35px;
+  margin: 0 auto;
+  opacity: .75;
+  z-index: 2;
+}
+
+.centered-text {
+  position: absolute;
+  color: #214069;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 500;
+
+  .button-blob {
+    cursor: default;
+    background-color: #4A8FE8;
+    border: 0;
+
+    &:hover {
+      background-color: #4A8FE8;
+    }
+  }
+}
+
+.pokrivala-cover {
+  position: relative;
+  background-image: url('../../images/header.jpg');
+  background-size: cover;
+  background-position: center center;
+  width: 100%;
+  padding: 15px 0;
+  z-index: 1;
+}

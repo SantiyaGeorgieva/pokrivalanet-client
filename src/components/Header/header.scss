@@ -1,3 +1,7 @@
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .bc-blue {
   background-color: #407AC7;
 
@@ -21,5 +25,13 @@
       overflow: hidden;
       width: 107px;
     }
+  }
+}
+
+.location-link:hover {
+  background-color: #000 !important;
+
+  a {
+    color: #fff !important;
   }
 }

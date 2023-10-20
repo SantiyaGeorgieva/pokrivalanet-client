@@ -1,3 +1,4 @@
+import React from 'react';
 import { Route, Routes } from 'react-router';
 import './App.css';
 import Home from './pages/Home';
@@ -5,6 +6,7 @@ import Contact from './pages/Contact';
 import UnderConstruction from './pages/UnderConstruction';
 
 function App() {
+
   return (
     <div className="App">
       <Routes>

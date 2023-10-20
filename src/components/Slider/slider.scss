@@ -1,0 +1,37 @@
+.bc-light-gray {
+  background-color: #EEEEEE;
+}
+
+.slick-list {
+  margin: 0 auto;
+  width: 80%;
+  height: 430px;
+}
+
+.slick-dots {
+  bottom: 25px !important;
+
+  li {
+    &.slick-active {
+      button {
+        color: #fff;
+      }
+    }
+
+    button {
+      &::before {
+        color: #ccc !important;
+        opacity: .75;
+      }
+    }
+  }
+}
+
+.column-image {
+  height: 430px;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+}

@@ -34,8 +34,10 @@ function Header() {
               <Button color="dark" size="sm" className="me-2" outline>
                 <i className="fa fa-phone my-2 px-2" />+359 877 614 029
               </Button>
-              <Button color="dark" size="sm" className="me-2" outline>
-                <i className="fa-solid fa-location-dot my-2 px-2" />Русе
+              <Button color="dark" size="sm" className="location-link me-2" outline>
+                <Link className="text-dark text-decoration-none" to="/contact">
+                  <i className="fa-solid fa-location-dot my-2 px-2" />Русе
+                </Link>
               </Button>
               <Button color="dark" size="sm" outline>
                 <i className="fa-solid fa-envelope my-2 px-2" />brezenti_ruse@abv.bg
@@ -47,7 +49,7 @@ function Header() {
                   <UncontrolledDropdown setActiveFromChild>
                     <DropdownToggle
                       caret
-                      className="nav-link"
+                      className="nav-link cursor-pointer"
                       tag="a"
                     >
                       {selectedItem}

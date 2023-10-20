@@ -5,6 +5,7 @@ import Footer from "../../components/Footer";
 import GoogleMapRuse from '../../components/GoogleMapRuse';
 import GoogleMapSofia from '../../components/GoogleMapSofia';
 import Hr from '../../components/Hr';
+import PageTitle from '../../components/PageTitle';
 
 function Contact() {
   const [name, setName] = useState('');
@@ -127,6 +128,8 @@ function Contact() {
       }).then(
         (response) => (response.json())
       ).then((response) => {
+        console.log('response', response);
+
         if (response.status === 'success') {
           console.log("Message Sent.");
           this.resetForm()
@@ -137,6 +140,7 @@ function Contact() {
     }
   }
 
+  PageTitle('Контакти | Покривала НЕТ');
   return (
     <>
       <Header />

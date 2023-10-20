@@ -8,10 +8,12 @@
   height: 1.5em;
   opacity: 1;
   margin: 30px 0;
+  text-transform: uppercase;
+  font-weight: 600;
 
   &:before {
     content: '';
-    background: linear-gradient(to right, #000, #000, #000);
+    background: linear-gradient(to right, #ddd, #ddd, #ddd);
     position: absolute;
     left: 0;
     top: 50%;

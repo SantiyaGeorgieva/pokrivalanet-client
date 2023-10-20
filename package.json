@@ -1,6 +1,6 @@
 {
   "name": "pokrivala-net",
-  "homepage": "htttps://pokrivala.net",
+  "homepage": "http://pokrivala.net",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -15,10 +15,12 @@
     "react-router": "^6.17.0",
     "react-router-dom": "^6.17.0",
     "react-scripts": "^5.0.1",
+    "react-slick": "^0.29.0",
     "reactstrap": "^9.2.0",
     "sass": "^1.69.4",
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.4",
+    "slick-carousel": "^1.8.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

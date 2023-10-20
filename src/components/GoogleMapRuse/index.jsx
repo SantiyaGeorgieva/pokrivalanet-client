@@ -2,6 +2,8 @@ import { GoogleMap, InfoWindow, Marker, useJsApiLoader } from '@react-google-map
 import { useCallback, useState } from 'react';
 import Loader from '../Loader';
 
+const google = window.google;
+
 const containerStyle = {
   width: '100%',
   height: '295px'
@@ -39,7 +41,7 @@ function GoogleMapRuse() {
   }, []);
 
   return (
-    <GoogleMap
+    isLoaded ? <GoogleMap
       mapContainerStyle={containerStyle}
       center={center}
       zoom={15}
@@ -72,7 +74,7 @@ function GoogleMapRuse() {
           </InfoWindow>
         )}
       </Marker>
-    </GoogleMap>
+    </GoogleMap> : <Loader />
   )
 }
 

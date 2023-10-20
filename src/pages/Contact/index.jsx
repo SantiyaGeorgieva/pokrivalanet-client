@@ -140,7 +140,7 @@ function Contact() {
     }
   }
 
-  PageTitle('Контакти | Покривала НЕТ');
+  PageTitle('Информация за Контакти | Покривала НЕТ');
   return (
     <>
       <Header />

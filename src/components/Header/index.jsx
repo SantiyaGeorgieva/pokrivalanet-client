@@ -77,7 +77,7 @@ function Header() {
           </Row>
         </Col>
       </Row>
-      <div className="container-fluid px-0">
+      <div className="container-fluid">
         <Row className="bc-blue align-items-center">
           <div className="container">
             <Row className={`align-items-center ${isActive ? 'active' : ''}`}>

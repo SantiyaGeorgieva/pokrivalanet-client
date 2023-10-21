@@ -46,10 +46,10 @@ function Header() {
             <Col md="1" className="d-flex align-items-center">
               <Navbar expand="sm" className="py-0">
                 <Nav className="ms-auto" navbar>
-                  <UncontrolledDropdown setActiveFromChild>
+                  <UncontrolledDropdown setActiveFromChild className="cursor-notAllowed">
                     <DropdownToggle
                       caret
-                      className="nav-link cursor-pointer"
+                      className="nav-link pointer-events-none"
                       tag="a"
                     >
                       {selectedItem}

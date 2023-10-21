@@ -12,9 +12,9 @@ function UnderConstruction() {
       <CookieConsent
         location="bottom"
         buttonText="Приеми"
-        cookieName="myAwesomeCookieName2"
-        style={{ display: 'flex', alignItems: 'center', background: "#2B373B", textAlign: 'left', padding: '10px 0 10px 15px' }}
-        buttonStyle={{ background: '#fff', color: "#4e503b", fontSize: "13px", fontWeight: '600' }}
+        cookieName="pokrivalaCookie"
+        style={{ display: 'flex', alignItems: 'center', background: "#2B373B", textAlign: 'left', padding: '10px 0 10px 15px', opacity: '.85' }}
+        buttonStyle={{ background: '#fff', color: "#4e503b", fontSize: "13px", fontWeight: '600', borderRadius: '30px' }}
         expires={150}
       >
         <p className="mb-0">Pokrivala използва бисквитки, за да гарантира на потребителите използването на функциите на своя сайт, като предлага по-добро потребителско изживяване.</p>

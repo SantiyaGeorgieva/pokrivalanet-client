@@ -28,10 +28,10 @@ function Header() {
               </div>
             </Col>
             <Col md="7">
-              <Button size="sm" color="dark" className="me-2" outline>
+              <Button size="sm" color="dark" className="cursor-default me-2" outline>
                 <i className="fa fa-phone my-2 px-2" />+359 887 614 031
               </Button>
-              <Button color="dark" size="sm" className="me-2" outline>
+              <Button color="dark" size="sm" className="cursor-default me-2" outline>
                 <i className="fa fa-phone my-2 px-2" />+359 877 614 029
               </Button>
               <Button color="dark" size="sm" className="location-link me-2" outline>
@@ -39,7 +39,7 @@ function Header() {
                   <i className="fa-solid fa-location-dot my-2 px-2" />Русе
                 </Link>
               </Button>
-              <Button color="dark" size="sm" outline>
+              <Button color="dark" size="sm" outline className="cursor-default">
                 <i className="fa-solid fa-envelope my-2 px-2" />brezenti_ruse@abv.bg
               </Button>
             </Col>

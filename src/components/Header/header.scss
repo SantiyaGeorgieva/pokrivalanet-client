@@ -2,6 +2,14 @@
   cursor: pointer;
 }
 
+.cursor-default {
+  cursor: default;
+
+  &:hover {
+    cursor: default;
+  }
+}
+
 .bc-blue {
   background-color: #407AC7;
 

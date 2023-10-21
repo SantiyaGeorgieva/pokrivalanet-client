@@ -45,7 +45,7 @@ function Footer() {
           <p className="c-blue-text mb-0 ms-5">{new Date().getFullYear()} © Всички права запазени</p>
         </Col>
         <Col md="6" className="text-end">
-          <p className="c-blue-text mb-0 me-5">Designed | Powered by Santiya Georgieva</p>
+          <p className="c-blue-text mb-0 me-5">Designed | Created by Santiya Georgieva</p>
         </Col>
       </Row>
     </div>

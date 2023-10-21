@@ -91,6 +91,9 @@ export const awningAnShadesImages = [
     image: Image9
   },
   {
+    image: Image10
+  },
+  {
     image: Image11
   },
   {

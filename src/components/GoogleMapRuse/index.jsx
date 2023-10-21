@@ -1,6 +1,7 @@
 import { GoogleMap, InfoWindow, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { useCallback, useState } from 'react';
 import Loader from '../Loader';
+import { googleApiKey } from '../../config';
 
 const google = window.google;
 
@@ -17,7 +18,7 @@ const center = {
 function GoogleMapRuse() {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: "AIzaSyBq74d-udEuQzsjQs2XB5RAazk6Zqwa35M"
+    googleMapsApiKey: googleApiKey
   })
 
   const [mapMarker, setMapMarker] = useState(null);

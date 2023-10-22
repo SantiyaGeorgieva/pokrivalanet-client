@@ -7,4 +7,13 @@
   padding: 30px 40px;
   margin-bottom: 40px;
   text-align: justify;
+
+  &.small {
+    height: auto;
+    padding: 15px 20px;
+
+    p {
+      font-size: 13px;
+    }
+  }
 }

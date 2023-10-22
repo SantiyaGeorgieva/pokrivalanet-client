@@ -1,7 +1,7 @@
 {
   "name": "pokrivala-net",
   "homepage": "http://pokrivala.net",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "private": true,
   "dependencies": {
     "@react-google-maps/api": "^2.19.2",
@@ -16,12 +16,8 @@
     "react-router": "^6.17.0",
     "react-router-dom": "^6.17.0",
     "react-scripts": "^5.0.1",
-    "react-slick": "^0.29.0",
     "reactstrap": "^9.2.0",
     "sass": "^1.69.4",
-    "semantic-ui-css": "^2.5.0",
-    "semantic-ui-react": "^2.1.4",
-    "slick-carousel": "^1.8.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

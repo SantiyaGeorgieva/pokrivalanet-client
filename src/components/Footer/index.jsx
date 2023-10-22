@@ -2,10 +2,10 @@ import { Col, Row } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './footer.scss';
 
-function Footer() {
+function Footer({ isMobile }) {
   return (
-    <div className="container-fluid px-0">
-      <Row className="bc-dark-blue">
+    <div className="container-fluid">
+      <Row className={`bc-dark-blue ${isMobile ? 'small' : ''}`}>
         <Col>
           <div className="container">
             <Row className="footer-menu">
@@ -40,15 +40,19 @@ function Footer() {
           </div>
         </Col>
       </Row>
-      <Row className="bc-dark-blue hr">
-        <Col md="6" className="text-start">
-          <p className="c-blue-text mb-0 ms-5">{new Date().getFullYear()} © Всички права запазени</p>
+      <Row className={`bc-dark-blue ${isMobile ? 'small' : ''}`}>
+        <Col md="6" className={`${isMobile ? 'text-center' : 'text-start'}`}>
+          <p className={`c-blue-text mb-0 ${isMobile ? 'text-center' : 'text-start ms-5'}`}>
+            {new Date().getFullYear()} © Всички права запазени
+          </p>
         </Col>
-        <Col md="6" className="text-end">
-          <p className="c-blue-text mb-0 me-5">Designed | Created by Santiya Georgieva</p>
+        <Col md="6" className={`${isMobile ? 'text-center' : 'text-end'}`}>
+          <p className={`c-blue-text mb-0 ${isMobile ? 'text-center' : 'text-end me-5'}`}>
+            Designed | Created by Santiya Georgieva
+          </p>
         </Col>
       </Row>
-    </div>
+    </div >
   );
 }
 

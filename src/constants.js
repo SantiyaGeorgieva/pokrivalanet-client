@@ -11,6 +11,16 @@ import Image10 from './images/tenti_i_sennici/35882682_1265999740169828_99728277
 import Image11 from './images/tenti_i_sennici/66775396_1766036240166173_4429178534304415744_n.jpg';
 import Image12 from './images/tenti_i_sennici/66848446_1766036230166174_3605350399013289984_n.jpg';
 
+import TruckCover from './images/pokrivala-za-kamioni.jpg';
+import WindproofCurtains from './images/vetrouportni_zavesi.jpg';
+import CurtainsCowFarms from './images/zavesi_za_kravefermi.jpg';
+import BigCover from './images/golemi_pokrivala.jpg';
+import PrefabricatedTents from './images/sglobyaemishatri.jpg';
+import AwningsSunshades from './images/tenti_i_sennici.jpg';
+import IndustrialMaterials from './images/industrialni_izdeliya.jpg';
+import LiningsCovers from './images/oblicovki_i_pokrivala.jpg';
+import WagonCovers from './images/pokrivala_za-vagoni.png';
+
 export const links = [
   {
     to: '/',
@@ -99,4 +109,78 @@ export const awningAnShadesImages = [
   {
     image: Image12
   }
-]
+];
+
+export const carouselItems = [
+  {
+    src: TruckCover,
+    altText: 'Slide 1',
+    key: 1,
+    className: 'column-image',
+    text: 'Покривала и брезенти за транспортни средства'
+  },
+  {
+    src: WindproofCurtains,
+    altText: 'Slide 2',
+    key: 2,
+    className: 'column-image',
+    text: 'Ветроупорни завеси'
+  },
+  {
+    src: AwningsSunshades,
+    altText: 'Slide 3',
+    key: 3,
+    className: 'column-image',
+    text: 'Тенти и сенници'
+  },
+  {
+    src: TruckCover,
+    altText: 'Slide 4',
+    key: 4,
+    className: 'column-image',
+    text: 'Покривала за рибарници и лагуни'
+  },
+  {
+    src: CurtainsCowFarms,
+    altText: 'Slide 5',
+    key: 5,
+    className: 'column-image',
+    text: 'Завеси за кравеферми'
+  },
+  {
+    src: IndustrialMaterials,
+    altText: 'Slide 6',
+    key: 8,
+    className: 'column-image',
+    text: 'Индустриални изделия'
+  },
+  {
+    src: PrefabricatedTents,
+    altText: 'Slide 6',
+    key: 6,
+    className: 'column-image',
+    text: 'Сглобяеми шатри'
+  },
+  {
+    src: BigCover,
+    altText: 'Slide 6',
+    key: 7,
+    className: 'column-image',
+    text: 'Големи покривала'
+  },
+
+  {
+    src: LiningsCovers,
+    altText: 'Slide 6',
+    key: 9,
+    className: 'column-image',
+    text: 'Облицовки и покривала'
+  },
+  {
+    src: WagonCovers,
+    altText: 'Slide 6',
+    key: 10,
+    className: 'column-image',
+    text: 'Покривала за вагони'
+  },
+];

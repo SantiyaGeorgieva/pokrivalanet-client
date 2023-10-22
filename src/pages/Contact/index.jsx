@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, FormFeedback, FormGroup, Input, Label, Row } from "reactstrap";
-import CookieConsent from 'react-cookie-consent';
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
 import GoogleMapRuse from '../../components/GoogleMapRuse';
 import GoogleMapSofia from '../../components/GoogleMapSofia';
 import Hr from '../../components/Hr';
 import PageTitle from '../../components/PageTitle';
 
-function Contact() {
+function Contact({ hideMain }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [subject, setSubject] = useState('');
@@ -144,9 +141,8 @@ function Contact() {
   }
 
   PageTitle('Информация за Контакти | Покривала НЕТ');
-  return (
-    <>
-      <Header />
+  return <>
+    {!hideMain && (<>
       <div className="container my-5">
         <Row>
           <Col md="6">
@@ -225,21 +221,10 @@ function Contact() {
             </Form>
           </Col>
         </Row>
-      </div >
-      <Footer />
-      <CookieConsent
-        location="bottom"
-        buttonText="Приеми"
-        cookieName="pokrivalaCookie"
-        style={{ display: 'flex', alignItems: 'center', background: "#2B373B", textAlign: 'left', padding: '10px 0 10px 15px', opacity: '.85' }}
-        buttonStyle={{ background: '#fff', color: "#4e503b", fontSize: "13px", fontWeight: '600', borderRadius: '30px' }}
-        expires={150}
-      >
-        <p className="mb-0">Pokrivala използва бисквитки, за да гарантира на потребителите използването на функциите на своя сайт, като предлага по-добро потребителско изживяване.</p>
-        <p className="mb-0">Продължавайки да разглеждате сайта, вие се съгласявате с използването на бисквитки.</p>
-      </CookieConsent>
-    </>
-  )
+      </div>
+    </>)
+    }
+  </>
 }
 
 export default Contact;

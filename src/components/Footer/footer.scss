@@ -1,6 +1,8 @@
 .bc-dark-blue {
   background-color: #214069;
   overflow-x: none;
+  padding: 15px 0;
+  border-top: 1px solid #415269;
 
   .container {
     padding: 30px 0;
@@ -18,13 +20,19 @@
     }
   }
 
-
   .c-blue-text {
     color: #92B9EC;
   }
 
-  &.hr {
-    padding: 15px 0;
-    border-top: 1px solid #415269;
+  &.small {
+    padding: 10px 0 !important;
+
+    a {
+      font-size: 12px !important;
+    }
+
+    p {
+      font-size: 12px;
+    }
   }
 }

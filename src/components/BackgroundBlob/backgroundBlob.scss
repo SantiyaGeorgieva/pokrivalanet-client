@@ -41,4 +41,18 @@
   width: 100%;
   padding: 15px 0;
   z-index: 1;
+
+  &.small {
+    background-size: auto;
+    background-repeat: no-repeat;
+
+    .light-rectangle {
+      width: auto;
+    }
+
+    .centered-text {
+      font-size: 13px;
+      width: 85%;
+    }
+  }
 }

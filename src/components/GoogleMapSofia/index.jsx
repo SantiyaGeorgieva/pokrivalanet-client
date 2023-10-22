@@ -1,6 +1,6 @@
-import { GoogleMap, InfoWindow, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { useCallback, useState } from 'react';
-import Loader from '../Loader';
+import { Spinner } from 'reactstrap';
+import { GoogleMap, InfoWindow, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { googleApiKey } from '../../config';
 
 const google = window.google;
@@ -75,7 +75,7 @@ function GoogleMapSofia() {
             </InfoWindow>
           )}
         </Marker>
-      </GoogleMap> : <Loader />
+      </GoogleMap> : <Spinner className="m-5" color="primary" />
   )
 }
 

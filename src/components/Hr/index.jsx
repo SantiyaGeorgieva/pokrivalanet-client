@@ -2,7 +2,7 @@ import './hr.scss';
 
 function Hr({ text }) {
   return (
-    <div className="container px-0">
+    <div className="container">
       <hr className="hr-text" data-content={text} />
     </div>
   )

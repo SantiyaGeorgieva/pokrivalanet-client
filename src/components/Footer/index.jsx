@@ -9,7 +9,7 @@ function Footer({ isMobile }) {
         <Col>
           <div className="container">
             <Row className="footer-menu">
-              <Col md="4" className="d-flex flex-column text-start">
+              <Col md="4" className={`d-flex flex-column text-start ${isMobile ? 'w-50' : ''}`}>
                 <Link to="/">Начало</Link>
                 <Link to="/truck-covers">Покривала за камиони</Link>
                 <Link to="/windproof-curtains">Ветроупорни завеси</Link>
@@ -25,7 +25,7 @@ function Footer({ isMobile }) {
                 <Link to="/cover-for-wagons">Покривала за вагони</Link>
                 <Link to="/contact">Контакти</Link>
               </Col>
-              <Col md="4" className="d-flex align-items-end justify-content-center">
+              {!isMobile && <Col md="4" className="d-flex align-items-end justify-content-center">
                 <div className="d-flex align-items-center social-icons">
                   <p className="mb-0 me-2 text-light">Намерете ни</p>
                   <Link to="https://www.facebook.com/brezentiruse" target="_blank" className="mb-0">
@@ -35,8 +35,23 @@ function Footer({ isMobile }) {
                     <i className="fa-brands fa-facebook fs-4 text-light"></i>
                   </Link>
                 </div>
-              </Col>
+              </Col>}
             </Row>
+            {isMobile &&
+              <Row>
+                <Col>
+                  <div className="d-flex align-items-center justify-content-center mt-4 social-icons">
+                    <p className="mb-0 me-2 text-light">Намерете ни</p>
+                    <Link to="https://www.facebook.com/brezentiruse" target="_blank" className="mb-0">
+                      <i className="fa-brands fa-facebook fs-4 me-2 text-light"></i>
+                    </Link>
+                    <Link to="https://www.facebook.com/CreativeIdeaGroup/?fref=ts" target="_blank">
+                      <i className="fa-brands fa-facebook fs-4 text-light"></i>
+                    </Link>
+                  </div>
+                </Col>
+              </Row>
+            }
           </div>
         </Col>
       </Row>

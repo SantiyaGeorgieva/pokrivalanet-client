@@ -21,8 +21,6 @@ import { links } from "../../constants";
 function Header({ isMobile, isOpen, toggle }) {
   const [selectedItem, setSelectedItem] = useState("BG");
 
-  const handleToggle = () => toggle();
-
   return (
     <>{!isMobile ? (<div className="container-fluid px-0">
       <div className="my-3">
@@ -109,36 +107,73 @@ function Header({ isMobile, isOpen, toggle }) {
           </div>
         </nav>
       </div>
-    </div>) : <Navbar expand="md" className={`small ${isOpen ? 'bc-blue' : ''}`}>
-      {!isOpen &&
-        <>
-          <NavLink to="/" className="navbar-brand">
-            <img src={Logo} alt="Pokrivala.net logo" />
-          </NavLink>
-          <div className="d-flex flex-column align-items-center mx-auto">
-            <Row className="my-3">
-              <Col md="12">
-                <Button size="sm" color="dark" className="cursor-default me-2" outline>
-                  <i className="fa fa-phone my-2 px-2" />+359 887 614 031
-                </Button>
-                <Button color="dark" size="sm" className="cursor-default me-2" outline>
-                  <i className="fa fa-phone my-2 px-2" />+359 877 614 029
-                </Button>
-              </Col>
-            </Row>
-            <Row>
-              <Col md="6">
-                <Button color="dark" size="sm" className="location-link me-2" outline>
-                  <Link className="text-dark text-decoration-none" to="/contact">
-                    <i className="fa-solid fa-location-dot my-2 px-2" />Русе
-                  </Link>
-                </Button>
-                <Button color="dark" size="sm" outline className="cursor-default">
-                  <i className="fa-solid fa-envelope my-2 px-2" />brezenti_ruse@abv.bg
-                </Button>
-              </Col>
-            </Row>
-            <div className="social-icons">
+    </div>) :
+      <Navbar expand="md" className={`small ${isOpen ? 'bc-blue' : ''}`}>
+        {!isOpen &&
+          <>
+            <NavLink to="/" className="navbar-brand">
+              <img src={Logo} alt="Pokrivala.net logo" />
+            </NavLink>
+            <Navbar expand="sm" className="py-0 px-0 mt-5 me-2 text-end">
+              <Nav className=" ms-auto" navbar>
+                <UncontrolledDropdown setActiveFromChild className="cursor-notAllowed">
+                  <DropdownToggle
+                    caret
+                    className="nav-link pointer-events-none"
+                    tag="a"
+                  >
+                    {selectedItem}
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    <DropdownItem
+                      href="#"
+                      tag="a"
+                      onClick={() => { setSelectedItem('EN') }}
+                    >
+                      EN
+                    </DropdownItem>
+                    <DropdownItem
+                      href="#"
+                      tag="a"
+                      onClick={() => { setSelectedItem('RO') }}
+                    >
+                      RO
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+              </Nav>
+            </Navbar>
+            <div className="d-flex flex-column align-items-center text-start">
+              <Row className={`${isMobile ? '' : 'my-3'}`}>
+                <Col md="12" className={`${!isMobile ? '' : 'mt-3 mb-2'}`}>
+                  <Button size="sm" color="dark" className="cursor-default me-2" outline>
+                    <i className="fa fa-phone my-2 px-2" />+359 887 614 031
+                  </Button>
+                </Col>
+                <Col className={`${!isMobile ? '' : 'mb-2'}`}>
+                  <Button color="dark" size="sm" className="cursor-default me-2" outline>
+                    <i className="fa fa-phone my-2 px-2" />+359 877 614 029
+                  </Button>
+                </Col>
+              </Row>
+            </div>
+            <div className="d-flex flex-column align-items-center text-start">
+              <Row>
+                <Col md="12" className={`${!isMobile ? '' : 'mb-2'}`}>
+                  <Button color="dark" size="sm" className="location-link me-2" outline>
+                    <Link className="text-dark text-decoration-none" to="/contact">
+                      <i className="fa-solid fa-location-dot my-2 px-2" />Русе
+                    </Link>
+                  </Button>
+                </Col>
+                <Col className={`${!isMobile ? '' : 'mb-2'}`}>
+                  <Button color="dark" size="sm" outline className="cursor-default">
+                    <i className="fa-solid fa-envelope my-2 px-2" />brezenti_ruse@abv.bg
+                  </Button>
+                </Col>
+              </Row>
+            </div>
+            <div className="d-flex flex-column align-items-center text-start social-icons">
               <Link to="https://www.facebook.com/brezentiruse" target="_blank">
                 <i className="fa-brands fa-facebook fs-4 mx-1 my-2 text-dark"></i>
               </Link>
@@ -146,34 +181,33 @@ function Header({ isMobile, isOpen, toggle }) {
                 <i className="fa-brands fa-facebook fs-4 text-dark"></i>
               </Link>
             </div>
-          </div>
-        </>
-      }
-      <div className={`menuToggle ${isOpen ? 'close' : ''}`} onClick={toggle}>
-        <input type="checkbox" />
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-      <Collapse isOpen={isOpen} navbar>
-        <Nav className="menu" navbar>
-          {links.map((element, i) => {
-            return (<NavItem
-              key={i}>
-              <NavLink
-                to={element.to}
-                className={({ isActive }) =>
-                  isActive ? 'fw-bold' : ''
-                }
-                onClick={() => toggle()}
-              >
-                {element.name}
-              </NavLink>
-            </NavItem>)
-          })}
-        </Nav>
-      </Collapse>
-    </Navbar >
+          </>
+        }
+        <div className={`menuToggle ${isOpen ? 'close' : ''}`} onClick={() => toggle()}>
+          <input type="checkbox" />
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <Collapse isOpen={isOpen} navbar>
+          <Nav className="menu" navbar>
+            {links.map((element, i) => {
+              return (<NavItem
+                key={i}>
+                <NavLink
+                  to={element.to}
+                  className={({ isActive }) =>
+                    isActive ? 'fw-bold' : ''
+                  }
+                  onClick={() => toggle()}
+                >
+                  {element.name}
+                </NavLink>
+              </NavItem>)
+            })}
+          </Nav>
+        </Collapse>
+      </Navbar >
     }
     </>
   )

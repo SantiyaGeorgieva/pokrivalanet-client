@@ -8,6 +8,9 @@
     padding: 30px 0;
 
     .footer-menu {
+      display: flex;
+      flex-wrap: nowrap;
+
       a {
         color: white;
         text-decoration: none;
@@ -26,6 +29,10 @@
 
   &.small {
     padding: 10px 0 !important;
+
+    .container {
+      padding: 10px 0;
+    }
 
     a {
       font-size: 12px !important;

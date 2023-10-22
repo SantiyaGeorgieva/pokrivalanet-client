@@ -42,3 +42,14 @@ body {
     transform: rotate(360deg);
   }
 }
+
+.button-cookie {
+  width: 100%;
+}
+
+.test {
+  display: flex;
+  width: 95%;
+  align-items: center;
+  justify-content: center;
+}

@@ -50,7 +50,7 @@ function HomeSlider(args) {
   });
 
   return (
-    <div className="container my-4">
+    <div className={`container ${!args.isMobile ? 'my-4' : 'my-2'}`}>
       <Row className={`d-flex bc-light-gray ${args.isMobile ? 'small' : ''} mx-auto`}>
         <Col md="5" className="d-flex flex-column align-items-center justify-content-center px-0">
           {carouselItems.map(item => {

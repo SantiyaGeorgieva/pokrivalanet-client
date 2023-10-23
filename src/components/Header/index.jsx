@@ -198,13 +198,13 @@ const Header = memo(function Header({ isMobile, isOpen, toggle }) {
           <Nav className="menu" navbar>
             {links.map((element, i) => {
               return (isOpen && <NavItem
-                key={i}>
+                key={i}
+                onClick={toggle}>
                 <NavLink
                   to={element.to}
                   className={({ isActive }) =>
                     isActive ? 'fw-bold' : ''
                   }
-                  onClick={toggle}
                 >
                   {element.name}
                 </NavLink>

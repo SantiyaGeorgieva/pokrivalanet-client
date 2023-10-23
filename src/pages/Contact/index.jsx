@@ -5,7 +5,7 @@ import GoogleMapSofia from '../../components/GoogleMapSofia';
 import Hr from '../../components/Hr';
 import PageTitle from '../../components/PageTitle';
 
-function Contact({ hideMain }) {
+function Contact({ hideMain, isMobile }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [subject, setSubject] = useState('');
@@ -62,6 +62,7 @@ function Contact({ hideMain }) {
   const [hasMessageError, setMessageError] = useState(false);
   const [hasTextInputError, setTextInputError] = useState(false);
   const [hasTextInputsError, setTextInputsError] = useState(false);
+  const [isLoaderLoad, setLoaderLoad] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -143,34 +144,45 @@ function Contact({ hideMain }) {
   PageTitle('Информация за Контакти | Покривала НЕТ');
   return <>
     {!hideMain && (<>
-      <div className="container my-5">
+      <div className={`container ${!isMobile ? 'my-5' : ''}`}>
         <Row>
           <Col md="6">
             <div className="d-flex flex-column text-start">
-              <p className="mb-1"><i className="fa-solid fa-location-dot my-2 px-2" />гр. Русе, ул. „Тракция“ 10</p>
-              <p className="mb-1"><i className="fa fa-phone my-2 px-2" />+359 877 614 031,</p>
-              <p className="mb-1"><i className="fa fa-phone my-2 px-2" />+359 877 614 029,</p>
-              <p className="mb-2"><i className="fa fa-phone my-2 px-2" />+359 877 062 082</p>
+              <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />гр. Русе, ул. „Тракция“ 10</p>
+              <p className="mb-1"><i className="fa fa-phone my-2 pe-2" />+359 877 614 031,</p>
+              <p className="mb-1"><i className="fa fa-phone my-2 pe-2" />+359 877 614 029,</p>
+              <p className="mb-2"><i className="fa fa-phone my-2 pe-2" />+359 877 062 082</p>
             </div>
-            <div className="d-flex flex-column text-start mt-3">
-              <p className="mb-1"><i className="fa-solid fa-location-dot my-2 px-2" />гр. Пловдив</p>
-              <p className="mb-2"><i className="fa fa-phone my-2 px-2" />+359 877 614 031</p>
-              <p className="mb-2"><i className="fa-solid fa-envelope my-2 px-2" />brezenti_ruse@abv.bg</p>
-            </div>
+            {!isMobile &&
+              <div className="d-flex flex-column text-start mt-3">
+                <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />гр. Пловдив</p>
+                <p className="mb-2"><i className="fa fa-phone my-2 pe-2" />+359 877 614 031</p>
+                <p className="mb-2"><i className="fa-solid fa-envelope my-2 pe-2" />brezenti_ruse@abv.bg</p>
+              </div>
+            }
           </Col>
-          <Col md="6" className="text-end">
-            <GoogleMapRuse />
+          <Col md="6" className={`container ${isLoaderLoad ? 'text-end' : ''}`}>
+            <GoogleMapRuse isLoaderLoad={isLoaderLoad} setLoaderLoad={setLoaderLoad} />
           </Col>
         </Row>
+        {isMobile && <Row>
+          <Col md="6">
+            <div className="d-flex flex-column text-start mt-3">
+              <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />гр. Пловдив</p>
+              <p className="mb-2"><i className="fa fa-phone my-2 pe-2" />+359 877 614 031</p>
+              <p className="mb-2"><i className="fa-solid fa-envelope my-2 pe-2" />brezenti_ruse@abv.bg</p>
+            </div>
+          </Col>
+        </Row>}
         <Row className="mt-4">
           <Col md="6">
             <div className="d-flex flex-column text-start">
-              <p className="mb-1"><i className="fa-solid fa-location-dot my-2 px-2" />гр. София</p>
-              <p className="mb-2"><i className="fa fa-phone my-2 px-2" />+359 878 395 164</p>
+              <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />гр. София</p>
+              <p className="mb-2"><i className="fa fa-phone my-2 pe-2" />+359 878 395 164</p>
             </div>
           </Col>
-          <Col md="6" className="text-end">
-            <GoogleMapSofia />
+          <Col md="6" className={`container ${isLoaderLoad ? 'text-end' : ''}`}>
+            <GoogleMapSofia isLoaderLoad={isLoaderLoad} setLoaderLoad={setLoaderLoad} />
           </Col>
         </Row>
         <Hr text="Контакти" />

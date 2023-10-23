@@ -15,11 +15,15 @@ const center = {
   lng: 23.4559064
 };
 
-function GoogleMapSofia() {
+function GoogleMapSofia({ isLoaderLoad, setLoaderLoad }) {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: googleApiKey
   })
+
+  if (isLoaded) {
+    setLoaderLoad(isLoaderLoad);
+  }
 
   const [mapMarker, setMapMarker] = useState(null);
   const [showingInfoWindow, setShowingInfoWindow] = useState(true);

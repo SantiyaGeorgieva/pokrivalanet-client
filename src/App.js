@@ -45,7 +45,7 @@ function App() {
           <Route exact path="/large-bedspreads" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} />
           <Route exact path="/linings-and-covers" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} />
           <Route exact path="/cover-for-wagons" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} />
-          <Route exact path="/contact" element={<Contact hideMain={hideMain} />} />
+          <Route exact path="/contact" element={<Contact hideMain={hideMain} isMobile={isMobile} />} />
           <Route exact path="/about-me" element={<AboutMe hideMain={hideMain} isMobile={isMobile} />} />
         </Routes>
       </main>

@@ -1,9 +1,14 @@
+import { Row, Col } from 'reactstrap';
 import './hr.scss';
 
-function Hr({ text }) {
+function Hr({ isMobile, text }) {
   return (
-    <div className="container">
-      <hr className="hr-text" data-content={text} />
+    <div className={`container ${!isMobile ? 'px-0' : ''}`}>
+      <Row>
+        <Col>
+          <hr className="hr-text" data-content={text} />
+        </Col>
+      </Row>
     </div>
   )
 }

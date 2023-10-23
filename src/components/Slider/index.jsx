@@ -53,11 +53,11 @@ function HomeSlider(args) {
     <div className={`container ${!args.isMobile ? 'my-4' : 'my-2'}`}>
       <Row className={`d-flex bc-light-gray ${args.isMobile ? 'small' : ''} mx-auto`}>
         <Col md="5" className="d-flex flex-column align-items-center justify-content-center px-0">
-          {carouselItems.map(item => {
-            return <h4 className="mb-0">{(activeIndex + 1 === item.key) && item.text}</h4>
+          {carouselItems.map((item, idx) => {
+            return <h4 key={idx} className="mb-0">{(activeIndex + 1 === item.key) && item.text}</h4>
           })}
         </Col>
-        <Col md="7" className="px-0">
+        <Col md="7" className={`px-0 ${args.isMobile ? 'py-0' : ''}`}>
           <Carousel
             activeIndex={activeIndex}
             next={next}

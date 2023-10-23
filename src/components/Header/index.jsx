@@ -15,11 +15,18 @@ import {
 import Logo from '../../images/logo.png'
 import { Link, NavLink } from "react-router-dom";
 import './header.scss';
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { links } from "../../constants";
 
 function Header({ isMobile, isOpen, toggle }) {
   const [selectedItem, setSelectedItem] = useState("BG");
+  const continerFluidRef = useRef(null);
+
+  useEffect(() => {
+    if ((isMobile || isOpen) && document.querySelectorAll('.container-fluid')[1]) {
+      document.querySelectorAll('.container-fluid')[1].classList.add("px-0");
+    }
+  }, [isMobile, isOpen])
 
   return (
     <>{!isMobile ? (<div className="container-fluid px-0">
@@ -85,7 +92,7 @@ function Header({ isMobile, isOpen, toggle }) {
           </div>
         </nav>
         <nav className="navbar navbar-expand-md navbar-dark bc-blue">
-          <div className="collapse navbar-collapse" id="navbarCollapse">
+          <div className="collapse navbar-collapse align-items-center justify-content-center" id="navbarCollapse">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item d-flex collapse navbar-collapse" id="navbars-host">
                 {links.map((element, i) => {
@@ -116,7 +123,7 @@ function Header({ isMobile, isOpen, toggle }) {
             </NavLink>
             <Navbar expand="sm" className="py-0 px-0 mt-5 me-2 text-end">
               <Nav className=" ms-auto" navbar>
-                <UncontrolledDropdown setActiveFromChild className="cursor-notAllowed">
+                <UncontrolledDropdown setActiveFromChild className="cursor-notAllowed" ref={continerFluidRef}>
                   <DropdownToggle
                     caret
                     className="nav-link pointer-events-none"

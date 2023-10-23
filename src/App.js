@@ -8,6 +8,8 @@ import Contact from './pages/Contact';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import CookieConsent from 'react-cookie-consent';
+import { Link } from 'react-router-dom';
+import AboutMe from './pages/AboutMe';
 
 function App() {
   const [hideMain, setHideMain] = useState(false);
@@ -44,22 +46,27 @@ function App() {
           <Route exact path="/linings-and-covers" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} />
           <Route exact path="/cover-for-wagons" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} />
           <Route exact path="/contact" element={<Contact hideMain={hideMain} />} />
+          <Route exact path="/about-me" element={<AboutMe hideMain={hideMain} isMobile={isMobile} />} />
         </Routes>
       </main>
       {!hideMain ? <Footer isMobile={isMobile} /> : <></>}
       <div className="container">
         <CookieConsent
-          buttonWrapperClasses={`${isMobile ? 'test' : ''}`}
+          buttonWrapperClasses={`${isMobile ? 'button-cookie-wrapper' : ''}`}
           buttonClasses={`${isMobile ? 'button-cookie' : ''}`}
+          contentClasses={`${isMobile ? 'cookie-content' : ''}`}
+          containerClasses={`${isMobile ? 'cookie-container' : ''}`}
           location="bottom"
-          buttonText="Приеми"
+          buttonText="Приемам"
           cookieName="pokrivalaCookie"
           style={{ display: 'flex', alignItems: 'center', background: "#2B373B", textAlign: 'left', padding: '10px 0 10px 15px', opacity: '.85' }}
-          buttonStyle={{ background: '#fff', color: "#4e503b", fontSize: "14px", fontWeight: '600', borderRadius: '30px' }}
+          buttonStyle={{ background: '#fff', color: "#4e503b", fontSize: "14px", fontWeight: '600', textTransform: 'uppercase', fontSize: '13px', fontWeight: '600' }}
           expires={150}
         >
-          <p className="mb-0">Pokrivala използва бисквитки, за да гарантира на потребителите използването на функциите на своя сайт, като предлага по-добро потребителско изживяване.</p>
-          <p className="mb-0">Продължавайки да разглеждате сайта, вие се съгласявате с използването на бисквитки.</p>
+          <p className="mb-0">
+            Ние използваме "бисквитки", за да Ви осигурим по-добро съдържание и потребителско преживяване. Вашите предпочитания можете да отбележите<Link to="/" className="fw-bold text-decoration-none text-light"> тук.</Link>
+          </p>
+          <p className="mt-2 mb-0">Запознайте се с нашата <Link className="fw-bold text-decoration-none text-light" to="/">Политика за бисквитки</Link>.</p>
         </CookieConsent>
       </div>
     </div>

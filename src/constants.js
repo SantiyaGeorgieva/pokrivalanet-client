@@ -150,21 +150,21 @@ export const carouselItems = [
   {
     src: IndustrialMaterials,
     altText: 'Slide 6',
-    key: 8,
+    key: 6,
     className: 'column-image',
     text: 'Индустриални изделия'
   },
   {
     src: PrefabricatedTents,
     altText: 'Slide 6',
-    key: 6,
+    key: 7,
     className: 'column-image',
     text: 'Сглобяеми шатри'
   },
   {
     src: BigCover,
     altText: 'Slide 6',
-    key: 7,
+    key: 8,
     className: 'column-image',
     text: 'Големи покривала'
   },

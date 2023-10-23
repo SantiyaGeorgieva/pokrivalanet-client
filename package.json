@@ -1,7 +1,7 @@
 {
   "name": "pokrivala-net",
   "homepage": "http://pokrivala.net",
-  "version": "0.1.9",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@react-google-maps/api": "^2.19.2",

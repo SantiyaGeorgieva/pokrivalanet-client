@@ -1,10 +1,13 @@
 body {
-  overflow-x: hidden;
   font-family: 'Roboto', sans-serif;
 }
 
 .App {
   text-align: center;
+  font-family: 'Roboto', sans-serif;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  margin: 0;
 }
 
 .App-logo {
@@ -43,13 +46,33 @@ body {
   }
 }
 
-.button-cookie {
-  width: 100%;
+.cookie-container {
+  padding: 10px !important;
 }
 
-.test {
+.cookie-container .cookie-content {
+  margin: 0 !important;
+  padding-top: 10px;
+}
+
+.cookie-content>p {
+  font-size: 13px;
+  text-align: justify;
+}
+
+.button-cookie-wrapper {
   display: flex;
-  width: 95%;
+  width: 100%;
   align-items: center;
   justify-content: center;
+  margin: 0 auto;
+
+  .button-cookie {
+    width: 100%;
+    margin: 0 auto;
+
+    &::after {
+      background: rgb(255, 255, 255);
+    }
+  }
 }

@@ -62,9 +62,9 @@ function Footer({ isMobile }) {
           </p>
         </Col>
         <Col md="6" className={`${isMobile ? 'text-center' : 'text-end'}`}>
-          <p className={`c-blue-text mb-0 ${isMobile ? 'text-center' : 'text-end me-5'}`}>
+          <Link to="/about-me" className={`c-blue-text text-decoration-none mb-0 ${isMobile ? 'text-center' : 'text-end me-5'}`}>
             Designed | Created by Santiya Georgieva
-          </p>
+          </Link>
         </Col>
       </Row>
     </div >

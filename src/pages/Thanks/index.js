@@ -5,7 +5,7 @@ function Thanks() {
   return (
     <>
       <Header />
-      <div class="col-md-12">
+      <div className="col-md-12">
         <p>
           Благодарим Ви! Вашето съобщение беше изпратено успешно!
         </p>

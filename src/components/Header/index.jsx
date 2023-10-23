@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState, memo } from "react";
+import { Link, NavLink } from "react-router-dom";
 import {
   Button,
   Row,
@@ -11,22 +13,18 @@ import {
   Collapse,
   NavItem
 } from "reactstrap";
-
 import Logo from '../../images/logo.png'
-import { Link, NavLink } from "react-router-dom";
-import './header.scss';
-import { useEffect, useRef, useState } from "react";
 import { links } from "../../constants";
+import './header.scss';
 
-function Header({ isMobile, isOpen, toggle }) {
+const Header = memo(function Header({ isMobile, isOpen, toggle }) {
   const [selectedItem, setSelectedItem] = useState("BG");
-  const continerFluidRef = useRef(null);
 
   useEffect(() => {
-    if ((isMobile || isOpen) && document.querySelectorAll('.container-fluid')[1]) {
+    if (!isOpen && document.querySelectorAll('.container-fluid')[1]) {
       document.querySelectorAll('.container-fluid')[1].classList.add("px-0");
     }
-  }, [isMobile, isOpen])
+  }, [isOpen])
 
   return (
     <>{!isMobile ? (<div className="container-fluid px-0">
@@ -123,7 +121,7 @@ function Header({ isMobile, isOpen, toggle }) {
             </NavLink>
             <Navbar expand="sm" className="py-0 px-0 mt-5 me-2 text-end">
               <Nav className=" ms-auto" navbar>
-                <UncontrolledDropdown setActiveFromChild className="cursor-notAllowed" ref={continerFluidRef}>
+                <UncontrolledDropdown setActiveFromChild className="cursor-notAllowed">
                   <DropdownToggle
                     caret
                     className="nav-link pointer-events-none"
@@ -190,7 +188,7 @@ function Header({ isMobile, isOpen, toggle }) {
             </div>
           </>
         }
-        <div className={`menuToggle ${isOpen ? 'close' : ''}`} onClick={() => toggle()}>
+        <div className={`menuToggle ${isOpen ? 'close' : ''}`} onClick={toggle}>
           <input type="checkbox" />
           <span></span>
           <span></span>
@@ -199,14 +197,14 @@ function Header({ isMobile, isOpen, toggle }) {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="menu" navbar>
             {links.map((element, i) => {
-              return (<NavItem
+              return (isOpen && <NavItem
                 key={i}>
                 <NavLink
                   to={element.to}
                   className={({ isActive }) =>
                     isActive ? 'fw-bold' : ''
                   }
-                  onClick={() => toggle()}
+                  onClick={toggle}
                 >
                   {element.name}
                 </NavLink>
@@ -214,10 +212,10 @@ function Header({ isMobile, isOpen, toggle }) {
             })}
           </Nav>
         </Collapse>
-      </Navbar >
+      </Navbar>
     }
     </>
   )
-}
+});
 
 export default Header;

@@ -165,15 +165,17 @@ function Contact({ hideMain, isMobile }) {
             <GoogleMapRuse isLoaderLoad={isLoaderLoad} setLoaderLoad={setLoaderLoad} />
           </Col>
         </Row>
-        {isMobile && <Row>
-          <Col md="6">
-            <div className="d-flex flex-column text-start mt-3">
-              <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />гр. Пловдив</p>
-              <p className="mb-2"><i className="fa fa-phone my-2 pe-2" />+359 877 614 031</p>
-              <p className="mb-2"><i className="fa-solid fa-envelope my-2 pe-2" />brezenti_ruse@abv.bg</p>
-            </div>
-          </Col>
-        </Row>}
+        {isMobile &&
+          <Row>
+            <Col md="6">
+              <div className="d-flex flex-column text-start mt-3">
+                <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />гр. Пловдив</p>
+                <p className="mb-2"><i className="fa fa-phone my-2 pe-2" />+359 877 614 031</p>
+                <p className="mb-2"><i className="fa-solid fa-envelope my-2 pe-2" />brezenti_ruse@abv.bg</p>
+              </div>
+            </Col>
+          </Row>
+        }
         <Row className="mt-4">
           <Col md="6">
             <div className="d-flex flex-column text-start">
@@ -186,7 +188,7 @@ function Contact({ hideMain, isMobile }) {
           </Col>
         </Row>
         <Hr text="Контакти" />
-        <Row className="d-flex align-items-center justify-content-center">
+        <Row className={`{d-flex align-items-center justify-content-center} ${isMobile ? 'mb-5' : ''}`}>
           <Col md="4">
             <Form onSubmit={handleSubmit} method="POST">
               <FormGroup className="text-start mb-2">

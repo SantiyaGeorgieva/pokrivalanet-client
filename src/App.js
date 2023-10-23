@@ -50,7 +50,7 @@ function App() {
         </Routes>
       </main>
       {!hideMain ? <Footer isMobile={isMobile} /> : <></>}
-      <div className="container">
+      <div className="container-fluid px-0">
         <CookieConsent
           buttonWrapperClasses={`${isMobile ? 'button-cookie-wrapper' : ''}`}
           buttonClasses={`${isMobile ? 'button-cookie' : ''}`}
@@ -59,14 +59,13 @@ function App() {
           location="bottom"
           buttonText="Приемам"
           cookieName="pokrivalaCookie"
-          style={{ display: 'flex', alignItems: 'center', background: "#2B373B", textAlign: 'left', padding: '10px 0 10px 15px', opacity: '.85' }}
+          style={{ display: 'flex', alignItems: 'center', background: "#2B373B", textAlign: 'left', padding: '10px 15px', opacity: '.85' }}
           buttonStyle={{ background: '#fff', color: "#4e503b", fontSize: "14px", fontWeight: '600', textTransform: 'uppercase', fontSize: '13px', fontWeight: '600' }}
           expires={150}
         >
           <p className="mb-0">
-            Ние използваме "бисквитки", за да Ви осигурим по-добро съдържание и потребителско преживяване. Вашите предпочитания можете да отбележите<Link to="/" className="fw-bold text-decoration-none text-light"> тук.</Link>
+            Ние използваме "бисквитки", за да Ви осигурим по-добро съдържание и потребителско преживяване.
           </p>
-          <p className="mt-2 mb-0">Запознайте се с нашата <Link className="fw-bold text-decoration-none text-light" to="/">Политика за бисквитки</Link>.</p>
         </CookieConsent>
       </div>
     </div>

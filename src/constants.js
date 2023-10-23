@@ -14,6 +14,7 @@ import Image12 from './images/tenti_i_sennici/66848446_1766036230166174_36053503
 import TruckCover from './images/pokrivala-za-kamioni.jpg';
 import WindproofCurtains from './images/vetrouportni_zavesi.jpg';
 import CurtainsCowFarms from './images/zavesi_za_kravefermi.jpg';
+import CoversForFishpondsAndLagoons from './images/pokrivala_za_ribarnici_laguuni.jpg';
 import BigCover from './images/golemi_pokrivala.jpg';
 import PrefabricatedTents from './images/sglobyaemishatri.jpg';
 import AwningsSunshades from './images/tenti_i_sennici.jpg';
@@ -134,7 +135,7 @@ export const carouselItems = [
     text: 'Тенти и сенници'
   },
   {
-    src: TruckCover,
+    src: CoversForFishpondsAndLagoons,
     altText: 'Slide 4',
     key: 4,
     className: 'column-image',

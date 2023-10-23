@@ -47,12 +47,15 @@ body {
 }
 
 .cookie-container {
-  padding: 10px !important;
+  /* padding: 10px !important; */
+  position: relative;
+  width: 100%;
+  height: 100px;
+
 }
 
 .cookie-container .cookie-content {
   margin: 0 !important;
-  padding-top: 10px;
 }
 
 .cookie-content>p {
@@ -66,13 +69,18 @@ body {
   align-items: center;
   justify-content: center;
   margin: 0 auto;
+  z-index: 1;
 
   .button-cookie {
+    position: absolute;
     width: 100%;
-    margin: 0 auto;
-
-    &::after {
-      background: rgb(255, 255, 255);
-    }
+    margin-top: 30px !important;
+    z-index: 3;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    z-index: 2;
+    width: 93%;
   }
 }

@@ -41,7 +41,8 @@
     }
 
     li {
-      padding: 10px 0;
+      padding: 15px 0;
+      width: 100%;
 
       &:hover::after,
       &:focus::after {
@@ -119,7 +120,7 @@
 
   span {
     display: flex;
-    width: 26px;
+    width: 27px;
     height: 2px;
     margin-bottom: 5px;
     position: relative;
@@ -162,11 +163,27 @@
   left: 50%;
   transform: translate(-50%, -52%);
   transition: transform 0.3s cubic-bezier(0.77, 0.2, 0.05, 1.0);
-}
+  width: 100%;
 
-.menu li {
-  padding: 10px 0;
-  transition-delay: 2s;
+  li {
+    padding: 15px 0;
+    transition-delay: 2s;
+
+    &.active {
+
+      &:focus,
+      &:active {
+        &::before {
+          content: '';
+          opacity: 50%;
+        }
+      }
+
+      color: #fff;
+      font-weight: bold;
+      background-color: #2E6DBF;
+    }
+  }
 }
 
 .menuToggle input:checked~ul {

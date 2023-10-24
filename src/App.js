@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router';
-import './App.css';
+import CookieConsent from 'react-cookie-consent';
 import Home from './pages/Home';
 import AwningsAndShades from './pages/AwningsAndShades';
 import UnderConstruction from './pages/UnderConstruction';
 import Contact from './pages/Contact';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import CookieConsent from 'react-cookie-consent';
-import { Link } from 'react-router-dom';
 import AboutMe from './pages/AboutMe';
+import WindproofCurtains from './pages/WindproofCurtains';
+import IndustrialProducts from './pages/IndustrialProducts';
+import TruckCovers from './pages/TruckCovers';
+import './App.css';
 
 function App() {
   const [hideMain, setHideMain] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  const toggle = () => {
+  const toggleClass = (e) => {
     setIsOpen(!isOpen);
     setHideMain(!hideMain);
   };
@@ -30,17 +32,17 @@ function App() {
   return (
     <div className="App">
       <header className="top-navbar">
-        <Header isMobile={isMobile} isOpen={isOpen} toggle={toggle} />
+        <Header isMobile={isMobile} isOpen={isOpen} toggleClass={toggleClass} />
       </header>
       <main role="main">
         <Routes>
           <Route exact path="/" element={<Home hideMain={hideMain} isMobile={isMobile} />} />
-          <Route exact path="/truck-covers" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} preventScrollReset={true} />
-          <Route exact path="/windproof-curtains" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} preventScrollReset={true} />
+          <Route exact path="/truck-covers" element={<TruckCovers isMobile={isMobile} hideMain={hideMain} />} preventScrollReset={true} />
+          <Route exact path="/windproof-curtains" element={<WindproofCurtains isMobile={isMobile} hideMain={hideMain} />} preventScrollReset={true} />
           <Route exact path="/awnings-and-shades" element={<AwningsAndShades isMobile={isMobile} hideMain={hideMain} />} />
           <Route exact path="/covers-for-fishponds-and-lagoons" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} />
           <Route exact path="/curtains-for-cow-farms" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} />
-          <Route exact path="/industrial-products" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} />
+          <Route exact path="/industrial-products" element={<IndustrialProducts isMobile={isMobile} hideMain={hideMain} />} />
           <Route exact path="/prefab-tents" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} />
           <Route exact path="/large-bedspreads" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} />
           <Route exact path="/linings-and-covers" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} />

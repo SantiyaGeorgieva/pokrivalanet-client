@@ -1,0 +1,21 @@
+.text-transform {
+  text-transform: uppercase;
+}
+
+.bc-blue {
+  background-color: #407AC7 !important;
+}
+
+.descripiton-field {
+  border-top: 0 !important;
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+
+  &.form-control {
+    &:focus {
+      box-shadow: none !important;
+    }
+  }
+}

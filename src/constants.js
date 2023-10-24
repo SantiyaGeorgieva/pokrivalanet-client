@@ -11,6 +11,32 @@ import Image10 from './images/tenti_i_sennici/35882682_1265999740169828_99728277
 import Image11 from './images/tenti_i_sennici/66775396_1766036240166173_4429178534304415744_n.jpg';
 import Image12 from './images/tenti_i_sennici/66848446_1766036230166174_3605350399013289984_n.jpg';
 
+import Image13 from './images/vetrouporni_zavesi/0-02-05-59d.jpg';
+import Image14 from './images/vetrouporni_zavesi/0-02-05-d3a.jpg';
+import Image15 from './images/vetrouporni_zavesi/11393141_522761684545229_2604772646811635826_n-1.jpg';
+import Image16 from './images/vetrouporni_zavesi/17834112_933219366781202_3920712614450571300_o.jpg';
+import Image17 from './images/vetrouporni_zavesi/26171186_1127962003973603_2695203319089200973_o.jpg';
+import Image18 from './images/vetrouporni_zavesi/27356205_1152068804896256_8336173980022776859_o-1.jpg';
+import Image19 from './images/vetrouporni_zavesi/298374916_740782007255441_5828143896829016548_n.jpg';
+import Image20 from './images/vetrouporni_zavesi/34411866_1250208191748983_7727466323868909568_n.jpg';
+import Image21 from './images/vetrouporni_zavesi/34668424_1250207088415760_8509815417361924096_n.jpg';
+import Image22 from './images/vetrouporni_zavesi/35771061_1265997443503391_3947200285054599168_n.jpg';
+import Image23 from './images/vetrouporni_zavesi/45126527_1426253934144407_1559016370455183360_n.jpg';
+import Image24 from './images/vetrouporni_zavesi/vetroustoichivi-zav-4.jpg';
+
+import Image25 from './images/industrial_products/14606311_790123677757439_7849620970814937291_n.jpg';
+import Image26 from './images/industrial_products/14691050_790123637757443_7224925709597694267_n.jpg';
+import Image27 from './images/industrial_products/14729291_790123631090777_5190003305582043200_n.jpg';
+import Image28 from './images/industrial_products/16195284_875087605927712_5582006697216253944_n.jpg';
+import Image29 from './images/industrial_products/16298440_875087602594379_4087207823957465867_n.jpg';
+import Image30 from './images/industrial_products/16298580_875087532594386_6431045033329270986_n.jpg';
+import Image31 from './images/industrial_products/16298949_875087565927716_1508829325012991675_n.jpg';
+import Image32 from './images/industrial_products/17192308_905874346182371_5371580546756988735_o.jpg';
+import Image33 from './images/industrial_products/17240524_905874342849038_5980828231341812373_o.jpg';
+import Image34 from './images/industrial_products/17240533_905874396182366_8448948110936823862_o.jpg';
+import Image35 from './images/industrial_products/18768603_972371386199333_4043812526702163233_o.jpg';
+import Image36 from './images/industrial_products/18768603_972371386199333_4043812526702163233_o.jpg';
+
 import TruckCover from './images/pokrivala-za-kamioni.jpg';
 import WindproofCurtains from './images/vetrouportni_zavesi.jpg';
 import CurtainsCowFarms from './images/zavesi_za_kravefermi.jpg';
@@ -21,6 +47,10 @@ import AwningsSunshades from './images/tenti_i_sennici.jpg';
 import IndustrialMaterials from './images/industrialni_izdeliya.jpg';
 import LiningsCovers from './images/oblicovki_i_pokrivala.jpg';
 import WagonCovers from './images/pokrivala_za-vagoni.png';
+
+import ZavesaCipove from './images/zavesa-kalkulator-cipove.png';
+import ZavesaKopcheta from './images/zavesa-kalkulator-plasmasovi-kopcheta.png';
+import ZavesaElipsa from './images/zavesa-kalkulator-obkov-elipsa.png';
 
 export const links = [
   {
@@ -112,6 +142,84 @@ export const awningAnShadesImages = [
   }
 ];
 
+export const windproofCurtains = [
+  {
+    image: Image13
+  },
+  {
+    image: Image14
+  },
+  {
+    image: Image15
+  },
+  {
+    image: Image16
+  },
+  {
+    image: Image17
+  },
+  {
+    image: Image18
+  },
+  {
+    image: Image19
+  },
+  {
+    image: Image20
+  },
+  {
+    image: Image21
+  },
+  {
+    image: Image22
+  },
+  {
+    image: Image23
+  },
+  {
+    image: Image24
+  }
+];
+
+export const industrialProducts = [
+  {
+    image: Image25
+  },
+  {
+    image: Image26
+  },
+  {
+    image: Image27
+  },
+  {
+    image: Image28
+  },
+  {
+    image: Image29
+  },
+  {
+    image: Image30
+  },
+  {
+    image: Image31
+  },
+  {
+    image: Image32
+  },
+  {
+    image: Image33
+  },
+  {
+    image: Image34
+  },
+  {
+    image: Image35
+  },
+  {
+    image: Image36
+  }
+];
+
 export const carouselItems = [
   {
     src: TruckCover,
@@ -169,7 +277,6 @@ export const carouselItems = [
     className: 'column-image',
     text: 'Големи покривала'
   },
-
   {
     src: LiningsCovers,
     altText: 'Slide 6',
@@ -183,5 +290,28 @@ export const carouselItems = [
     key: 10,
     className: 'column-image',
     text: 'Покривала за вагони'
+  },
+];
+
+export const windproofCurtainsOptions = [
+  {
+    id: 1,
+    image: ZavesaKopcheta,
+    text: 'Пластмасови въртящи копчета'
+  },
+  {
+    id: 2,
+    image: ZavesaElipsa,
+    text: 'Обвков елипса'
+  },
+  {
+    id: 3,
+    image: ZavesaCipove,
+    text: 'Ципове'
+  },
+  {
+    id: 4,
+    image: '',
+    text: 'Колан за закачане'
   },
 ];

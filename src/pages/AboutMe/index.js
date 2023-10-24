@@ -5,11 +5,11 @@ import Hr from "../../components/Hr";
 function AboutMe({ isMobile, hideMain }) {
   PageTitle('За мен | Покривала НЕТ');
   return <>{!hideMain &&
-    <div className={`container ${isMobile ? 'my-1' : 'my-5'}`}>
+    <div className={`container ${isMobile ? 'small my-1' : 'my-5'}`}>
       <Row className="text-start">
         <Col>
           <p>Този сайт е разработен от Сантия Георгиева.
-            Предлагам професионално разработване на уеб сайтове на атрактивни цени.
+            Предлагам професионално разработване на уеб сайтове на преференциални цени.
             Ако посетения от Вас сайт ви е харесал и желаете и вие да имате такъв, може да се свържете се с мен,
             като ме потърсите на посочените по-долу контакти.
           </p>

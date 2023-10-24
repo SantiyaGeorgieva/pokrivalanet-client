@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, memo } from "react";
+import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import {
   Button,
@@ -17,14 +17,16 @@ import Logo from '../../images/logo.png'
 import { links } from "../../constants";
 import './header.scss';
 
-const Header = memo(function Header({ isMobile, isOpen, toggle }) {
+function Header({ isMobile, isOpen, toggleClass }) {
   const [selectedItem, setSelectedItem] = useState("BG");
+  console.log('isOpen', isOpen);
+  // document.querySelectorAll('.container-fluid')[1] && document.querySelectorAll('.container-fluid')[1].classList.add("px-0");
 
   useEffect(() => {
-    if (!isOpen && document.querySelectorAll('.container-fluid')[1]) {
+    if (document.querySelectorAll('.container-fluid')[1]) {
       document.querySelectorAll('.container-fluid')[1].classList.add("px-0");
     }
-  }, [isOpen])
+  }, [isMobile, isOpen])
 
   return (
     <>{!isMobile ? (<div className="container-fluid px-0">
@@ -188,7 +190,7 @@ const Header = memo(function Header({ isMobile, isOpen, toggle }) {
             </div>
           </>
         }
-        <div className={`menuToggle ${isOpen ? 'close' : ''}`} onClick={toggle}>
+        <div className={`menuToggle ${isOpen ? 'close' : ''}`} onClick={(e) => toggleClass(e)}>
           <input type="checkbox" />
           <span></span>
           <span></span>
@@ -198,24 +200,22 @@ const Header = memo(function Header({ isMobile, isOpen, toggle }) {
           <Nav className="menu" navbar>
             {links.map((element, i) => {
               return (isOpen && <NavItem
-                key={i}
-                onClick={toggle}>
-                <NavLink
-                  to={element.to}
-                  className={({ isActive }) =>
-                    isActive ? 'fw-bold' : ''
-                  }
-                >
+                onClick={({ target }) => {
+                  target && target?.classList.toggle('active')
+                  toggleClass(isOpen);
+                }}
+                key={i}>
+                <NavLink to={element.to}>
                   {element.name}
                 </NavLink>
               </NavItem>)
             })}
           </Nav>
         </Collapse>
-      </Navbar>
+      </Navbar >
     }
     </>
   )
-});
+};
 
 export default Header;

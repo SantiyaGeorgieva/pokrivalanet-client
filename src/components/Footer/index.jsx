@@ -3,6 +3,14 @@ import { Link } from 'react-router-dom';
 import './footer.scss';
 
 function Footer({ isMobile }) {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth"
+    })
+  }
+
   return (
     <div className="container-fluid">
       <Row className={`bc-dark-blue ${isMobile ? 'small' : ''}`}>
@@ -10,20 +18,20 @@ function Footer({ isMobile }) {
           <div className="container">
             <Row className="footer-menu">
               <Col md="4" className={`d-flex flex-column text-start ${isMobile ? 'w-50' : ''}`}>
-                <Link to="/">Начало</Link>
-                <Link to="/truck-covers">Покривала за камиони</Link>
-                <Link to="/windproof-curtains">Ветроупорни завеси</Link>
-                <Link to="/awnings-and-shades">Тенти и сенници</Link>
-                <Link to="/covers-for-fishponds-and-lagoons">Покривала за рибарници и лагуни</Link>
-                <Link to="/curtains-for-cow-farms">Завеси за кравеферми</Link>
+                <Link onClick={scrollToTop} to="/">Начало</Link>
+                <Link onClick={scrollToTop} to="/truck-covers">Покривала за камиони</Link>
+                <Link onClick={scrollToTop} to="/windproof-curtains">Ветроупорни завеси</Link>
+                <Link onClick={scrollToTop} to="/awnings-and-shades">Тенти и сенници</Link>
+                <Link onClick={scrollToTop} to="/covers-for-fishponds-and-lagoons">Покривала за рибарници и лагуни</Link>
+                <Link onClick={scrollToTop} to="/curtains-for-cow-farms">Завеси за кравеферми</Link>
               </Col>
               <Col md="4" className="d-flex flex-column text-start">
-                <Link to="/industrial-products">Индустриални  изделия</Link>
-                <Link to="/prefab-tents">Сглобяеми шатри</Link>
-                <Link to="/large-bedspreads">Големи покривала</Link>
-                <Link to="/linings-and-covers">Облицовки и покривала</Link>
-                <Link to="/cover-for-wagons">Покривала за вагони</Link>
-                <Link to="/contact">Контакти</Link>
+                <Link onClick={scrollToTop} to="/industrial-products">Индустриални  изделия</Link>
+                <Link onClick={scrollToTop} to="/prefab-tents">Сглобяеми шатри</Link>
+                <Link onClick={scrollToTop} to="/large-bedspreads">Големи покривала</Link>
+                <Link onClick={scrollToTop} to="/linings-and-covers">Облицовки и покривала</Link>
+                <Link onClick={scrollToTop} to="/cover-for-wagons">Покривала за вагони</Link>
+                <Link onClick={scrollToTop} to="/contact">Контакти</Link>
               </Col>
               {!isMobile && <Col md="4" className="d-flex align-items-end justify-content-center">
                 <div className="d-flex align-items-center social-icons">
@@ -62,7 +70,7 @@ function Footer({ isMobile }) {
           </p>
         </Col>
         <Col md="6" className={`${isMobile ? 'text-center' : 'text-end'}`}>
-          <Link to="/about-me" className={`c-blue-text text-decoration-none mb-0 ${isMobile ? 'text-center' : 'text-end me-5'}`}>
+          <Link onClick={scrollToTop} to="/about-me" className={`c-blue-text text-decoration-none mb-0 ${isMobile ? 'text-center' : 'text-end me-5'}`}>
             Designed | Created by Santiya Georgieva
           </Link>
         </Col>

@@ -188,7 +188,7 @@ function Contact({ hideMain, isMobile }) {
           </Col>
         </Row>
         <Hr text="Контакти" />
-        <Row className={`{d-flex align-items-center justify-content-center} ${isMobile ? 'mb-5' : ''}`}>
+        <Row className={`{d-flex align-items-center justify-content-center ${isMobile ? 'mb-5' : ''}`}>
           <Col md="4">
             <Form onSubmit={handleSubmit} method="POST">
               <FormGroup className="text-start mb-2">

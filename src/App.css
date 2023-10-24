@@ -84,3 +84,8 @@ body {
     width: 93%;
   }
 }
+
+.px-15 {
+  padding-left: 15px;
+  padding-right: 15px;
+}

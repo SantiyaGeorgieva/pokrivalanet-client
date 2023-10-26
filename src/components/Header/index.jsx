@@ -22,7 +22,7 @@ function Header({ isMobile, isOpen, toggleClass }) {
   console.log('isOpen', isOpen);
 
   useEffect(() => {
-    if (document.querySelectorAll('.container-fluid')[1]) {
+    if (isMobile && document.querySelectorAll('.container-fluid')[1]) {
       document.querySelectorAll('.container-fluid')[1].classList.add("px-0");
     }
   }, [isMobile, isOpen])
@@ -30,7 +30,7 @@ function Header({ isMobile, isOpen, toggleClass }) {
   return (
     <>{!isMobile ? (<div className="container-fluid px-0">
       <div className="mb-3">
-        <nav className="navbar navbar-expand-lg">
+        <nav className="navbar navbar-expand-lg py-0">
           <div className="container-fluid">
             <NavLink to="/" className="navbar-brand text-start">
               <img src={Logo} alt="Pokrivala.net logo" className="w-50" />

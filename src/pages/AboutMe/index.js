@@ -8,14 +8,16 @@ function AboutMe({ isMobile, hideMain }) {
     <div className={`container ${isMobile ? 'small my-1' : 'my-5'}`}>
       <Row className="text-start">
         <Col>
-          <p>Този сайт е разработен от Сантия Георгиева.
+          <p className="mb-0">Този сайт е разработен от Сантия Георгиева.</p>
+          <p className="mb-0">
             Предлагам професионално разработване на уеб сайтове на преференциални цени.
-            Ако посетения от Вас сайт ви е харесал и желаете и вие да имате такъв, може да се свържете се с мен,
+          </p>
+          <p>Ако посетения от Вас сайт ви е харесал и желаете и вие да имате такъв, може да се свържете се с мен,
             като ме потърсите на посочените по-долу контакти.
           </p>
         </Col>
       </Row>
-      <Row className="text-start">
+      <Row className="text-start mt-5">
         <Col>
           <h4>За връзка с мен:</h4>
           <p className="mb-2"><i className="fa-solid fa-location-dot pe-2" />гр. Русе</p>

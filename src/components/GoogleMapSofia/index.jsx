@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Spinner } from 'reactstrap';
 import { GoogleMap, InfoWindow, Marker, useJsApiLoader } from '@react-google-maps/api';
-import { googleApiKey } from '../../config';
+import { googleApiKey } from '../../configApi';
 
 const google = window.google;
 

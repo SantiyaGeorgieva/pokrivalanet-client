@@ -52,6 +52,14 @@ import ZavesaCipove from './images/zavesa-kalkulator-cipove.png';
 import ZavesaKopcheta from './images/zavesa-kalkulator-plasmasovi-kopcheta.png';
 import ZavesaElipsa from './images/zavesa-kalkulator-obkov-elipsa.png';
 
+import TavanShtora from './images/pokrivala_za_kamioni/0-02-05-5c9ca7dec67c92e1b5111724e35fb3824346ae81f3029bee7f9c85798e3c773e_1ded37fba3581175.jpg';
+import ShtoraPoluremarke from './images/pokrivala_za_kamioni/0-02-05-72a980e606f6b977e61521ee76e5836f81d36a83396493f11f46563d096c57ea_6f193ca04ae5d076.jpg';
+import ShtoraPoluremarkeKapaci from './images/pokrivala_za_kamioni/0-02-05-f1a207804051d2989ca3c92520cff8774289574c75a2f15c073d6f000e797656_b541c86197e98bdd.jpg';
+import PokrivaloZyrnovot from './images/pokrivala_za_kamioni/18056333_940929649343507_9187667431850749039_o.jpg';
+import TristrannaShtora from './images/pokrivala_za_kamioni/27503173_1152068168229653_1753673864796201805_o.jpg';
+import ObiknovenoPokrivalo from './images/pokrivala_za_kamioni/393711189_802369458558867_2543073741770309246_n.jpg';
+import ShtoraBezKapaciKomlektOtDve from './images/pokrivala_za_kamioni/66785853_1766036520166145_1529046337771798528_n.jpg';
+
 export const links = [
   {
     to: '/',
@@ -291,6 +299,96 @@ export const carouselItems = [
     className: 'column-image',
     text: 'Покривала за вагони'
   },
+];
+
+export const cardslItems = [
+  {
+    src: TavanShtora,
+    altText: 'Slide 1',
+    key: 1,
+    className: 'column-image',
+    title: 'Таван на щора за полуремарке',
+    subtitle: '680,00 лв. без ДДС'
+  },
+  {
+    src: ShtoraPoluremarke,
+    altText: 'Slide 2',
+    key: 2,
+    className: 'column-image',
+    title: 'Страници на щора за полуремарке - комплект от две',
+    subtitle: '1 400,00 лв. без ДДС'
+  },
+  {
+    src: ShtoraPoluremarkeKapaci,
+    altText: 'Slide 3',
+    key: 3,
+    className: 'column-image',
+    title: 'Страници на щора за полуремарке с капаци - комплект от две',
+    subtitle: '1 500,00 лв. без ДДС'
+  },
+  {
+    src: PokrivaloZyrnovot,
+    altText: 'Slide 6',
+    key: 4,
+    className: 'column-image',
+    title: 'Покривало за зърновоз или гондола',
+    subtitle: 'Изчислете цена'
+  },
+  {
+    src: TristrannaShtora,
+    altText: 'Slide 6',
+    key: 5,
+    className: 'column-image',
+    title: 'Тристранна щора за полуремерке',
+    subtitle: '2168,00 лв. без ДДС'
+  },
+  {
+    src: ObiknovenoPokrivalo,
+    altText: 'Slide 5',
+    key: 6,
+    className: 'column-image',
+    title: 'Обикновено покривало за камион или ремарке',
+    subtitle: 'Изчислете цена'
+  },
+  {
+    src: IndustrialMaterials,
+    altText: 'Slide 6',
+    key: 7,
+    className: 'column-image',
+    title: 'Страници на щора с капаци комплект от две',
+    subtitle: 'Изчислете цена',
+  },
+  {
+    src: ShtoraBezKapaciKomlektOtDve,
+    altText: 'Slide 6',
+    key: 8,
+    className: 'column-image',
+    title: 'Страници на щора без капаци комплект от две',
+    subtitle: 'Изчислете цена'
+  },
+  {
+    src: WagonCovers,
+    altText: 'Slide 6',
+    key: 9,
+    className: 'column-image',
+    title: 'Покривало за тресачка',
+    subtitle: '660,00 лв. без ДДС'
+  },
+  {
+    src: CoversForFishpondsAndLagoons,
+    altText: 'Slide 4',
+    key: 10,
+    className: 'column-image',
+    title: 'Ремонт на покривала'
+  },
+  {
+    src: BigCover,
+    altText: 'Slide 6',
+    key: 11,
+    className: 'column-image',
+    title: 'Конструкция за брезент',
+    subtitle: ''
+  }
 ];
 
 export const windproofCurtainsOptions = [

@@ -4,6 +4,7 @@ import GoogleMapRuse from '../../components/GoogleMapRuse';
 import GoogleMapSofia from '../../components/GoogleMapSofia';
 import Hr from '../../components/Hr';
 import PageTitle from '../../components/PageTitle';
+import { removeSpaces } from '../../utils';
 
 function Contact({ hideMain, isMobile }) {
   const [name, setName] = useState('');
@@ -46,15 +47,11 @@ function Contact({ hideMain, isMobile }) {
     setMainCaptchaText(code);
   };
 
-  const removeSpaces = (string) => {
-    return string.split(' ').join('');
-  }
-
-  const addInputValues = (value) => {
-    let values2 = [...values, value];
-    console.log('values2', values2);
-    setValues(values2);
-  }
+  // const addInputValues = (value) => {
+  //   let values2 = [...values, value];
+  //   console.log('values2', values2);
+  //   setValues(values2);
+  // }
 
   const [hasNameError, setNameError] = useState(false);
   const [hasEmailError, setEmailError] = useState(false);
@@ -78,6 +75,7 @@ function Contact({ hideMain, isMobile }) {
       setNameError(true);
     } else if (nameValue !== '') {
       setNameError(false);
+      setName(nameValue);
     }
 
     if (subjectValue === '') {
@@ -114,31 +112,38 @@ function Contact({ hideMain, isMobile }) {
       setTextInputsError(false);
     }
 
-    addInputValues();
-    console.log('a', values);
+    setTimeout(() => {
+      console.log('!hasNameError && !hasEmailError && !hasSubjectError && !hasMessageError && !hasTextInputError && !hasTextInputsError',
+        !hasNameError && !hasEmailError && !hasSubjectError && !hasMessageError && !hasTextInputError && !hasTextInputsError);
 
-    if (!hasNameError && !hasEmailError && !hasSubjectError && !hasMessageError && !hasTextInputError && !hasTextInputsError) {
-      console.log('HEREEEE');
-      fetch('../../email.php', {
-        method: "POST",
-        body: JSON.stringify(values[1]),
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-      }).then(
-        (response) => (response.json())
-      ).then((response) => {
-        console.log('response', response);
+      if (!hasNameError && !hasEmailError && !hasSubjectError && !hasMessageError && !hasTextInputError && !hasTextInputsError) {
+        // addInputValues([...values, { name: name, email: email, subject: subject, message: message }]);
+        setValues([...values, { name: name, email: email, subject: subject, message: message }]);
 
-        if (response.status === 'success') {
-          console.log("Message Sent.");
-          this.resetForm()
-        } else if (response.status === 'fail') {
-          console.log("Message failed to send.", response)
-        }
-      });
-    }
+        console.log('HEREEEE', values);
+        console.log('HEREEEE', values[0]);
+
+        fetch('../../server.js', {
+          method: "POST",
+          body: JSON.stringify(values[1]),
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        }).then(
+          (response) => (response.json())
+        ).then((response) => {
+          console.log('response', response);
+
+          if (response.status === 'success') {
+            console.log("Message Sent.");
+            this.resetForm()
+          } else if (response.status === 'fail') {
+            console.log("Message failed to send.", response)
+          }
+        });
+      }
+    }, 10);
   }
 
   PageTitle('Информация за Контакти | Покривала НЕТ');
@@ -190,7 +195,7 @@ function Contact({ hideMain, isMobile }) {
         <Hr text="Контакти" />
         <Row className={`{d-flex align-items-center justify-content-center ${isMobile ? 'mb-5' : ''}`}>
           <Col md="4">
-            <Form onSubmit={handleSubmit} method="POST">
+            <Form onSubmit={(e) => handleSubmit(e)} method="POST">
               <FormGroup className="text-start mb-2">
                 <Label for="exampleEmail">Имена</Label>
                 <Input type="text" name="name" onChange={e => setName(e.target.value)} value={name} invalid={hasNameError} />

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router';
+import { Navigate, Route, Routes } from 'react-router';
 import CookieConsent from 'react-cookie-consent';
 import Home from './pages/Home';
 import AwningsAndShades from './pages/AwningsAndShades';
@@ -12,6 +12,7 @@ import WindproofCurtains from './pages/WindproofCurtains';
 import IndustrialProducts from './pages/IndustrialProducts';
 import TruckCovers from './pages/TruckCovers';
 import './App.css';
+import NotFound from './pages/NotFound';
 
 function App() {
   const [hideMain, setHideMain] = useState(false);
@@ -38,17 +39,20 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Home hideMain={hideMain} isMobile={isMobile} />} />
           <Route exact path="/truck-covers" element={<TruckCovers isMobile={isMobile} hideMain={hideMain} />} preventScrollReset={true} />
+          <Route exact path="/truck-covers/calculator" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} preventScrollReset={true} />
           <Route exact path="/windproof-curtains" element={<WindproofCurtains isMobile={isMobile} hideMain={hideMain} />} preventScrollReset={true} />
-          <Route exact path="/awnings-and-shades" element={<AwningsAndShades isMobile={isMobile} hideMain={hideMain} />} />
+          <Route exact path="/awnings-and-shades" element={<AwningsAndShades isMobile={isMobile} hideMain={hideMain} />} preventScrollReset={true} />
           <Route exact path="/covers-for-fishponds-and-lagoons" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} />
-          <Route exact path="/curtains-for-cow-farms" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} />
-          <Route exact path="/industrial-products" element={<IndustrialProducts isMobile={isMobile} hideMain={hideMain} />} />
-          <Route exact path="/prefab-tents" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} />
-          <Route exact path="/large-bedspreads" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} />
-          <Route exact path="/linings-and-covers" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} />
-          <Route exact path="/cover-for-wagons" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} />
-          <Route exact path="/contact" element={<Contact hideMain={hideMain} isMobile={isMobile} />} />
-          <Route exact path="/about-me" element={<AboutMe hideMain={hideMain} isMobile={isMobile} />} />
+          <Route exact path="/curtains-for-cow-farms" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} preventScrollReset={true} />} />
+          <Route exact path="/industrial-products" element={<IndustrialProducts isMobile={isMobile} hideMain={hideMain} preventScrollReset={true} />} />
+          <Route exact path="/prefab-tents" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} preventScrollReset={true} />
+          <Route exact path="/large-bedspreads" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} preventScrollReset={true} />} />
+          <Route exact path="/linings-and-covers" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} preventScrollReset={true} />} />
+          <Route exact path="/cover-for-wagons" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} preventScrollReset={true} />} />
+          <Route exact path="/contact" element={<Contact hideMain={hideMain} isMobile={isMobile} preventScrollReset={true} />} />
+          <Route exact path="/about-me" element={<AboutMe hideMain={hideMain} isMobile={isMobile} preventScrollReset={true} />} />
+          <Route path="/not-found" element={<NotFound hideMain={hideMain} isMobile={isMobile} preventScrollReset={true} />} />
+          <Route path="*" element={<Navigate to="/not-found" />} />
         </Routes>
       </main>
       {!hideMain ? <Footer isMobile={isMobile} /> : <></>}

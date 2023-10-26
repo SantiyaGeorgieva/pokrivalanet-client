@@ -10,7 +10,7 @@ function Gallery({ images, isMobile }) {
   const lastRow = result.slice(8, result.length);
 
   return (
-    <div className="container px-0">
+    <div className={`container ${isMobile ? 'px-0' : ''}`}>
       <Row>
         {firstRow.map((img, idx) => {
           return <Col md="3" key={idx} className={`${isMobile ? 'mb-3' : 'ps-0'}`}>

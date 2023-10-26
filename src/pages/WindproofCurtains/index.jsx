@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { Row, Col, Form, FormFeedback, FormGroup, Input, Label, Button, Spinner } from "reactstrap";
 import Gallery from "../../components/Gallery";
 import Hr from "../../components/Hr";
@@ -23,6 +23,10 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
   const [optionText, setOptionText] = useState('Пластмасови въртящи копчета');
   const [values, setValues] = useState([]);
 
+  const [val, setVal] = useState('');
+  const inputEl = useRef(null);
+  let numReg = /^\d+$/;
+
   useEffect(() => {
     if (thick && thick.length === 1) {
       setThick(`${thick && thick?.length ? `${thick} мм` : ''}`);
@@ -32,6 +36,34 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
   const handleChange = (e) => {
     setOptionText(e.target.value);
   }
+
+  const handleInputChange = e => {
+    const { value, selectionEnd } = e.target;
+    const rightCharsCount = value.length - selectionEnd;
+    const formattedValue = parseInt(value.replace(/\D/g, ''), 10).toLocaleString();
+    const newPosition = formattedValue.length - rightCharsCount;
+
+    setVal(formattedValue);
+    console.log('inputEl', inputEl?.current?.props?.value);
+
+    setTimeout(() => {
+      inputEl?.current?.props?.value && inputEl?.current?.props?.value.setSelectionRange(newPosition, newPosition);
+    }, 0);
+  };
+
+  // const handleFocusThick = (e) => {
+  //   const start = e.currentTarget.selectionStart;
+  //   const value = e.target.value;
+
+  //   if (!numReg.test(e.key)) {
+  //     e.preventDefault();
+
+  //     if (typeof value !== "string") return;
+
+  //     // e.target.value = value.toUpperCase();
+  //     e.currentTarget.setSelectionRange(start, start);
+  //   }
+  // }
 
   const addInputValues = (value) => {
     let values2 = [...values, value];
@@ -67,10 +99,13 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
     }
 
     if (knobCount === '') {
-      console.log('hereeeee');
       setKnobsCountError(true);
     } else if (knobCount !== '') {
       setKnobsCountError(false);
+    }
+
+    if (!numReg.test(thick)) {
+      setThickError(true)
     }
 
     addInputValues();
@@ -147,7 +182,15 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
                 <Col md="6">
                   <FormGroup className="text-start mb-2">
                     <Label for="thick" className="fw-bold">Дебелина</Label>
-                    <Input type="text" onChange={e => setThick(e.target.value)} name="thick" value={thick} invalid={hasThickError} />
+                    <Input
+                      type="text"
+                      ref={inputEl}
+                      autoFocus="autofocus"
+                      name="thick"
+                      value={thick}
+                      onChange={e => setThick(e.target.value)}
+                      invalid={hasThickError}
+                    />
                     {hasThickError && <FormFeedback>Моля, въведете дебелина.</FormFeedback>}
                   </FormGroup>
                 </Col>
@@ -183,19 +226,34 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
                     {hasZipCountError && <FormFeedback>Моля, въведете брой ципове.</FormFeedback>}
                   </FormGroup>
                 </Col>}
-                {optionText === 'Колан за закачане' && <Col md="6" className="text-start">
-                  <Label for="zipCount">Брой колани</Label>
-                  <FormGroup>
-                    <Input
-                      type="number"
-                      onChange={e => setKnobCount(e.target.value)}
-                      name="zipCount"
-                      value={knobCount}
-                      invalid={hasKnobsCountError}
-                    />
-                    {hasKnobsCountError && <FormFeedback>Моля, въведете брой колани.</FormFeedback>}
-                  </FormGroup>
-                </Col>}
+                {optionText === 'Колан за закачане' && <Row>
+                  <Col md="6" className="text-start">
+                    <Label for="zipCount">Брой колани</Label>
+                    <FormGroup>
+                      <Input
+                        type="number"
+                        onChange={e => setKnobCount(e.target.value)}
+                        name="zipCount"
+                        value={knobCount}
+                        invalid={hasKnobsCountError}
+                      />
+                      {hasKnobsCountError && <FormFeedback>Моля, въведете брой колани.</FormFeedback>}
+                    </FormGroup>
+                  </Col>
+                  <Col md="6" className="text-start">
+                    <Label for="zipCount">Брой ципове</Label>
+                    <FormGroup>
+                      <Input
+                        type="number"
+                        onChange={e => setZipCount(e.target.value)}
+                        name="zipCount"
+                        value={zipCount}
+                        invalid={hasZipCountError}
+                      />
+                      {hasZipCountError && <FormFeedback>Моля, въведете брой ципове.</FormFeedback>}
+                    </FormGroup>
+                  </Col>
+                </Row>}
               </Row>
               <Row>
                 <Col md="6" className="text-start">

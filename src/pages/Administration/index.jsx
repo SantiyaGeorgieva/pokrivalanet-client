@@ -1,6 +1,7 @@
 import { Button, Col, Form, FormFeedback, FormGroup, Input, Label, Row } from "reactstrap";
 import PageTitle from "../../components/PageTitle";
 import Hr from "../../components/Hr";
+import AdminPanelImage from '../../images/admin-panel.png'
 
 import './administration.scss';
 import { useState } from "react";
@@ -72,6 +73,7 @@ function Administration({ hideMain, isMobile }) {
                     <Button type="submit" color="primary" className={`${isMobile ? 'btn-sm me-3' : 'me-3'}`}>Запази промени</Button>
                     <Button type="button" color="secondary" onClick={handleMode} className={`${isMobile ? 'btn-sm' : ''}`}>Откажи</Button>
                   </div>
+                  <img src={AdminPanelImage} alt="Admin panel image" />
                 </Form>
               </Col>
             </Row>
@@ -113,6 +115,11 @@ function Administration({ hideMain, isMobile }) {
                   >Редактирай
                   </Button>
                 </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <img src={AdminPanelImage} alt="Admin panel image" />
               </Col>
             </Row>
           </div>

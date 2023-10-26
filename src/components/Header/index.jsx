@@ -56,7 +56,7 @@ function Header({ isMobile, isOpen, toggleClass }) {
                 </Link>
               </Button>
               <Button color="dark" size="sm" outline className="cursor-default">
-                <i className="fa-solid fa-envelope my-2 px-2" />brezenti_ruse@abv.bg
+                <i className="fa-solid fa-envelope my-2 px-2" />office@pokrivala.net
               </Button>
               <Navbar expand="sm" className="py-0">
                 <Nav className="ms-auto" navbar>
@@ -174,7 +174,7 @@ function Header({ isMobile, isOpen, toggleClass }) {
                 </Col>
                 <Col className={`${!isMobile ? '' : 'mb-2'}`}>
                   <Button color="dark" size="sm" outline className="cursor-default">
-                    <i className="fa-solid fa-envelope my-2 px-2" />brezenti_ruse@abv.bg
+                    <i className="fa-solid fa-envelope my-2 px-2" />office@pokrivala.net
                   </Button>
                 </Col>
               </Row>

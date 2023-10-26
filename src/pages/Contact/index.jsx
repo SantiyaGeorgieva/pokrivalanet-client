@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Form, FormFeedback, FormGroup, Input, Label, Row } from "reactstrap";
 import GoogleMapRuse from '../../components/GoogleMapRuse';
-import GoogleMapSofia from '../../components/GoogleMapSofia';
 import Hr from '../../components/Hr';
 import PageTitle from '../../components/PageTitle';
 import { removeSpaces } from '../../utils';
@@ -162,7 +161,7 @@ function Contact({ hideMain, isMobile }) {
               <div className="d-flex flex-column text-start mt-3">
                 <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />гр. Пловдив</p>
                 <p className="mb-2"><i className="fa fa-phone my-2 pe-2" />+359 877 614 031</p>
-                <p className="mb-2"><i className="fa-solid fa-envelope my-2 pe-2" />brezenti_ruse@abv.bg</p>
+                <p className="mb-2"><i className="fa-solid fa-envelope my-2 pe-2" />office@pokrivala.net</p>
               </div>
             }
           </Col>
@@ -176,22 +175,11 @@ function Contact({ hideMain, isMobile }) {
               <div className="d-flex flex-column text-start mt-3">
                 <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />гр. Пловдив</p>
                 <p className="mb-2"><i className="fa fa-phone my-2 pe-2" />+359 877 614 031</p>
-                <p className="mb-2"><i className="fa-solid fa-envelope my-2 pe-2" />brezenti_ruse@abv.bg</p>
+                <p className="mb-2"><i className="fa-solid fa-envelope my-2 pe-2" />office@pokrivala.net</p>
               </div>
             </Col>
           </Row>
         }
-        <Row className="mt-4">
-          <Col md="6">
-            <div className="d-flex flex-column text-start">
-              <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />гр. София</p>
-              <p className="mb-2"><i className="fa fa-phone my-2 pe-2" />+359 878 395 164</p>
-            </div>
-          </Col>
-          <Col md="6" className={`container ${isLoaderLoad ? 'text-end' : ''}`}>
-            <GoogleMapSofia isLoaderLoad={isLoaderLoad} setLoaderLoad={setLoaderLoad} />
-          </Col>
-        </Row>
         <Hr text="Контакти" />
         <Row className={`{d-flex align-items-center justify-content-center ${isMobile ? 'mb-5' : ''}`}>
           <Col md="4">

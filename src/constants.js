@@ -37,6 +37,9 @@ import Image34 from './images/industrial_products/17240533_905874396182366_84489
 import Image35 from './images/industrial_products/18768603_972371386199333_4043812526702163233_o.jpg';
 import Image36 from './images/industrial_products/18768603_972371386199333_4043812526702163233_o.jpg';
 
+import Image37 from './images/ribarnici_laguni/37380435_1304071699695965_3865178951005503488_n 1.png';
+import Image38 from './images/ribarnici_laguni/37380435_1304071699695965_3865178951005503488_n11.png';
+
 import TruckCover from './images/pokrivala-za-kamioni.jpg';
 import WindproofCurtains from './images/vetrouportni_zavesi.jpg';
 import CurtainsCowFarms from './images/zavesi_za_kravefermi.jpg';
@@ -48,9 +51,10 @@ import IndustrialMaterials from './images/industrialni_izdeliya.jpg';
 import LiningsCovers from './images/oblicovki_i_pokrivala.jpg';
 import WagonCovers from './images/pokrivala_za-vagoni.png';
 
-import ZavesaCipove from './images/zavesa-kalkulator-cipove.png';
-import ZavesaKopcheta from './images/zavesa-kalkulator-plasmasovi-kopcheta.png';
-import ZavesaElipsa from './images/zavesa-kalkulator-obkov-elipsa.png';
+import ZavesaCipove from './images/zavesa-kalkulator-cipove.jpg';
+import ZavesaKopcheta from './images/zavesa-kalkulator-plasmasovi-kopcheta.jpg';
+import ZavesaElipsa from './images/zavesa-kalkulator-obkov-elipsa.jpg';
+import ZavesaBezObkov from './images/zavesa-bez-obkov.jpg';
 
 import TavanShtora from './images/pokrivala_za_kamioni/0-02-05-5c9ca7dec67c92e1b5111724e35fb3824346ae81f3029bee7f9c85798e3c773e_1ded37fba3581175.jpg';
 import ShtoraPoluremarke from './images/pokrivala_za_kamioni/0-02-05-72a980e606f6b977e61521ee76e5836f81d36a83396493f11f46563d096c57ea_6f193ca04ae5d076.jpg';
@@ -59,6 +63,10 @@ import PokrivaloZyrnovot from './images/pokrivala_za_kamioni/18056333_9409296493
 import TristrannaShtora from './images/pokrivala_za_kamioni/27503173_1152068168229653_1753673864796201805_o.jpg';
 import ObiknovenoPokrivalo from './images/pokrivala_za_kamioni/393711189_802369458558867_2543073741770309246_n.jpg';
 import ShtoraBezKapaciKomlektOtDve from './images/pokrivala_za_kamioni/66785853_1766036520166145_1529046337771798528_n.jpg';
+import StraniciShtoraSkapaciKomplektOtDve from './images/pokrivala_za_kamioni/248156970_4411504175607542_8164656237683932178_n.jpg';
+import ReklamniNadpisi from './images/pokrivala_za_kamioni/338003367_5578260945613455_2833902347299641586_n.jpg';
+import RemontPokrivala from './images/pokrivala_za_kamioni/26132737.png';
+import KonstrukciyaBrezent from './images/pokrivala_za_kamioni/1684150263340333218_common--23051514021554027700.jpg';
 
 export const links = [
   {
@@ -228,6 +236,11 @@ export const industrialProducts = [
   }
 ];
 
+export const coversForFishpondsAndLagoonsImages = [
+  { image: Image37 },
+  { image: Image38 }
+]
+
 export const carouselItems = [
   {
     src: TruckCover,
@@ -351,7 +364,7 @@ export const cardslItems = [
     subtitle: 'Изчислете цена'
   },
   {
-    src: IndustrialMaterials,
+    src: StraniciShtoraSkapaciKomplektOtDve,
     altText: 'Slide 6',
     key: 7,
     className: 'column-image',
@@ -367,22 +380,21 @@ export const cardslItems = [
     subtitle: 'Изчислете цена'
   },
   {
-    src: WagonCovers,
+    src: ReklamniNadpisi,
     altText: 'Slide 6',
     key: 9,
     className: 'column-image',
-    title: 'Покривало за тресачка',
-    subtitle: '660,00 лв. без ДДС'
+    title: 'Поставяне на рекламни надписи'
   },
   {
-    src: CoversForFishpondsAndLagoons,
+    src: RemontPokrivala,
     altText: 'Slide 4',
     key: 10,
     className: 'column-image',
     title: 'Ремонт на покривала'
   },
   {
-    src: BigCover,
+    src: KonstrukciyaBrezent,
     altText: 'Slide 6',
     key: 11,
     className: 'column-image',
@@ -400,7 +412,7 @@ export const windproofCurtainsOptions = [
   {
     id: 2,
     image: ZavesaElipsa,
-    text: 'Обвков елипса'
+    text: 'Кръгов обков'
   },
   {
     id: 3,
@@ -409,7 +421,7 @@ export const windproofCurtainsOptions = [
   },
   {
     id: 4,
-    image: '',
-    text: 'Колан за закачане'
+    image: ZavesaBezObkov,
+    text: 'Без обков (стационарен)'
   },
 ];

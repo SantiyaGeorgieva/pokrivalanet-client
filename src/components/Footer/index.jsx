@@ -2,6 +2,7 @@ import { Col, Row } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './footer.scss';
 import { scrollToTop } from '../../utils';
+import LogoWhite from '../../images/logo-white.png';
 
 function Footer({ isMobile }) {
 
@@ -28,14 +29,19 @@ function Footer({ isMobile }) {
                 <Link onClick={scrollToTop} to="/contact">Контакти</Link>
               </Col>
               {!isMobile && <Col md="4" className="d-flex align-items-end justify-content-center">
-                <div className="d-flex align-items-center social-icons">
-                  <p className="mb-0 me-2 text-light">Намерете ни</p>
-                  <Link to="https://www.facebook.com/brezentiruse" target="_blank" className="mb-0">
-                    <i className="fa-brands fa-facebook fs-4 me-2 text-light"></i>
+                <div className="d-flex flex-column align-items-center social-icons">
+                  <Link to="/">
+                    <img src={LogoWhite} alt="Logo white" className="w-50" />
                   </Link>
-                  <Link to="https://www.facebook.com/CreativeIdeaGroup/?fref=ts" target="_blank">
-                    <i className="fa-brands fa-facebook fs-4 text-light"></i>
-                  </Link>
+                  <div className="d-flex mt-2">
+                    <p className="mb-0 me-2 text-light">Намерете ни</p>
+                    <Link to="https://www.facebook.com/brezentiruse" target="_blank" className="mb-0">
+                      <i className="fa-brands fa-facebook fs-4 me-2 text-light"></i>
+                    </Link>
+                    <Link to="https://www.facebook.com/CreativeIdeaGroup/?fref=ts" target="_blank">
+                      <i className="fa-brands fa-facebook fs-4 text-light"></i>
+                    </Link>
+                  </div>
                 </div>
               </Col>}
             </Row>
@@ -49,6 +55,9 @@ function Footer({ isMobile }) {
                     </Link>
                     <Link to="https://www.facebook.com/CreativeIdeaGroup/?fref=ts" target="_blank">
                       <i className="fa-brands fa-facebook fs-4 text-light"></i>
+                    </Link>
+                    <Link to="/">
+                      <img src={LogoWhite} alt="Logo white" className="w-50" />
                     </Link>
                   </div>
                 </Col>

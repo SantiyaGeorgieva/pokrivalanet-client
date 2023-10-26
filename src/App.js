@@ -13,6 +13,7 @@ import IndustrialProducts from './pages/IndustrialProducts';
 import TruckCovers from './pages/TruckCovers';
 import './App.css';
 import NotFound from './pages/NotFound';
+import CoversForFishpondsAndLagoons from './pages/CoversForFishpondsAndLagoons';
 
 function App() {
   const [hideMain, setHideMain] = useState(false);
@@ -42,7 +43,7 @@ function App() {
           <Route exact path="/truck-covers/calculator" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} preventScrollReset={true} />
           <Route exact path="/windproof-curtains" element={<WindproofCurtains isMobile={isMobile} hideMain={hideMain} />} preventScrollReset={true} />
           <Route exact path="/awnings-and-shades" element={<AwningsAndShades isMobile={isMobile} hideMain={hideMain} />} preventScrollReset={true} />
-          <Route exact path="/covers-for-fishponds-and-lagoons" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} />
+          <Route exact path="/covers-for-fishponds-and-lagoons" element={<CoversForFishpondsAndLagoons isMobile={isMobile} hideMain={hideMain} />} />
           <Route exact path="/curtains-for-cow-farms" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} preventScrollReset={true} />} />
           <Route exact path="/industrial-products" element={<IndustrialProducts isMobile={isMobile} hideMain={hideMain} preventScrollReset={true} />} />
           <Route exact path="/prefab-tents" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} preventScrollReset={true} />

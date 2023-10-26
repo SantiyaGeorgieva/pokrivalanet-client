@@ -153,7 +153,7 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
           {windproofCurtainsOptions.filter(option => option.text === optionText).map(option => {
             return <img
               key={option.id}
-              className={isMobile ? 'mw-100' : ''}
+              className={isMobile ? 'w-100' : 'w-75'}
               src={option.image ? option.image : <Spinner className="m-5" color="primary" />}
             />
           })}

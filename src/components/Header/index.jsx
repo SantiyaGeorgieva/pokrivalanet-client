@@ -20,7 +20,6 @@ import './header.scss';
 function Header({ isMobile, isOpen, toggleClass }) {
   const [selectedItem, setSelectedItem] = useState("BG");
   console.log('isOpen', isOpen);
-  // document.querySelectorAll('.container-fluid')[1] && document.querySelectorAll('.container-fluid')[1].classList.add("px-0");
 
   useEffect(() => {
     if (document.querySelectorAll('.container-fluid')[1]) {
@@ -30,11 +29,11 @@ function Header({ isMobile, isOpen, toggleClass }) {
 
   return (
     <>{!isMobile ? (<div className="container-fluid px-0">
-      <div className="my-3">
+      <div className="mb-3">
         <nav className="navbar navbar-expand-lg">
           <div className="container-fluid">
-            <NavLink to="/" className="navbar-brand">
-              <img src={Logo} alt="Pokrivala.net logo" />
+            <NavLink to="/" className="navbar-brand text-start">
+              <img src={Logo} alt="Pokrivala.net logo" className="w-50" />
             </NavLink>
             <div className="d-flex align-items-center justify-content-end collapse navbar-collapse" id="navbars-host">
               <div className="social-icons me-3 text-end">
@@ -118,8 +117,8 @@ function Header({ isMobile, isOpen, toggleClass }) {
       <Navbar expand="md" className={`small ${isOpen ? 'bc-blue' : ''}`}>
         {!isOpen &&
           <>
-            <NavLink to="/" className="navbar-brand">
-              <img src={Logo} alt="Pokrivala.net logo" />
+            <NavLink to="/" className="navbar-brand text-start">
+              <img src={Logo} alt="Pokrivala.net logo" className="w-50" />
             </NavLink>
             <Navbar expand="sm" className="py-0 px-0 mt-5 me-2 text-end">
               <Nav className=" ms-auto" navbar>
@@ -135,14 +134,14 @@ function Header({ isMobile, isOpen, toggleClass }) {
                     <DropdownItem
                       href="#"
                       tag="a"
-                      onClick={() => { setSelectedItem('EN') }}
+                      onClick={() => setSelectedItem('EN')}
                     >
                       EN
                     </DropdownItem>
                     <DropdownItem
                       href="#"
                       tag="a"
-                      onClick={() => { setSelectedItem('RO') }}
+                      onClick={() => setSelectedItem('RO')}
                     >
                       RO
                     </DropdownItem>

@@ -9,7 +9,7 @@ function Home({ hideMain, isMobile }) {
 
   return <>
     {!hideMain && (
-      <div className="container-fluid px-0">
+      <div className={`container-fluid ${isMobile ? 'px-0' : ''}`}>
         <HomeSlider isMobile={isMobile} />
         <Hr text="За нас" />
         <Rectangle isMobile={isMobile} text="Ако търсите изделия от PVC, които да удовлетворят не само Вашите високи стандарти,

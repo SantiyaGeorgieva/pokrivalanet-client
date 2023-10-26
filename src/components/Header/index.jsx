@@ -32,7 +32,7 @@ function Header({ isMobile, isOpen, toggleClass }) {
       <div className="mb-3">
         <nav className="navbar navbar-expand-lg py-0">
           <div className="container-fluid">
-            <NavLink to="/" className="navbar-brand text-start">
+            <NavLink to="/" className={`navbar-brand text-start ${!isMobile ? 'ms-4' : ''}`}>
               <img src={Logo} alt="Pokrivala.net logo" className="w-50" />
             </NavLink>
             <div className="d-flex align-items-center justify-content-end collapse navbar-collapse" id="navbars-host">

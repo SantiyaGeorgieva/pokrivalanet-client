@@ -11,9 +11,10 @@ import AboutMe from './pages/AboutMe';
 import WindproofCurtains from './pages/WindproofCurtains';
 import IndustrialProducts from './pages/IndustrialProducts';
 import TruckCovers from './pages/TruckCovers';
-import './App.css';
 import NotFound from './pages/NotFound';
 import CoversForFishpondsAndLagoons from './pages/CoversForFishpondsAndLagoons';
+import Administration from './pages/Administration';
+import './App.css';
 
 function App() {
   const [hideMain, setHideMain] = useState(false);
@@ -52,6 +53,7 @@ function App() {
           <Route exact path="/cover-for-wagons" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} preventScrollReset={true} />} />
           <Route exact path="/contact" element={<Contact hideMain={hideMain} isMobile={isMobile} preventScrollReset={true} />} />
           <Route exact path="/about-me" element={<AboutMe hideMain={hideMain} isMobile={isMobile} preventScrollReset={true} />} />
+          <Route exact path="/admin-panel" element={<Administration hideMain={hideMain} isMobile={isMobile} preventScrollReset={true} />} />
           <Route path="/not-found" element={<NotFound hideMain={hideMain} isMobile={isMobile} preventScrollReset={true} />} />
           <Route path="*" element={<Navigate to="/not-found" />} />
         </Routes>

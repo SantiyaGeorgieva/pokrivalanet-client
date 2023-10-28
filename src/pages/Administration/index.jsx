@@ -70,7 +70,7 @@ function Administration({ hideMain, isMobile }) {
                     {setPriceCurtainError && <FormFeedback>Моля, въведете цена на завеса</FormFeedback>}
                   </FormGroup>
                   <div className="d-flex align-items-center justify-content-end">
-                    <Button type="submit" color="primary" className={`${isMobile ? 'btn-sm me-3' : 'me-3'}`}>Запази промени</Button>
+                    <Button type="submit" className={`bc-dark-blue ${isMobile ? 'btn-sm me-3' : 'me-3'}`}>Запази промени</Button>
                     <Button type="button" color="secondary" onClick={handleMode} className={`${isMobile ? 'btn-sm' : ''}`}>Откажи</Button>
                   </div>
                   <img src={AdminPanelImage} alt="Admin panel image" />
@@ -109,8 +109,7 @@ function Administration({ hideMain, isMobile }) {
                 <div className="d-flex align-items-center justify-content-end">
                   <Button
                     type="button"
-                    color="primary"
-                    className={`${isMobile ? 'btn-sm' : 'me-3'}`}
+                    className={`bc-dark-blue ${isMobile ? 'btn-sm' : 'me-3'}`}
                     onClick={handleMode}
                   >Редактирай
                   </Button>

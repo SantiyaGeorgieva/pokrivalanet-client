@@ -4,6 +4,8 @@ import GoogleMapRuse from '../../components/GoogleMapRuse';
 import Hr from '../../components/Hr';
 import PageTitle from '../../components/PageTitle';
 import { removeSpaces } from '../../utils';
+import Pdf from '../../components/Pdf';
+import { PDFViewer } from '@react-pdf/renderer';
 
 function Contact({ hideMain, isMobile }) {
   const [name, setName] = useState('');

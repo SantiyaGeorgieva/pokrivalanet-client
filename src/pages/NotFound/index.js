@@ -1,8 +1,9 @@
+import { Button } from "reactstrap";
+import { Link } from "react-router-dom";
 import PageTitle from "../../components/PageTitle";
 import Hr from "../../components/Hr";
 import NotFoundImage from "../../images/404.png";
-import { Button } from "reactstrap";
-import { Link } from "react-router-dom";
+import { scrollToTop } from "../../utils";
 
 import './notFound.scss';
 
@@ -22,7 +23,7 @@ function NotFound({ hideMain, isMobile }) {
           <img className="w-50" src={NotFoundImage} />
           <h5 className="mt-5 mb-0">Страницата, която се опитате да достъпите не съществува</h5>
           <Link to="/">
-            <Button className="button-back mt-5">Върнете се в началото</Button>
+            <Button className="button-back mt-5" onClick={scrollToTop}>Върнете се в началото</Button>
           </Link>
         </div>
       }

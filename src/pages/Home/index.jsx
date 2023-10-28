@@ -1,5 +1,4 @@
 import PageTitle from "../../components/PageTitle";
-import HomeSlider from "../../components/Slider";
 import Hr from "../../components/Hr";
 import Rectangle from "../../components/Rectangle";
 import BackgroundBlob from "../../components/BackgroundBlob";
@@ -9,9 +8,7 @@ function Home({ hideMain, isMobile }) {
 
   return <>
     {!hideMain && (
-      <div className={`container-fluid ${isMobile ? 'px-0' : ''}`}>
-        <HomeSlider isMobile={isMobile} />
-        <Hr text="За нас" />
+      <div className="container-fluid px-0">
         <Rectangle isMobile={isMobile} text="Ако търсите изделия от PVC, които да удовлетворят не само Вашите високи стандарти,
        но и Вашите потребности, ще ги откриете в БРЕЗЕНТИ БГ ООД. Специализирани сме в производството и продажбата на тир покривала, 
        покривала за други транспортни средства, ветроупорни завеси, тенти и брезенти в Русе. Високата функционалност, безупречното качество 
@@ -22,6 +19,7 @@ function Home({ hideMain, isMobile }) {
         20 г. опит в изработката на изделия от PVC, затова можете да разчитате на истински професионализъм от тяхна страна. 
         Екипът ни разработва както собствени проекти, така и проекти, съобразени със специфичните изисквания на всеки клиент. 
         Можем да изпълним поръчка по Ваша идея." />
+        <Hr text="За нас" />
         <BackgroundBlob isMobile={isMobile} text="<p class='mb-1'>Имате товарни превозни средства, заведение, басейн?</p>
         <p class='mb-1'>Заповядайте при нас!</p>
         <p class='mb-4'>Тук ще откриете най-качествените тир покривала, тенти и брезенти в Русе!</p>" />

@@ -1,11 +1,11 @@
 import { Col, Row } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import './footer.scss';
-import { scrollToTop } from '../../utils';
 import LogoWhite from '../../images/logo-white.png';
+import { scrollToTop } from '../../utils';
+
+import './footer.scss';
 
 function Footer({ isMobile }) {
-
   return (
     <div className="container-fluid">
       <Row className={`bc-dark-blue ${isMobile ? 'small' : ''}`}>
@@ -22,7 +22,7 @@ function Footer({ isMobile }) {
               </Col>
               <Col md="4" className="d-flex flex-column text-start">
                 <Link onClick={scrollToTop} to="/industrial-products">Индустриални  изделия</Link>
-                <Link onClick={scrollToTop} to="/prefab-tents">Сглобяеми шатри</Link>
+                <Link onClick={scrollToTop} to="/prefabricated-tents">Сглобяеми шатри</Link>
                 <Link onClick={scrollToTop} to="/large-bedspreads">Големи покривала</Link>
                 <Link onClick={scrollToTop} to="/linings-and-covers">Облицовки и покривала</Link>
                 <Link onClick={scrollToTop} to="/cover-for-wagons">Покривала за вагони</Link>

@@ -24,32 +24,49 @@ import Image22 from './images/vetrouporni_zavesi/35771061_1265997443503391_39472
 import Image23 from './images/vetrouporni_zavesi/45126527_1426253934144407_1559016370455183360_n.jpg';
 import Image24 from './images/vetrouporni_zavesi/vetroustoichivi-zav-4.jpg';
 
-import Image25 from './images/industrial_products/14606311_790123677757439_7849620970814937291_n.jpg';
-import Image26 from './images/industrial_products/14691050_790123637757443_7224925709597694267_n.jpg';
-import Image27 from './images/industrial_products/14729291_790123631090777_5190003305582043200_n.jpg';
-import Image28 from './images/industrial_products/16195284_875087605927712_5582006697216253944_n.jpg';
-import Image29 from './images/industrial_products/16298440_875087602594379_4087207823957465867_n.jpg';
-import Image30 from './images/industrial_products/16298580_875087532594386_6431045033329270986_n.jpg';
-import Image31 from './images/industrial_products/16298949_875087565927716_1508829325012991675_n.jpg';
-import Image32 from './images/industrial_products/17192308_905874346182371_5371580546756988735_o.jpg';
-import Image33 from './images/industrial_products/17240524_905874342849038_5980828231341812373_o.jpg';
-import Image34 from './images/industrial_products/17240533_905874396182366_8448948110936823862_o.jpg';
-import Image35 from './images/industrial_products/18768603_972371386199333_4043812526702163233_o.jpg';
-import Image36 from './images/industrial_products/18768603_972371386199333_4043812526702163233_o.jpg';
+import Image25 from './images/industrial_products/16195284_875087605927712_5582006697216253944_n.jpg';
+import Image26 from './images/industrial_products/16298440_875087602594379_4087207823957465867_n.jpg';
+import Image27 from './images/industrial_products/16298580_875087532594386_6431045033329270986_n.jpg';
+import Image28 from './images/industrial_products/16298949_875087565927716_1508829325012991675_n.jpg';
+import Image29 from './images/industrial_products/17192308_905874346182371_5371580546756988735_o.jpg';
+import Image30 from './images/industrial_products/17240524_905874342849038_5980828231341812373_o.jpg';
+import Image31 from './images/industrial_products/17240533_905874396182366_8448948110936823862_o.jpg';
+import Image32 from './images/industrial_products/18768603_972371386199333_4043812526702163233_o.jpg';
+import Image33 from './images/industrial_products/18768603_972371386199333_4043812526702163233_o.jpg';
 
-import Image37 from './images/ribarnici_laguni/37380435_1304071699695965_3865178951005503488_n 1.png';
-import Image38 from './images/ribarnici_laguni/37380435_1304071699695965_3865178951005503488_n11.png';
+import Image34 from './images/ribarnici_laguni/37380435_1304071699695965_3865178951005503488_n 1.png';
+import Image35 from './images/ribarnici_laguni/pokrivala_za_ribarnici_laguuni.jpg';
+import Image36 from './images/ribarnici_laguni/0-02-05-2fc3bab27248972518a8afb7b0c500914b04e183774a3c60f750bfd06fbdbf98_a9d8b6085ad6eaee.jpg';
 
-import TruckCover from './images/pokrivala-za-kamioni.jpg';
-import WindproofCurtains from './images/vetrouportni_zavesi.jpg';
-import CurtainsCowFarms from './images/zavesi_za_kravefermi.jpg';
-import CoversForFishpondsAndLagoons from './images/pokrivala_za_ribarnici_laguuni.jpg';
-import BigCover from './images/golemi_pokrivala.jpg';
-import PrefabricatedTents from './images/sglobyaemishatri.jpg';
-import AwningsSunshades from './images/tenti_i_sennici.jpg';
-import IndustrialMaterials from './images/industrialni_izdeliya.jpg';
-import LiningsCovers from './images/oblicovki_i_pokrivala.jpg';
-import WagonCovers from './images/pokrivala_za-vagoni.png';
+import Image37 from './images/kravefermi/0-02-05-123276bfd1a687869bbc0231bfb7d2812f29d7790fc17680970e2b6e90a6c991_370f6d5a78042d3e.jpg';
+import Image38 from './images/kravefermi/0-02-05-5011b46356fca86e8b16ad5f7c1a01c529824a45d32d944de9c68a0189be13df_fec663db8aa40331.jpg';
+import Image39 from './images/kravefermi/0-02-05-5877463c4c2aca60a16fd3076e99a66238980f25f4b96553a753d51b5d18183b_d6e03b9819efc8b6.jpg';
+import Image40 from './images/kravefermi/0-02-05-bb8b527d9a4755d6c81c5003737986df0ac897805c02a1725d92de19a4ffd882_9fe0fb00bc8314ad.jpg';
+import Image41 from './images/kravefermi/0-02-05-bc429936aa2fc4d1884658930b9fbd734318f66b7eaad8fa9ca8e127dc905548_93b0f006b36e5bb4.jpg';
+import Image42 from './images/kravefermi/zavesi_za_kravefermi.jpg';
+
+import Image43 from './images/shatri/0-02-05-2bbf922ff017fe303ac1e8556a3a4a6f391e44c821fc2064ee03b3071e06254f_36cdba95c2e10e64.jpg';
+import Image44 from './images/shatri/0-02-05-2c66dc0075d53e7f8d164b0c5550f07f788e14bd46aec561c27e1325b01c7b41_5680633b3781d396.jpg';
+import Image45 from './images/shatri/0-02-05-44763f9438e3d5e20063b3e0bf14853006deb2ac57b73a682bc44d3434355203_be8f8bec2e380cdd.jpg';
+import Image46 from './images/shatri/0-02-05-a1ff587a3a8e91e12416bada56acc06b4b223d4f96c338ddecb55469bacb4d0a_cef525b97081f0f8.jpg';
+import Image47 from './images/shatri/0-02-05-a6ba87cd97eabc386eeecdaf95c830a9fe4903d1e2ad5314aec03e5919b12977_8e15aee7702e4203.jpg';
+import Image48 from './images/shatri/0-02-05-bc96d6ffb078bfc7a8394bb76a50b6d5dde5bdc9b4940c7143d619b3d0f28fdd_5aaad878cc99c49b.jpg';
+import Image49 from './images/shatri/0-02-05-c8bdd0de1c0a60669027823e625fd6c14be3e0895f21acf93eca762aec9771a7_76196c0f7940bad4.jpg';
+import Image50 from './images/shatri/0-02-05-e3bbf56de677e08aaaeadf1567da263ff1776e2a00ea99388a95b7e5fc19979d_7b3a7ee8856b6cf3.jpg';
+import Image51 from './images/shatri/sglobyaemishatri.jpg';
+
+import Image52 from './images/golemi_pokrivala/14606311_790123677757439_7849620970814937291_n.jpg';
+import Image53 from './images/golemi_pokrivala/14691050_790123637757443_7224925709597694267_n.jpg';
+import Image54 from './images/golemi_pokrivala/14729291_790123631090777_5190003305582043200_n.jpg';
+import Image55 from './images/golemi_pokrivala/golemi_pokrivala.jpg';
+import Image56 from './images/golemi_pokrivala/industrialni_izdeliya.jpg';
+
+import Image57 from './images/oblicovki/0-02-05-0d8cca77b5b5d35f4c6f4a2736e2c22943328289a2952594a846ec7e2869f6e6_41b4197ef2871366.jpg';
+import Image58 from './images/oblicovki/0-02-05-37be719243476f17e9d3ed54ae4332c36669d62b99a5aef13a41511b04a14c6d_1b8a5edd97c52600.jpg';
+import Image59 from './images/oblicovki/0-02-05-a7c80ce486ce09508fd5b673d572731b2a8721be707df21f9fb752da4d80d696_43ed10a03c86554d.jpg';
+import Image60 from './images/oblicovki/37380435_1304071699695965_3865178951005503488_n11.png';
+
+import Image61 from './images/pokrivala_za_vagoni/pokrivala_za-vagoni.png';
 
 import ZavesaCipove from './images/zavesa-kalkulator-cipove.jpg';
 import ZavesaKopcheta from './images/zavesa-kalkulator-plasmasovi-kopcheta.jpg';
@@ -98,7 +115,7 @@ export const links = [
     name: 'Индустриални  изделия'
   },
   {
-    to: '/prefab-tents',
+    to: '/prefabricated-tents',
     name: 'Сглобяеми шатри'
   },
   {
@@ -208,6 +225,9 @@ export const industrialProducts = [
     image: Image27
   },
   {
+    image: Image27
+  },
+  {
     image: Image28
   },
   {
@@ -224,94 +244,53 @@ export const industrialProducts = [
   },
   {
     image: Image33
-  },
-  {
-    image: Image34
-  },
-  {
-    image: Image35
-  },
-  {
-    image: Image36
   }
 ];
 
 export const coversForFishpondsAndLagoonsImages = [
-  { image: Image37 },
-  { image: Image38 }
-]
+  { image: Image34 },
+  { image: Image35 },
+  { image: Image36 }
+];
 
-export const carouselItems = [
-  {
-    src: TruckCover,
-    altText: 'Slide 1',
-    key: 1,
-    className: 'column-image',
-    text: 'Покривала и брезенти за транспортни средства'
-  },
-  {
-    src: WindproofCurtains,
-    altText: 'Slide 2',
-    key: 2,
-    className: 'column-image',
-    text: 'Ветроупорни завеси'
-  },
-  {
-    src: AwningsSunshades,
-    altText: 'Slide 3',
-    key: 3,
-    className: 'column-image',
-    text: 'Тенти и сенници'
-  },
-  {
-    src: CoversForFishpondsAndLagoons,
-    altText: 'Slide 4',
-    key: 4,
-    className: 'column-image',
-    text: 'Покривала за рибарници и лагуни'
-  },
-  {
-    src: CurtainsCowFarms,
-    altText: 'Slide 5',
-    key: 5,
-    className: 'column-image',
-    text: 'Завеси за кравеферми'
-  },
-  {
-    src: IndustrialMaterials,
-    altText: 'Slide 6',
-    key: 6,
-    className: 'column-image',
-    text: 'Индустриални изделия'
-  },
-  {
-    src: PrefabricatedTents,
-    altText: 'Slide 6',
-    key: 7,
-    className: 'column-image',
-    text: 'Сглобяеми шатри'
-  },
-  {
-    src: BigCover,
-    altText: 'Slide 6',
-    key: 8,
-    className: 'column-image',
-    text: 'Големи покривала'
-  },
-  {
-    src: LiningsCovers,
-    altText: 'Slide 6',
-    key: 9,
-    className: 'column-image',
-    text: 'Облицовки и покривала'
-  },
-  {
-    src: WagonCovers,
-    altText: 'Slide 6',
-    key: 10,
-    className: 'column-image',
-    text: 'Покривала за вагони'
-  },
+export const curtainsCowFarmsImages = [
+  { image: Image37 },
+  { image: Image38 },
+  { image: Image39 },
+  { image: Image40 },
+  { image: Image41 },
+  { image: Image42 }
+];
+
+export const prefabricatedТents = [
+  { image: Image43 },
+  { image: Image44 },
+  { image: Image45 },
+  { image: Image46 },
+  { image: Image47 },
+  { image: Image48 },
+  { image: Image49 },
+  { image: Image50 },
+  { image: Image51 }
+];
+
+export const largeBedspreadsImages = [
+  { image: Image52 },
+  { image: Image53 },
+  { image: Image54 },
+  { image: Image55 },
+  { image: Image56 }
+];
+
+export const liningsAndCoversImages = [
+  { image: Image57 },
+  { image: Image58 },
+  { image: Image59 },
+  { image: Image60 }
+];
+
+export const wagonCoversImages = [
+  { image: Image61 }
 ];
 
 export const cardslItems = [

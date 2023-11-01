@@ -5,7 +5,7 @@ const invoice = {
   company: "POKRIVALA NET",
   email: "office@pokrivala.net",
   phone: "+ 359 877 614 031",
-  address: "гр. Русе, ул.'Тракция' 10",
+  address: 'гр. Русе, ул."Тракция" 10',
   trans_date: "2019-09-12",
   due_date: "2019-10-12",
   items: [

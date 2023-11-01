@@ -68,3 +68,7 @@ body {
 .bc-dark-blue-text {
   color: #214069 !important;
 }
+
+.w-65 {
+  width: 65%;
+}

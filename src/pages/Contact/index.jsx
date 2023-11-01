@@ -4,10 +4,11 @@ import GoogleMapRuse from '../../components/GoogleMapRuse';
 import Hr from '../../components/Hr';
 import PageTitle from '../../components/PageTitle';
 import { removeSpaces } from '../../utils';
-import Pdf from '../../components/Pdf';
-import { PDFViewer } from '@react-pdf/renderer';
+import Message from '../../components/Message';
 
 function Contact({ hideMain, isMobile }) {
+  PageTitle('Информация за Контакти | Покривала НЕТ');
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [subject, setSubject] = useState('');
@@ -15,6 +16,14 @@ function Contact({ hideMain, isMobile }) {
   const [captchaText, setCaptchaText] = useState('');
   const [mainCaptchaText, setMainCaptchaText] = useState('');
   const [values, setValues] = useState([]);
+  const [messageOpen, setMessageOpen] = useState(false);
+  const [hasNameError, setNameError] = useState(false);
+  const [hasEmailError, setEmailError] = useState(false);
+  const [hasSubjectError, setSubjectError] = useState(false);
+  const [hasMessageError, setMessageError] = useState(false);
+  const [hasTextInputError, setTextInputError] = useState(false);
+  const [hasTextInputsError, setTextInputsError] = useState(false);
+  const [isLoaderLoad, setLoaderLoad] = useState(false);
 
   useEffect(() => {
     let alpha = new Array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
@@ -32,6 +41,12 @@ function Contact({ hideMain, isMobile }) {
     setMainCaptchaText(code);
   }, [])
 
+  useEffect(() => {
+    if (!hasNameError && !hasEmailError && !hasSubjectError && !hasMessageError && !hasTextInputError && !hasTextInputsError && values.length > 0) {
+      fetchMessage();
+    }
+  }, [values])
+
   const onRefresh = () => {
     let alpha = new Array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
     let a, b, c, d;
@@ -47,20 +62,6 @@ function Contact({ hideMain, isMobile }) {
     document.getElementById("mainCaptcha").value = code;
     setMainCaptchaText(code);
   };
-
-  // const addInputValues = (value) => {
-  //   let values2 = [...values, value];
-  //   console.log('values2', values2);
-  //   setValues(values2);
-  // }
-
-  const [hasNameError, setNameError] = useState(false);
-  const [hasEmailError, setEmailError] = useState(false);
-  const [hasSubjectError, setSubjectError] = useState(false);
-  const [hasMessageError, setMessageError] = useState(false);
-  const [hasTextInputError, setTextInputError] = useState(false);
-  const [hasTextInputsError, setTextInputsError] = useState(false);
-  const [isLoaderLoad, setLoaderLoad] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -113,41 +114,39 @@ function Contact({ hideMain, isMobile }) {
       setTextInputsError(false);
     }
 
-    setTimeout(() => {
-      console.log('!hasNameError && !hasEmailError && !hasSubjectError && !hasMessageError && !hasTextInputError && !hasTextInputsError',
-        !hasNameError && !hasEmailError && !hasSubjectError && !hasMessageError && !hasTextInputError && !hasTextInputsError);
-
-      if (!hasNameError && !hasEmailError && !hasSubjectError && !hasMessageError && !hasTextInputError && !hasTextInputsError) {
-        // addInputValues([...values, { name: name, email: email, subject: subject, message: message }]);
-        setValues([...values, { name: name, email: email, subject: subject, message: message }]);
-
-        console.log('HEREEEE', values);
-        console.log('HEREEEE', values[0]);
-
-        fetch('../../server.js', {
-          method: "POST",
-          body: JSON.stringify(values[1]),
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-        }).then(
-          (response) => (response.json())
-        ).then((response) => {
-          console.log('response', response);
-
-          if (response.status === 'success') {
-            console.log("Message Sent.");
-            this.resetForm()
-          } else if (response.status === 'fail') {
-            console.log("Message failed to send.", response)
-          }
-        });
-      }
-    }, 10);
+    if (!hasNameError && !hasEmailError && !hasSubjectError && !hasMessageError && !hasTextInputError && !hasTextInputsError) {
+      setValues([{ name: name, email: email, subject: subject, message: message }, ...values]);
+    }
   }
 
-  PageTitle('Информация за Контакти | Покривала НЕТ');
+  const fetchMessage = async () => {
+    const response = await fetch(`http://localhost:3010/contact`, {
+      method: "POST",
+      body: JSON.stringify(values[0]),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    }).then(
+      (response) => (response.json())
+    ).then((response) => {
+      if (response.status === 'success') {
+        setValues([]);
+        setName('');
+        setEmail('');
+        setSubject('');
+        setMessage('');
+        setCaptchaText('');
+        onRefresh();
+        setMessageOpen(true);
+      } else if (response.status === 'fail') {
+        console.log("Message failed to send.", response)
+      }
+    });
+
+    return response;
+  }
+
   return <>
     {!hideMain && (<>
       <div className={`container ${!isMobile ? 'my-5' : ''}`}>
@@ -227,6 +226,7 @@ function Contact({ hideMain, isMobile }) {
                 {hasTextInputsError && <FormFeedback>Кодовете не съвпадат.</FormFeedback>}
               </FormGroup>
               <Button type="submit" outline className="d-flex text-start mt-4" id="btn-submit">Изпрати</Button>
+              {messageOpen ? <Message isVisible={messageOpen} text="Благодарим Ви! Вашето запитване беше изпратено успешно. Ще се свържем с вас при възникнала възможност." /> : <></>}
             </Form>
           </Col>
         </Row>

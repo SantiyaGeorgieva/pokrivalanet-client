@@ -1,10 +1,13 @@
 import React, { Fragment } from 'react';
-import { Text, View, StyleSheet } from '@react-pdf/renderer';
+import { Text, View, StyleSheet, Font } from '@react-pdf/renderer';
+import Roboto from '../../fonts/roboto/Roboto-Regular.ttf';
+
+Font.register({ family: 'Roboto', fonts: [{ src: Roboto, fontWeight: 'bold' }] });
 
 const styles = StyleSheet.create({
   invoiceNoContainer: {
     flexDirection: 'row',
-    marginTop: 36,
+    marginTop: 25,
     justifyContent: 'flex-end'
   },
   invoiceDateContainer: {
@@ -16,6 +19,7 @@ const styles = StyleSheet.create({
     fontStyle: 'bold',
   },
   label: {
+    fontFamily: 'Roboto',
     width: 60
   }
 });
@@ -23,7 +27,7 @@ const styles = StyleSheet.create({
 const InvoiceNo = ({ invoice }) => (
   <Fragment>
     <View style={styles.invoiceNoContainer}>
-      <Text style={styles.label}>Оферта No:</Text>
+      <Text style={styles.label}>Оферта No: </Text>
       <Text style={styles.invoiceDate}>{invoice?.invoice_no}</Text>
     </View>
     <View style={styles.invoiceDateContainer}>

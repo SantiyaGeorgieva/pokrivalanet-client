@@ -201,7 +201,7 @@ function Header({ isMobile, isOpen, toggleClass }) {
               return (isOpen && <NavItem
                 onClick={({ target }) => {
                   target && target?.classList.toggle('active')
-                  toggleClass(isOpen);
+                  toggleClass(false);
                 }}
                 key={i}>
                 <NavLink to={element.to}>

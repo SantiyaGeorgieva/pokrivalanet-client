@@ -1,6 +1,7 @@
 import { Row, Col, Spinner, Card, CardBody, CardTitle, CardSubtitle } from "reactstrap";
 import { Link } from "react-router-dom";
 import Hr from "../Hr";
+
 import './cardsCover.scss';
 
 function CardsCover({ cards, isMobile }) {
@@ -11,14 +12,14 @@ function CardsCover({ cards, isMobile }) {
 
   return (
     <div className={`container ${isMobile ? 'px-0' : ''}`}>
-      <Row>
+      <Row className={`${!isMobile ? 'mx-1' : ''}`}>
         {firstRow.map((row, idx) => {
           return <Col md="3" key={idx} className={`${isMobile ? 'mb-3' : ''}`}>
             {!row?.src ? <Spinner className="m-5" color="primary" /> :
               <>
                 {row.subtitle === 'Изчислете цена' ?
                   <Link className="text-decoration-none" to="/truck-covers/calculator">
-                    <Card>
+                    <Card className="h-100">
                       <img src={row?.src} className="gallery-image" />
                       <CardBody>
                         <CardTitle tag="h5">
@@ -52,14 +53,14 @@ function CardsCover({ cards, isMobile }) {
           </Col>
         })}
       </Row>
-      <Row className={`${!isMobile ? 'my-3' : ''}`}>
+      <Row className={`${!isMobile ? 'my-5 mx-1' : ''}`}>
         {secondRow.map((row, idx) => {
           return <Col md="3" key={idx} className={`h-100 ${isMobile ? 'mb-3' : ''}`}>
             {!row?.src ? <Spinner className="m-5" color="primary" /> :
               <>
                 {row.subtitle === 'Изчислете цена' ?
                   <Link className="text-decoration-none" to="/truck-covers/calculator">
-                    <Card>
+                    <Card className="h-100">
                       <img src={row?.src} className="gallery-image" />
                       <CardBody>
                         <CardTitle tag="h5">
@@ -94,7 +95,7 @@ function CardsCover({ cards, isMobile }) {
         })}
       </Row>
       <Hr isMobile={isMobile} text="Покривала за камиони" />
-      <Row className={`${!isMobile ? 'my-3' : ''}`}>
+      <Row className={`${!isMobile ? 'my-3 mx-1' : ''}`}>
         {lastRow.map((row, idx) => {
           return <Col md="3" key={idx} className={`${isMobile ? 'mb-3' : ''}`}>
             {!row?.src ? <Spinner className="m-5" color="primary" /> :

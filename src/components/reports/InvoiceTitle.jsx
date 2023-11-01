@@ -1,14 +1,19 @@
 import React from 'react';
-import { Text, View, StyleSheet } from '@react-pdf/renderer';
+import { Text, View, StyleSheet, Font } from '@react-pdf/renderer';
+import Roboto from '../../fonts/roboto/Roboto-Regular.ttf';
+
+Font.register({ family: 'Roboto', fonts: [{ src: Roboto, fontWeight: 'bold' }] });
 
 const styles = StyleSheet.create({
   titleContainer: {
+    fontFamily: 'Roboto',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 24,
+    marginTop: -120,
   },
   reportTitle: {
+    fontFamily: 'Roboto',
     letterSpacing: 4,
     fontSize: 25,
     textAlign: 'center',

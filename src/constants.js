@@ -68,10 +68,15 @@ import Image60 from './images/oblicovki/37380435_1304071699695965_38651789510055
 
 import Image61 from './images/pokrivala_za_vagoni/pokrivala_za-vagoni.png';
 
-import ZavesaCipove from './images/zavesa-kalkulator-cipove.jpg';
-import ZavesaKopcheta from './images/zavesa-kalkulator-plasmasovi-kopcheta.jpg';
-import ZavesaElipsa from './images/zavesa-kalkulator-obkov-elipsa.jpg';
+import ZavesaKopcheta from './images/zavesa-kopcheta.jpg';
+import ZavesaElipsa from './images/zavesa-krygol-obkov.jpg';
+import ZavesaCipove from './images/zavesa-cipove.jpg';
 import ZavesaBezObkov from './images/zavesa-bez-obkov.jpg';
+
+import ZavesaKopchetaSvrata from './images/zavesa-kopcheta-s-vrata.jpg';
+import ZavesaElipsaSvrata from './images/zavesa-krygyl-obkov-vrata.jpg';
+import ZavesaCipoveSvrata from './images/zavesa-cipove-s-vrata.jpg';
+import ZavesaBezObkovSvrata from './images/zavesa-bez-obkov-sys-vrata.jpg';
 
 import TavanShtora from './images/pokrivala_za_kamioni/0-02-05-5c9ca7dec67c92e1b5111724e35fb3824346ae81f3029bee7f9c85798e3c773e_1ded37fba3581175.jpg';
 import ShtoraPoluremarke from './images/pokrivala_za_kamioni/0-02-05-72a980e606f6b977e61521ee76e5836f81d36a83396493f11f46563d096c57ea_6f193ca04ae5d076.jpg';
@@ -386,21 +391,49 @@ export const windproofCurtainsOptions = [
   {
     id: 1,
     image: ZavesaKopcheta,
-    text: 'Пластмасови въртящи копчета'
+    text: 'Пластмасови въртящи копчета',
+    checked: false
   },
   {
     id: 2,
     image: ZavesaElipsa,
-    text: 'Кръгов обков'
+    text: 'Кръгов обков',
+    checked: false
   },
   {
     id: 3,
     image: ZavesaCipove,
-    text: 'Ципове'
+    text: 'Ципове',
+    checked: false
   },
   {
     id: 4,
     image: ZavesaBezObkov,
-    text: 'Без обков (стационарен)'
+    text: 'Без обков (стационарен)',
+    checked: false
   },
+  {
+    id: 5,
+    image: ZavesaKopchetaSvrata,
+    text: 'Пластмасови въртящи копчета',
+    checked: true
+  },
+  {
+    id: 6,
+    image: ZavesaElipsaSvrata,
+    text: 'Кръгов обков',
+    checked: true
+  },
+  {
+    id: 7,
+    image: ZavesaCipoveSvrata,
+    text: 'Ципове',
+    checked: true
+  },
+  {
+    id: 8,
+    image: ZavesaBezObkovSvrata,
+    text: 'Без обков (стационарен)',
+    checked: true
+  }
 ];

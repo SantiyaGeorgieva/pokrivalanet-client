@@ -16,6 +16,7 @@ import LargeBedspreads from './pages/LargeBedspreads';
 import LiningsAndCovers from './pages/LiningsAndCovers';
 import WagonCovers from './pages/WagonCovers';
 import Contact from './pages/Contact';
+import Register from './pages/Administration/Register';
 import Login from './pages/Administration/Login';
 import UnderConstruction from './pages/UnderConstruction';
 import Administration from './pages/Administration';
@@ -60,6 +61,7 @@ function App() {
           <Route exact path="/cover-for-wagons" element={<WagonCovers isMobile={isMobile} hideMain={hideMain} preventScrollReset={true} />} />
           <Route exact path="/contact" element={<Contact hideMain={hideMain} isMobile={isMobile} preventScrollReset={true} />} />
           <Route exact path="/about-me" element={<AboutMe hideMain={hideMain} isMobile={isMobile} preventScrollReset={true} />} />
+          <Route exact path="/register" element={<Register hideMain={hideMain} isMobile={isMobile} preventScrollReset={true} />} />
           <Route exact path="/login" element={<Login hideMain={hideMain} isMobile={isMobile} preventScrollReset={true} />} />
           <Route exact path="/admin-panel" element={<Administration hideMain={hideMain} isMobile={isMobile} preventScrollReset={true} />} />
           <Route path="/not-found" element={<NotFound hideMain={hideMain} isMobile={isMobile} preventScrollReset={true} />} />

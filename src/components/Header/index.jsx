@@ -19,7 +19,7 @@ import './header.scss';
 
 function Header({ isMobile, isOpen, toggleClass }) {
   const [selectedItem, setSelectedItem] = useState("BG");
-  console.log('isOpen', isOpen);
+  // console.log('isOpen', isOpen);
 
   useEffect(() => {
     if (isMobile && document.querySelectorAll('.container-fluid')[1]) {
@@ -55,7 +55,7 @@ function Header({ isMobile, isOpen, toggleClass }) {
                   <i className="fa-solid fa-location-dot my-2 px-2" />Русе
                 </Link>
               </Button>
-              <Button color="dark" size="sm" outline className="cursor-default">
+              <Button color="dark" size="sm" outline className="cursor-default" href="mailto:office@pokrivala.net">
                 <i className="fa-solid fa-envelope my-2 px-2" />office@pokrivala.net
               </Button>
               <Navbar expand="sm" className="py-0">

@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Button, Col, Form, FormFeedback, FormGroup, Input, Label, Row } from "reactstrap";
 import GoogleMapRuse from '../../components/GoogleMapRuse';
 import Hr from '../../components/Hr';
 import PageTitle from '../../components/PageTitle';
 import { removeSpaces } from '../../utils';
 import Message from '../../components/Message';
+import ReCAPTCHA from 'react-google-recaptcha';
+import { googleSecretApiKey, googleSiteKey } from '../../config/configApi';
+
+import './contact.scss';
 
 function Contact({ hideMain, isMobile }) {
   PageTitle('Информация за Контакти | Покривала НЕТ');
@@ -13,65 +17,51 @@ function Contact({ hideMain, isMobile }) {
   const [email, setEmail] = useState('');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
-  const [captchaText, setCaptchaText] = useState('');
-  const [mainCaptchaText, setMainCaptchaText] = useState('');
   const [values, setValues] = useState([]);
-  const [messageOpen, setMessageOpen] = useState(false);
   const [hasNameError, setNameError] = useState(false);
   const [hasEmailError, setEmailError] = useState(false);
   const [hasSubjectError, setSubjectError] = useState(false);
   const [hasMessageError, setMessageError] = useState(false);
-  const [hasTextInputError, setTextInputError] = useState(false);
-  const [hasTextInputsError, setTextInputsError] = useState(false);
   const [isLoaderLoad, setLoaderLoad] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const captchaRef = useRef(null);
+
+  const [messageCaptcha, setMessageCaptcha] = useState('');
+  const [error, setError] = useState('');
+
+  const [visible, setVisible] = useState(false);
+  const onDismiss = () => setVisible(false);
 
   useEffect(() => {
-    let alpha = new Array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
-    let a, b, c, d;
-
-    for (let i = 0; i < 4; i++) {
-      a = alpha[Math.floor(Math.random() * alpha.length)];
-      b = alpha[Math.floor(Math.random() * alpha.length)];
-      c = alpha[Math.floor(Math.random() * alpha.length)];
-      d = alpha[Math.floor(Math.random() * alpha.length)];
+    if (!hasNameError && !hasEmailError && !hasSubjectError && !hasMessageError && messageCaptcha.length > 0) {
+      setValues([{ name, email, subject, message }]);
     }
+  }, [name, email, subject, message, messageCaptcha])
 
-    let code = a + '' + b + '' + '' + c + '' + d;
-    document.getElementById("mainCaptcha").value = code;
-    setMainCaptchaText(code);
-  }, [])
-
-  useEffect(() => {
-    if (!hasNameError && !hasEmailError && !hasSubjectError && !hasMessageError && !hasTextInputError && !hasTextInputsError && values.length > 0) {
-      fetchMessage();
+  const verifyToken = async (token) => {
+    try {
+      let response = await fetch(`http://localhost:8080/verify-token`, {
+        method: 'POST',
+        secret: googleSecretApiKey,
+        token
+      });
+      return response;
     }
-  }, [values])
-
-  const onRefresh = () => {
-    let alpha = new Array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
-    let a, b, c, d;
-
-    for (let i = 0; i < 4; i++) {
-      a = alpha[Math.floor(Math.random() * alpha.length)];
-      b = alpha[Math.floor(Math.random() * alpha.length)];
-      c = alpha[Math.floor(Math.random() * alpha.length)];
-      d = alpha[Math.floor(Math.random() * alpha.length)];
+    catch (error) {
+      console.log("error ", error);
     }
+  }
 
-    let code = a + '' + b + '' + '' + c + '' + d;
-    document.getElementById("mainCaptcha").value = code;
-    setMainCaptchaText(code);
-  };
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setError('');
+    setMessageCaptcha('');
 
     let emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
     let nameValue = removeSpaces(name);
     let subjectValue = removeSpaces(message);
     let emailaddressVal = email;
-    let mainCaptchaValue = removeSpaces(mainCaptchaText);
-    let txtInput = removeSpaces(captchaText);
+    let token = captchaRef.current.getValue();
 
     if (nameValue === '') {
       setNameError(true);
@@ -92,12 +82,6 @@ function Contact({ hideMain, isMobile }) {
       setMessageError(false);
     }
 
-    if (txtInput === '') {
-      setTextInputError(true);
-    } else if (txtInput !== '') {
-      setTextInputError(false);
-    }
-
     if (emailaddressVal === '') {
       setEmailError(true);
     } else if (emailaddressVal !== '') {
@@ -108,38 +92,45 @@ function Contact({ hideMain, isMobile }) {
       setEmailError(true);
     }
 
-    if (txtInput !== '' && mainCaptchaValue !== txtInput) {
-      setTextInputsError(true);
-    } else if (txtInput !== '' && mainCaptchaValue === txtInput) {
-      setTextInputsError(false);
-    }
+    if (token) {
+      let valid_token = await verifyToken(token);
 
-    if (!hasNameError && !hasEmailError && !hasSubjectError && !hasMessageError && !hasTextInputError && !hasTextInputsError) {
-      setValues([{ name: name, email: email, subject: subject, message: message }, ...values]);
+      if (valid_token?.status === 200) {
+        setMessageCaptcha('Успешно валидиране на токъна! Моля, продължете с изпращането на формата');
+
+        if (values && values.length > 0) {
+          fetchMessage();
+        }
+      } else {
+        setError("Съжалявам! Токъна е невалиден");
+      }
+    } else {
+      setError("Трябва да потвърдите, че не сте робот");
     }
   }
 
   const fetchMessage = async () => {
-    const response = await fetch(`http://localhost:3010/contact`, {
+    setLoading(true);
+    const response = await fetch('http://localhost:8080/contact', {
       method: "POST",
       body: JSON.stringify(values[0]),
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
       },
-    }).then(
-      (response) => (response.json())
-    ).then((response) => {
-      if (response.status === 'success') {
+      responseType: 'json'
+    }).then((response) => {
+      if (response.status === 200) {
         setValues([]);
         setName('');
         setEmail('');
         setSubject('');
         setMessage('');
-        setCaptchaText('');
-        onRefresh();
-        setMessageOpen(true);
-      } else if (response.status === 'fail') {
+        setVisible(true);
+        setLoading(false);
+        setMessageCaptcha('');
+        window.grecaptcha.reset();
+      } else if (response.status === '400') {
         console.log("Message failed to send.", response)
       }
     });
@@ -212,21 +203,17 @@ function Contact({ hideMain, isMobile }) {
                 />
                 {hasMessageError && <FormFeedback>Моля, въведете вашето запитване.</FormFeedback>}
               </FormGroup>
-              <FormGroup className="text-start mb-2" disabled>
-                <div className="d-flex">
-                  <Input className="bc-gray" id="mainCaptcha" name="mainCaptchaText" value={mainCaptchaText} onChange={e => setMainCaptchaText(e.target.value)} disabled />
-                  <Button color="link" onClick={onRefresh}>
-                    <i className="fa-solid fa-arrows-rotate ms-2 mt-2"></i>
-                  </Button>
-                </div>
+              <FormGroup>
+                <ReCAPTCHA sitekey={googleSiteKey} ref={captchaRef} />
               </FormGroup>
-              <FormGroup className="text-start mb-2">
-                <Input name="captchaText" value={captchaText} onChange={e => setCaptchaText(e.target.value)} id="txtInput" invalid={hasTextInputError || hasTextInputsError} />
-                {hasTextInputError && <FormFeedback>Моля, въведете кода от полето.</FormFeedback>}
-                {hasTextInputsError && <FormFeedback>Кодовете не съвпадат.</FormFeedback>}
+              {error && <p className="text-start textError fs-14">Грешка! {error}</p>}
+              {messageCaptcha && <p className="text-start textSuccess fs-14">{messageCaptcha}</p>}
+              <FormGroup>
+                <Button type="submit" outline className="d-flex text-start mt-4" id="btn-submit" disabled={loading}>
+                  {loading ? 'Изпращане...' : 'Изпрати'}
+                </Button>
               </FormGroup>
-              <Button type="submit" outline className="d-flex text-start mt-4" id="btn-submit">Изпрати</Button>
-              {messageOpen ? <Message isVisible={messageOpen} text="Благодарим Ви! Вашето запитване беше изпратено успешно. Ще се свържем с вас при възникнала възможност." /> : <></>}
+              {visible ? <Message isVisible={visible} onDismiss={onDismiss} text="Благодарим Ви! Вашето запитване беше изпратено успешно. Ще се свържем с вас в най скоро време." /> : <></>}
             </Form>
           </Col>
         </Row>

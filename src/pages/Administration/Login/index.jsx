@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, FormFeedback, FormGroup, Input, Label, Row, Form } from "reactstrap";
 import Hr from "../../../components/Hr";
 import PageTitle from "../../../components/PageTitle";
@@ -7,27 +8,48 @@ import AdminPanelImage from '../../../images/admin-panel.png';
 import './login.scss';
 
 function Login({ hideMain, isMobile }) {
-  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [hasNameError, setNameError] = useState(false);
+  const [hasUsernameError, setUsernameError] = useState(false);
   const [hasPasswordError, setPasswordError] = useState(false);
+  let navigate = useNavigate();
 
   PageTitle('Вписване в администраторски панел | Покривала НЕТ');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (name === '') {
-      setNameError(true);
+    if (username === '') {
+      setUsernameError(true);
     } else {
-      setNameError(false);
+      setUsernameError(false);
     }
 
     if (password === '') {
       setPasswordError(true);
     } else {
-      setPassword(false);
+      setPasswordError(false);
     }
+
+    const response = await fetch('http://localhost:8080/login', {
+      method: "POST",
+      body: JSON.stringify({ username: username, password: password }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      responseType: 'json'
+    }).then((response) => {
+      if (response.status === '200') {
+        setUsername('');
+        setPassword('');
+        navigate.push("/admin-panel");
+      } else if (response.status !== '200') {
+        console.log("Message failed to send.", response)
+      }
+    });
+
+    return response;
   }
 
   return <>{!hideMain &&
@@ -44,9 +66,9 @@ function Login({ hideMain, isMobile }) {
             <Col md="4">
               <Form onSubmit={(e) => handleSubmit(e)} method="POST">
                 <FormGroup className="text-start mb-2">
-                  <Label for="name">Потребителско име</Label>
-                  <Input type="text" name="name" onChange={e => setName(e.target.value)} value={name} invalid={hasNameError} />
-                  {hasNameError && <FormFeedback>Моля, въведете името си</FormFeedback>}
+                  <Label for="username">Потребителско име</Label>
+                  <Input type="text" name="username" onChange={e => setUsername(e.target.value)} value={username} invalid={hasUsernameError} />
+                  {hasUsernameError && <FormFeedback>Моля, въведете името си</FormFeedback>}
                 </FormGroup>
                 <FormGroup className="text-start mb-2">
                   <Label for="password">Парола</Label>
@@ -54,7 +76,11 @@ function Login({ hideMain, isMobile }) {
                   {hasPasswordError && <FormFeedback>Моля, въведете паролата си</FormFeedback>}
                 </FormGroup>
                 <div className="d-flex align-items-center justify-content-end mt-4">
-                  <Button type="submit" className={`bc-dark-blue ${isMobile ? 'btn-sm me-3' : ''}`}>Вписване</Button>
+                  <Button
+                    type="submit"
+                    className={`bc-dark-blue ${isMobile ? 'btn-sm me-3' : ''}`}
+                    onClick={() => handleSubmit}>Вписване
+                  </Button>
                 </div>
               </Form>
             </Col>

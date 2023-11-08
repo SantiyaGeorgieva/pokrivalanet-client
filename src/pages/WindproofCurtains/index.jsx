@@ -104,7 +104,7 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
         setKnobCount('');
         setMessageOpen(true);
       } else if (response.status === 'fail') {
-        console.log("Message failed to send.", response)
+        console.log("Message failed to send.", response);
       }
     });
 

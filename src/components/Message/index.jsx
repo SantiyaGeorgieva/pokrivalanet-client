@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Alert } from 'reactstrap';
 
-function Message({ text, isVisible }) {
-  const [visible, setVisible] = useState(isVisible);
-  const onDismiss = () => setVisible(false);
-
+function Message({ text, isVisible, onDismiss }) {
   return (
-    <Alert isOpen={visible} toggle={onDismiss} className="mt-3">
+    <Alert
+      isOpen={isVisible}
+      toggle={onDismiss}
+      className="mt-3"
+      fade
+      transition={{ timeout: 1000 }}
+    >
       {text}
     </Alert>
   );

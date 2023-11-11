@@ -2,13 +2,13 @@ import { useTranslation } from "react-i18next";
 import Gallery from "../../components/Gallery";
 import Hr from "../../components/Hr";
 import PageTitle from "../../components/PageTitle";
-import { wagonCoversImages } from "../../constants";
+import { largeCoversImages } from "../../constants";
 
-import './wagonCover.scss';
+import './largeCovers.scss';
 
-function WagonCovers({ hideMain, isMobile }) {
+function LargeCovers({ hideMain, isMobile }) {
   const { t } = useTranslation();
-  PageTitle(t('large_and_covers_page_title'));
+  PageTitle(t('large_covers_page_title'));
 
   return <>{!hideMain &&
     <div className={`container ${isMobile ? '' : 'my-4'}`}>
@@ -20,11 +20,11 @@ function WagonCovers({ hideMain, isMobile }) {
           <p className="text-start">{t('main_text8')}</p>
         </>
       }
-      <Gallery images={wagonCoversImages} isMobile={isMobile} />
-      <Hr isMobile={isMobile} text={`${t('cover_for_wagons_link')}`} />
+      <Gallery images={largeCoversImages} isMobile={isMobile} />
+      <Hr isMobile={isMobile} text={`${t('large_covers_link')}`} />
     </div>
   }</>
 
 }
 
-export default WagonCovers;
+export default LargeCovers;

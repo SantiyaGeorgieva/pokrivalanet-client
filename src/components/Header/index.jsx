@@ -13,12 +13,15 @@ import {
   Collapse,
   NavItem
 } from "reactstrap";
-import Logo from '../../images/logo.png'
+import i18next from "i18next";
+import { useTranslation } from "react-i18next";
+import Logo from '../../images/logo.png';
 import { links } from "../../constants";
 import './header.scss';
 
 function Header({ isMobile, isOpen, toggleClass }) {
-  const [selectedItem, setSelectedItem] = useState("BG");
+  const [selectedItem, setSelectedItem] = useState(localStorage.getItem("i18nextLng"));
+  const { t } = useTranslation();
   // console.log('isOpen', isOpen);
 
   useEffect(() => {
@@ -52,7 +55,7 @@ function Header({ isMobile, isOpen, toggleClass }) {
               </Button>
               <Button color="dark" size="sm" className="location-link me-2" outline>
                 <Link className="text-dark text-decoration-none" to="/contact">
-                  <i className="fa-solid fa-location-dot my-2 px-2" />Русе
+                  <i className="fa-solid fa-location-dot my-2 px-2" />{t('city')}
                 </Link>
               </Button>
               <Button color="dark" size="sm" outline className="cursor-default" href="mailto:office@pokrivala.net">
@@ -60,29 +63,47 @@ function Header({ isMobile, isOpen, toggleClass }) {
               </Button>
               <Navbar expand="sm" className="py-0">
                 <Nav className="ms-auto" navbar>
-                  <UncontrolledDropdown setActiveFromChild className="cursor-notAllowed">
+                  <UncontrolledDropdown setActiveFromChild className="cursor-pointer">
                     <DropdownToggle
                       caret
-                      className="nav-link pointer-events-none"
+                      className="nav-link"
                       tag="a"
                     >
-                      {selectedItem}
+                      {selectedItem.toLocaleUpperCase()}
                     </DropdownToggle>
                     <DropdownMenu>
-                      <DropdownItem
+                      {selectedItem !== "en" && <DropdownItem
                         href="#"
                         tag="a"
-                        onClick={() => { setSelectedItem('EN') }}
+                        onClick={() => {
+                          i18next.changeLanguage('en');
+                          setSelectedItem(localStorage.getItem("i18nextLng"));
+                        }}
                       >
                         EN
                       </DropdownItem>
-                      <DropdownItem
+                      }
+                      {selectedItem !== "bg" && <DropdownItem
                         href="#"
                         tag="a"
-                        onClick={() => { setSelectedItem('RO') }}
+                        onClick={() => {
+                          i18next.changeLanguage('bg');
+                          setSelectedItem(localStorage.getItem("i18nextLng"));
+                        }}
+                      >
+                        BG
+                      </DropdownItem>}
+                      {selectedItem !== "ro" && <DropdownItem
+                        href="#"
+                        tag="a"
+                        onClick={() => {
+                          i18next.changeLanguage('ro');
+                          setSelectedItem(localStorage.getItem("i18nextLng"));
+                        }}
                       >
                         RO
                       </DropdownItem>
+                      }
                     </DropdownMenu>
                   </UncontrolledDropdown>
                 </Nav>
@@ -103,7 +124,7 @@ function Header({ isMobile, isOpen, toggleClass }) {
                           isActive ? 'fw-bold' : ''
                         }
                       >
-                        {element.name}
+                        {t(element.name)}
                       </NavLink>
                     </Col>
                   )
@@ -128,23 +149,41 @@ function Header({ isMobile, isOpen, toggleClass }) {
                     className="nav-link pointer-events-none"
                     tag="a"
                   >
-                    {selectedItem}
+                    {selectedItem.toLocaleUpperCase()}
                   </DropdownToggle>
                   <DropdownMenu>
-                    <DropdownItem
+                    {selectedItem !== "en" && <DropdownItem
                       href="#"
                       tag="a"
-                      onClick={() => setSelectedItem('EN')}
+                      onClick={() => {
+                        i18next.changeLanguage('en');
+                        setSelectedItem(localStorage.getItem("i18nextLng"));
+                      }}
                     >
                       EN
                     </DropdownItem>
-                    <DropdownItem
+                    }
+                    {selectedItem !== "bg" && <DropdownItem
                       href="#"
                       tag="a"
-                      onClick={() => setSelectedItem('RO')}
+                      onClick={() => {
+                        i18next.changeLanguage('bg');
+                        setSelectedItem(localStorage.getItem("i18nextLng"));
+                      }}
+                    >
+                      BG
+                    </DropdownItem>}
+                    {selectedItem !== "ro" && <DropdownItem
+                      href="#"
+                      tag="a"
+                      onClick={() => {
+                        i18next.changeLanguage('ro');
+                        setSelectedItem(localStorage.getItem("i18nextLng"));
+                      }}
                     >
                       RO
                     </DropdownItem>
+                    }
                   </DropdownMenu>
                 </UncontrolledDropdown>
               </Nav>
@@ -168,7 +207,7 @@ function Header({ isMobile, isOpen, toggleClass }) {
                 <Col md="12" className={`${!isMobile ? '' : 'mb-2'}`}>
                   <Button color="dark" size="sm" className="location-link me-2" outline>
                     <Link className="text-dark text-decoration-none" to="/contact">
-                      <i className="fa-solid fa-location-dot my-2 px-2" />Русе
+                      <i className="fa-solid fa-location-dot my-2 px-2" />{t('city')}
                     </Link>
                   </Button>
                 </Col>
@@ -205,7 +244,7 @@ function Header({ isMobile, isOpen, toggleClass }) {
                 }}
                 key={i}>
                 <NavLink to={element.to}>
-                  {element.name}
+                  {t(element.name)}
                 </NavLink>
               </NavItem>)
             })}

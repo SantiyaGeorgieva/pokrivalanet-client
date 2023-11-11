@@ -1,17 +1,19 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Button, Col, Form, FormFeedback, FormGroup, Input, Label, Row } from "reactstrap";
 import GoogleMapRuse from '../../components/GoogleMapRuse';
+import { useTranslation } from "react-i18next";
+import ReCAPTCHA from 'react-google-recaptcha';
 import Hr from '../../components/Hr';
 import PageTitle from '../../components/PageTitle';
 import { removeSpaces } from '../../utils';
 import Message from '../../components/Message';
-import ReCAPTCHA from 'react-google-recaptcha';
 import { googleSecretApiKey, googleSiteKey } from '../../config/configApi';
 
 import './contact.scss';
 
 function Contact({ hideMain, isMobile }) {
-  PageTitle('Информация за Контакти | Покривала НЕТ');
+  const { t } = useTranslation();
+  PageTitle(t('large_and_covers_page_title'));
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -96,16 +98,16 @@ function Contact({ hideMain, isMobile }) {
       let valid_token = await verifyToken(token);
 
       if (valid_token?.status === 200) {
-        setMessageCaptcha('Успешно валидиране на токъна! Моля, продължете с изпращането на формата');
+        setMessageCaptcha(t('message_captcha'));
 
         if (values && values.length > 0) {
           fetchMessage();
         }
       } else {
-        setError("Съжалявам! Токъна е невалиден");
+        setError(t('token_validation_message1'));
       }
     } else {
-      setError("Трябва да потвърдите, че не сте робот");
+      setError(t('token_validation_message2'));
     }
   }
 
@@ -144,14 +146,14 @@ function Contact({ hideMain, isMobile }) {
         <Row>
           <Col md="6">
             <div className="d-flex flex-column text-start">
-              <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />гр. Русе, ул. „Тракция“ 10</p>
+              <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />{`${t('addres_ruse')}`}</p>
               <p className="mb-1"><i className="fa fa-phone my-2 pe-2" />+359 877 614 031,</p>
               <p className="mb-1"><i className="fa fa-phone my-2 pe-2" />+359 877 614 029,</p>
               <p className="mb-2"><i className="fa fa-phone my-2 pe-2" />+359 877 062 082</p>
             </div>
             {!isMobile &&
               <div className="d-flex flex-column text-start mt-3">
-                <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />гр. Пловдив</p>
+                <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />{`${t('addres_plv')}`}</p>
                 <p className="mb-2"><i className="fa fa-phone my-2 pe-2" />+359 877 614 031</p>
                 <p className="mb-2"><i className="fa-solid fa-envelope my-2 pe-2" />office@pokrivala.net</p>
               </div>
@@ -165,34 +167,34 @@ function Contact({ hideMain, isMobile }) {
           <Row>
             <Col md="6">
               <div className="d-flex flex-column text-start mt-3">
-                <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />гр. Пловдив</p>
+                <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />{`${t('addres_plv')}`}</p>
                 <p className="mb-2"><i className="fa fa-phone my-2 pe-2" />+359 877 614 031</p>
                 <p className="mb-2"><i className="fa-solid fa-envelope my-2 pe-2" />office@pokrivala.net</p>
               </div>
             </Col>
           </Row>
         }
-        <Hr text="Контакти" />
+        <Hr text={`${t('contacts_link')}`} />
         <Row className={`{d-flex align-items-center justify-content-center ${isMobile ? 'mb-5' : ''}`}>
           <Col md="4">
             <Form onSubmit={(e) => handleSubmit(e)} method="POST">
               <FormGroup className="text-start mb-2">
-                <Label for="exampleEmail">Имена</Label>
+                <Label for="exampleEmail">{t('names')}</Label>
                 <Input type="text" name="name" onChange={e => setName(e.target.value)} value={name} invalid={hasNameError} />
-                {hasNameError && <FormFeedback>Моля, въведете вашите имена.</FormFeedback>}
+                {hasNameError && <FormFeedback>{t('name_error')}</FormFeedback>}
               </FormGroup>
               <FormGroup className="text-start mb-2">
-                <Label for="email">Имейл</Label>
+                <Label for="email">{t('email')}</Label>
                 <Input type="text" onChange={e => setEmail(e.target.value)} name="email" value={email} invalid={hasEmailError} />
-                {hasEmailError && <FormFeedback>Моля, въведете вашия имейл адрес.</FormFeedback>}
+                {hasEmailError && <FormFeedback>{t('email_error')}</FormFeedback>}
               </FormGroup>
               <FormGroup className="text-start mb-2">
-                <Label for="subject">Относно</Label>
+                <Label for="subject">{t('subject')}</Label>
                 <Input type="text" onChange={e => setSubject(e.target.value)} name="subject" value={subject} invalid={hasSubjectError} />
-                {hasSubjectError && <FormFeedback>Моля, въведете вашата тема.</FormFeedback>}
+                {hasSubjectError && <FormFeedback>{t('subject_error')}</FormFeedback>}
               </FormGroup>
               <FormGroup className="text-start mb-2">
-                <Label for="exampleText">Съобщение</Label>
+                <Label for="exampleText">{t('message')}</Label>
                 <Input
                   id="exampleText"
                   name="message"
@@ -201,19 +203,19 @@ function Contact({ hideMain, isMobile }) {
                   invalid={hasMessageError}
                   onChange={e => setMessage(e.target.value)}
                 />
-                {hasMessageError && <FormFeedback>Моля, въведете вашето запитване.</FormFeedback>}
+                {hasMessageError && <FormFeedback>{t('message_error')}</FormFeedback>}
               </FormGroup>
               <FormGroup>
                 <ReCAPTCHA sitekey={googleSiteKey} ref={captchaRef} />
               </FormGroup>
-              {error && <p className="text-start textError fs-14">Грешка! {error}</p>}
+              {error && <p className="text-start textError fs-14">{t('error_text')} {error}</p>}
               {messageCaptcha && <p className="text-start textSuccess fs-14">{messageCaptcha}</p>}
               <FormGroup>
                 <Button type="submit" outline className="d-flex text-start mt-4" id="btn-submit" disabled={loading}>
-                  {loading ? 'Изпращане...' : 'Изпрати'}
+                  {loading ? t('send_button_text2') : t('send_button_text1')}
                 </Button>
               </FormGroup>
-              {visible ? <Message isVisible={visible} onDismiss={onDismiss} text="Благодарим Ви! Вашето запитване беше изпратено успешно. Ще се свържем с вас в най скоро време." /> : <></>}
+              {visible ? <Message isVisible={visible} onDismiss={onDismiss} text={`${t('names')}`} /> : <></>}
             </Form>
           </Col>
         </Row>

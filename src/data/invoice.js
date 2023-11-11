@@ -2,12 +2,6 @@ const invoice = {
   id: "5df3180a09ea16dc4b95f910",
   invoice_no: "201906-28",
   balance: "$2,283.74",
-  company: "POKRIVALA NET",
-  email: "office@pokrivala.net",
-  phone: "+ 359 877 614 031",
-  address: 'гр. Русе, ул."Тракция" 10',
-  trans_date: "2019-09-12",
-  due_date: "2019-10-12",
   items: [
     {
       sno: 1,

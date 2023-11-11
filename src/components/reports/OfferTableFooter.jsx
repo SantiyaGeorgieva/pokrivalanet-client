@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const InvoiceTableFooter = ({ items }) => {
+const OfferTableFooter = ({ items }) => {
   const total = items.map(item => item.qty * item.rate)
     .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
   return (
@@ -36,4 +36,4 @@ const InvoiceTableFooter = ({ items }) => {
   )
 };
 
-export default InvoiceTableFooter;
+export default OfferTableFooter;

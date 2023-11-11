@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import CardsCover from "../../components/CardsCover";
 import PageTitle from "../../components/PageTitle";
 import { cardslItems } from "../../constants";
@@ -5,19 +6,16 @@ import { cardslItems } from "../../constants";
 import './truckCovers.scss';
 
 function TruckCovers({ hideMain, isMobile }) {
-  PageTitle('Информация за Покривала за Камиони | Покривала НЕТ');
+  const { t } = useTranslation();
+  PageTitle(t('truck_covers_page_title'));
 
   return <>{!hideMain &&
     <div className={`container ${isMobile ? '' : 'my-4'}`}>
       {isMobile ? <p className="text-wrapper mb-1">
-        Ние произвеждаме покривала и брезенти за транспортни средства, изработени от PVC материал.
-        Покривалата се предлагат в различни цветове и тегло, в зависимост от вида на транспортното средство.
-        Здрави и издръжливи, те са лесни за поставяне.
+        {t('main_text1')}
       </p>
-        : <div className="mx-3">
-          <p className="text-start mb-0">Ние произвеждаме покривала и брезенти за транспортни средства, изработени от PVC материал.</p>
-          <p className="text-start mb-0">Покривалата се предлагат в различни цветове и тегло, в зависимост от вида на транспортното средство.</p>
-          <p className="text-start">Здрави и издръжливи, те са лесни за поставяне.</p>
+        : <div className="mx-4">
+          <p className="text-start mb-3">{t('main_text1')}</p>
         </div>
       }
       <CardsCover cards={cardslItems} isMobile={isMobile} />

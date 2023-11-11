@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const InvoiceTableBlankSpace = ({ rowsCount }) => {
+const OfferTableBlankSpace = ({ rowsCount }) => {
   const blankRows = Array(rowsCount).fill(0)
   const rows = blankRows.map((x, i) =>
     <View style={styles.row} key={`BR${i}`}>
@@ -40,4 +40,4 @@ const InvoiceTableBlankSpace = ({ rowsCount }) => {
   return (<Fragment>{rows}</Fragment>)
 };
 
-export default InvoiceTableBlankSpace;
+export default OfferTableBlankSpace;

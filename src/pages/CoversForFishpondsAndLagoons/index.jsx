@@ -1,14 +1,14 @@
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 import Gallery from "../../components/Gallery";
 import Hr from "../../components/Hr";
 import PageTitle from "../../components/PageTitle";
-import { curtainsCowFarmsImages } from "../../constants";
+import { coversForFishpondsAndLagoonsImages } from "../../constants";
 
-import './curtainsCowFarmsImages.scss';
+import './coversForFishpondsAndLagoons.scss';
 
-function CurtainsCowFarms({ hideMain, isMobile }) {
+function CoversForFishpondsAndLagoons({ hideMain, isMobile }) {
   const { t } = useTranslation();
-  PageTitle(t('curtains_cow_farms_page_title'));
+  PageTitle(t('covers_for_fishponds_and_lagoons_page_title'));
 
   return <>
     {!hideMain &&
@@ -21,11 +21,11 @@ function CurtainsCowFarms({ hideMain, isMobile }) {
             <p className="text-start">{t('main_text8')}</p>
           </>
         }
-        <Gallery images={curtainsCowFarmsImages} isMobile={isMobile} />
-        <Hr isMobile={isMobile} text={`${t('curtains_for_cow_farms_link')}`} />
+        <Gallery images={coversForFishpondsAndLagoonsImages} isMobile={isMobile} />
+        <Hr isMobile={isMobile} text={t('covers_for_fishponds_and_lagoons_link')} />
       </div>
     }
   </>
 }
 
-export default CurtainsCowFarms;
+export default CoversForFishpondsAndLagoons;

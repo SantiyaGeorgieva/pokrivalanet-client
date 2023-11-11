@@ -1,23 +1,25 @@
 import { memo, useEffect, useState } from "react";
 import { saveAs } from 'file-saver';
 import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
-import { Row, Col, Form, FormFeedback, FormGroup, Input, Label, Button, Spinner } from "reactstrap";
+import { Row, Col, Form, FormFeedback, FormGroup, Input, Label, Button } from "reactstrap";
+import { useTranslation } from "react-i18next";
 import Gallery from "../../components/Gallery";
 import Hr from "../../components/Hr";
 import PageTitle from "../../components/PageTitle";
-import Invoice from "../../components/reports/Invoice";
 import invoice from "../../data/invoice.js";
 import { windproofCurtains, windproofCurtainsOptions } from "../../constants";
 
 import './windproofCurtains.scss';
+import Offer from "../../components/reports/Offer.jsx";
 
 const WindproofCurtains = memo(({ hideMain, isMobile }) => {
-  PageTitle('Информация за Ветроупортни Завеси | Покривала НЕТ');
+  const { t } = useTranslation();
+  PageTitle(t('windproof_curtains_page_title'));
 
   const [width, setWidth] = useState('');
   const [height, setHeight] = useState('');
   const [description, setDescription] = useState('');
-  const [select, setSelect] = useState('Пластмасови въртящи копчета');
+  const [select, setSelect] = useState(`${t('plastic_knobs')}`);
   const [zipCount, setZipCount] = useState('');
   const [knobCount, setKnobCount] = useState('');
   const [values, setValues] = useState([]);
@@ -119,26 +121,20 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
   return <>{!hideMain &&
     <div className={`container ${isMobile ? '' : 'my-4'}`}>
       {isMobile ? <p className="text-wrapper mb-3">
-        Ветроупорните завеси са изключително подходящи за предпазване от климатични въздействия (дъжд, вятър, слънце).
-        Подходящи са за всички открити обекти (градина, ресторант, тераса). Материалът е прозрачен, гъвкав и устойчив.
-        Могат да се монтират на различни повърхности (дърво, метал, пластмаса).
+        {t('main_text2')}
       </p>
-        : <>
-          <p className="text-start mb-0">Ветроупорните завеси са изключително подходящи за предпазване от климатични въздействия (дъжд, вятър, слънце).</p>
-          <p className="text-start mb-0">Подходящи са за всички открити обекти (градина, ресторант, тераса). Материалът е прозрачен, гъвкав и устойчив.</p>
-          <p className="mb-5 text-start">Могат да се монтират на различни повърхности (дърво, метал, пластмаса).</p>
-        </>
+        : <p className="text-start mb-5">{t('main_text2')}</p>
       }
       <Row>
         <Col md="6" className={`${!isMobile ? 'text-start' : ''}`}>
-          {!checked ? windproofCurtainsOptions.filter(option => option.text === select && !option.checked === !checked).map(option => {
+          {!checked ? windproofCurtainsOptions.filter(option => t(option.text) === select && !option.checked === !checked).map(option => {
             return <img
               key={option.id}
               className={isMobile ? 'w-100' : 'w-75'}
               src={option.image}
             />
           })
-            : windproofCurtainsOptions.filter(option => option.text === select && option.checked === checked).map(option => {
+            : windproofCurtainsOptions.filter(option => t(option.text) === select && option.checked === checked).map(option => {
               return <img
                 key={option.id}
                 className={isMobile ? 'w-100' : 'w-75'}
@@ -149,30 +145,30 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
         </Col>
         <Col md="6">
           <Form className={`${isMobile ? 'mt-3' : ''}`} onSubmit={handleSubmit} method="POST">
-            <h4 className={`${isMobile ? 'mb-3' : 'mb-5'}`}>Данни за завесата</h4>
+            <h4 className={`${isMobile ? 'mb-3' : 'mb-5'}`}>{t('curtain_data_text')}</h4>
             <div className={`container ${isMobile ? 'mt-3' : 'mt-5'}`}>
               <Row>
                 <Col md="6">
                   <FormGroup className="text-start mb-2">
-                    <Label for="width" className="fw-bold">Ширина</Label>
+                    <Label for="width" className="fw-bold">{t('width_text')}</Label>
                     <Input type="number" name="width" onChange={e => setWidth(e.target.value)} value={width}
                       invalid={hasWidthError}
                     />
-                    {hasWidthError && <FormFeedback>Моля, въведете ширина.</FormFeedback>}
+                    {hasWidthError && <FormFeedback>{t('has_width_error')}</FormFeedback>}
                   </FormGroup>
                 </Col>
                 <Col md="6">
                   <FormGroup className="text-start mb-2">
-                    <Label for="height" className="fw-bold">Височина</Label>
+                    <Label for="height" className="fw-bold">{t('height_text')}</Label>
                     <Input type="number" onChange={e => setHeight(e.target.value)} name="height" value={height} invalid={hasHeightError} />
-                    {hasHeightError && <FormFeedback>Моля, въведете височина.</FormFeedback>}
+                    {hasHeightError && <FormFeedback>{t('has_height_error')}</FormFeedback>}
                   </FormGroup>
                 </Col>
               </Row>
               <Row>
                 <Col md="6">
                   <FormGroup className="text-start mb-2">
-                    <Label for="thick" className="fw-bold">Дебелина</Label>
+                    <Label for="thick" className="fw-bold">{t('depth_text')}</Label>
                     <p>0.8 мм</p>
                   </FormGroup>
                 </Col>
@@ -181,7 +177,7 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
                 <Col md="6">
                   <FormGroup className="text-start mb-2">
                     <FormGroup>
-                      <Label for="select" className="fw-bold">Обков</Label>
+                      <Label for="select" className="fw-bold">{t('hardware_text')}</Label>
                       <Input
                         id="select"
                         name="select"
@@ -189,14 +185,14 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
                         defaultValue={select}
                         onChange={e => setSelect(e.target.value)}>
                         {windproofCurtainsOptions.map(option => {
-                          return !option.checked && <option key={option.id}>{option.text}</option>
+                          return !option.checked && <option key={option.id}>{t(`${option.text}`)}</option>
                         })}
                       </Input>
                     </FormGroup>
                   </FormGroup>
                 </Col>
-                {(select === 'Ципове' && !checked) && <Col md="6" className="text-start">
-                  <Label for="zipCount">Брой ципове</Label>
+                {((select === 'Ципове' || select === 'Zips' || select === 'Fermoare') && !checked) && <Col md="6" className="text-start">
+                  <Label for="zipCount">{t('count_of_zippers')}</Label>
                   <FormGroup>
                     <Input
                       type="number"
@@ -205,25 +201,25 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
                       value={zipCount}
                       invalid={hasZipCountError}
                     />
-                    {hasZipCountError && <FormFeedback>Моля, въведете брой ципове.</FormFeedback>}
+                    {hasZipCountError && <FormFeedback>{t('has_count_of_zippers_error')}</FormFeedback>}
                   </FormGroup>
                 </Col>}
-                {select === 'Кръгов обков' && <Row>
+                {(select === 'Кръгов обков' || select === 'Round fittings' || select === 'Garnituri rotunde') && <Row>
                   <Col md="6" className="text-start">
-                    <Label for="zipCount">Брой колани</Label>
+                    <Label for="knobCount">{t('count_of_knobs')}</Label>
                     <FormGroup>
                       <Input
                         type="number"
                         onChange={e => setSelect({ [e.target.name]: e.target.value })}
-                        name="zipCount"
+                        name="knobCount"
                         value={knobCount}
                         invalid={hasKnobCountError}
                       />
-                      {hasKnobCountError && <FormFeedback>Моля, въведете брой колани.</FormFeedback>}
+                      {hasKnobCountError && <FormFeedback>{t('has_count_of_knobs_error')}</FormFeedback>}
                     </FormGroup>
                   </Col>
                   <Col md="6" className="text-start">
-                    <Label for="zipCount">Брой ципове</Label>
+                    <Label for="zipCount">{t('count_of_zippers')}</Label>
                     <FormGroup>
                       <Input
                         type="number"
@@ -232,7 +228,7 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
                         value={zipCount}
                         invalid={hasZipCountError}
                       />
-                      {hasZipCountError && <FormFeedback>Моля, въведете брой ципове.</FormFeedback>}
+                      {hasZipCountError && <FormFeedback>{t('has_count_of_zippers_error')}</FormFeedback>}
                     </FormGroup>
                   </Col>
                 </Row>}
@@ -245,7 +241,7 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
                       name="checkbox"
                       type="checkbox"
                     />
-                    <Label check onClick={e => setChecked(!checked)} for="checkbox">Завесата има врата</Label>
+                    <Label check onClick={e => setChecked(!checked)} for="checkbox">{t('curtain_have_door')}</Label>
                   </FormGroup>
                 </Col>
               </Row>
@@ -255,7 +251,7 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
                     <Input
                       type="text"
                       className="descripiton-field"
-                      placeholder="Допълнително описание"
+                      placeholder={`${t('additional_description')}`}
                       onChange={e => setDescription(e.target.value)}
                       name="description"
                       value={description}
@@ -266,31 +262,31 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
               <Row className="mt-2">
                 <Col>
                   {!clicked ?
-                    <PDFDownloadLink document={<Invoice invoice={invoice} />} fileName="PokrivalaOffer.pdf" className="text-decoration-none">
+                    <PDFDownloadLink document={<Offer invoice={invoice} />} fileName={t('fileName')} className="text-decoration-none">
                       {({ blob, url, loading, error }) => {
                         setSingleFile(btoa(blob));
                         return loading ? 'Loading document...' :
                           <Button block type="submit" className="bc-blue d-flex mt-3">
-                            <span className="fw-bold mx-auto text-transform">Поръчай!</span>
+                            <span className="fw-bold mx-auto text-transform">{t('order_button')}</span>
                           </Button>
                       }}
                     </PDFDownloadLink>
                     :
                     <div className="d-flex align-items-center justify-content-between">
-                      <PDFDownloadLink document={<Invoice invoice={invoice} />} fileName="PokrivalaOffer.pdf" className="text-decoration-none">
+                      <PDFDownloadLink document={<Offer invoice={invoice} />} fileName={t('fileName')} className="text-decoration-none">
                         {({ blob, url, loading, error }) =>
                           loading ? 'Loading document...' :
                             <Button type="button" outline block href={url} target="_blank">
-                              <span className="fw-bold mx-auto text-transform">Разпечатай оферта</span>
+                              <span className="fw-bold mx-auto text-transform">{t('print_button')}</span>
                             </Button>
                         }
                       </PDFDownloadLink>
                       <Button
                         type="button"
                         className="bc-blue w-65"
-                        onClick={() => { generatePdfDocument('PokrivalaOffer.pdf', <Invoice invoice={invoice} />); }}
+                        onClick={() => { generatePdfDocument(`${t('fileName')}`, <Offer invoice={invoice} />); }}
                       >
-                        <span className="fw-bold text-transform">Свали оферта</span>
+                        <span className="fw-bold text-transform">{t('download_button')}</span>
                       </Button>
                     </div>
                   }
@@ -300,7 +296,7 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
           </Form>
         </Col>
       </Row>
-      <Hr isMobile={isMobile} text="Ветроупорни завеси" />
+      <Hr isMobile={isMobile} text={`${t('windproof_curtains_link')}`} />
       <Gallery images={windproofCurtains} isMobile={isMobile} />
     </div>
   }</>

@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
 const creds = require('./config/db.config.js');
-const { googleSecretApiKey } = require('./configApi.js');
+const { googleSecretApiKey } = require('./config/configApi');
 
 dotenv.config();
 
@@ -17,8 +17,8 @@ const pool = mysql.createPool({
   database: creds.DB
 }).promise();
 
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
+var bcrypt = require('bcrypt');
+var saltRounds = 10;
 
 const app = express();
 
@@ -38,6 +38,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 
 // app.use(cookieParser());
+
 //Routes
 app.post("/register", async (req, res, next) => {
   console.log('req', req.body);
@@ -49,6 +50,9 @@ app.post("/register", async (req, res, next) => {
   };
 
   pool.query('INSERT INTO users SET ?', users, function (error, results, fields) {
+    console.log('error', error);
+    console.log('results', results);
+    console.log('fields', fields);
     if (error) {
       res.send({
         "code": 400,

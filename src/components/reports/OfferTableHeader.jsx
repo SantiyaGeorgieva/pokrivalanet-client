@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const InvoiceTableHeader = () => (
+const OfferTableHeader = () => (
   <View style={styles.container}>
     <Text style={styles.description}>Item Description</Text>
     <Text style={styles.qty}>Qty</Text>
@@ -37,4 +37,4 @@ const InvoiceTableHeader = () => (
   </View>
 );
 
-export default InvoiceTableHeader;
+export default OfferTableHeader;

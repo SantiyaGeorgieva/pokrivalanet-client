@@ -93,51 +93,51 @@ import KonstrukciyaBrezent from './images/pokrivala_za_kamioni/16841502633403332
 export const links = [
   {
     to: '/',
-    name: 'Начало'
+    name: 'home_link'
   },
   {
     to: '/truck-covers',
-    name: 'Покривала за камиони'
+    name: 'truck_cover_link'
   },
   {
     to: '/windproof-curtains',
-    name: 'Ветроупорни завеси'
+    name: 'windproof_curtains_link'
   },
   {
     to: '/awnings-and-shades',
-    name: 'Тенти и сенници'
+    name: 'awnings_and_shades_link'
   },
   {
     to: '/covers-for-fishponds-and-lagoons',
-    name: 'Покривала за рибарници и лагуни'
+    name: 'covers_for_fishponds_and_lagoons_link'
   },
   {
     to: '/curtains-for-cow-farms',
-    name: 'Завеси за кравеферми'
+    name: 'curtains_for_cow_farms_link'
   },
   {
     to: '/industrial-products',
-    name: 'Индустриални  изделия'
+    name: 'industrial_products_link'
   },
   {
     to: '/prefabricated-tents',
-    name: 'Сглобяеми шатри'
+    name: 'prefabricated_tents_link'
   },
   {
-    to: '/large-bedspreads',
-    name: 'Големи покривала'
+    to: '/large-covers',
+    name: 'large_covers_link'
   },
   {
     to: '/linings-and-covers',
-    name: 'Облицовки и покривала'
+    name: 'linings_and_covers_link'
   },
   {
     to: '/cover-for-wagons',
-    name: 'Покривала за вагони'
+    name: 'cover_for_wagons_link'
   },
   {
     to: '/contact',
-    name: 'Контакти'
+    name: 'contacts_link'
   },
 ];
 
@@ -279,7 +279,7 @@ export const prefabricatedТents = [
   { image: Image51 }
 ];
 
-export const largeBedspreadsImages = [
+export const largeCoversImages = [
   { image: Image52 },
   { image: Image53 },
   { image: Image54 },
@@ -304,85 +304,85 @@ export const cardslItems = [
     altText: 'Slide 1',
     key: 1,
     className: 'column-image',
-    title: 'Таван на щора за полуремарке',
-    subtitle: '680,00 лв. без ДДС'
+    title: 'card_text1',
+    subtitle: 'card_text_subtitle1'
   },
   {
     src: ShtoraPoluremarke,
     altText: 'Slide 2',
     key: 2,
     className: 'column-image',
-    title: 'Страници на щора за полуремарке - комплект от две',
-    subtitle: '1 400,00 лв. без ДДС'
+    title: 'card_text2',
+    subtitle: 'card_text_subtitle2'
   },
   {
     src: ShtoraPoluremarkeKapaci,
     altText: 'Slide 3',
     key: 3,
     className: 'column-image',
-    title: 'Страници на щора за полуремарке с капаци - комплект от две',
-    subtitle: '1 500,00 лв. без ДДС'
+    title: 'card_text3',
+    subtitle: 'card_text_subtitle3'
   },
   {
     src: PokrivaloZyrnovot,
     altText: 'Slide 6',
     key: 4,
     className: 'column-image',
-    title: 'Покривало за зърновоз или гондола',
-    subtitle: 'Изчислете цена'
+    title: 'card_text4',
+    subtitle: 'card_text_subtitle5'
   },
   {
     src: TristrannaShtora,
     altText: 'Slide 6',
     key: 5,
     className: 'column-image',
-    title: 'Тристранна щора за полуремерке',
-    subtitle: '2168,00 лв. без ДДС'
+    title: 'card_text5',
+    subtitle: 'card_text_subtitle4'
   },
   {
     src: ObiknovenoPokrivalo,
     altText: 'Slide 5',
     key: 6,
     className: 'column-image',
-    title: 'Обикновено покривало за камион или ремарке',
-    subtitle: 'Изчислете цена'
+    title: 'card_text6',
+    subtitle: 'card_text_subtitle5'
   },
   {
     src: StraniciShtoraSkapaciKomplektOtDve,
     altText: 'Slide 6',
     key: 7,
     className: 'column-image',
-    title: 'Страници на щора с капаци комплект от две',
-    subtitle: 'Изчислете цена',
+    title: 'card_text7',
+    subtitle: 'card_text_subtitle5',
   },
   {
     src: ShtoraBezKapaciKomlektOtDve,
     altText: 'Slide 6',
     key: 8,
     className: 'column-image',
-    title: 'Страници на щора без капаци комплект от две',
-    subtitle: 'Изчислете цена'
+    title: 'card_text8',
+    subtitle: 'card_text_subtitle5'
   },
   {
     src: ReklamniNadpisi,
     altText: 'Slide 6',
     key: 9,
     className: 'column-image',
-    title: 'Поставяне на рекламни надписи'
+    title: 'card_text9'
   },
   {
     src: RemontPokrivala,
     altText: 'Slide 4',
     key: 10,
     className: 'column-image',
-    title: 'Ремонт на покривала'
+    title: 'card_text10'
   },
   {
     src: KonstrukciyaBrezent,
     altText: 'Slide 6',
     key: 11,
     className: 'column-image',
-    title: 'Конструкция за брезент',
+    title: 'card_text11',
     subtitle: ''
   }
 ];
@@ -391,49 +391,49 @@ export const windproofCurtainsOptions = [
   {
     id: 1,
     image: ZavesaKopcheta,
-    text: 'Пластмасови въртящи копчета',
+    text: 'plastic_knobs',
     checked: false
   },
   {
     id: 2,
     image: ZavesaElipsa,
-    text: 'Кръгов обков',
+    text: 'fitting',
     checked: false
   },
   {
     id: 3,
     image: ZavesaCipove,
-    text: 'Ципове',
+    text: 'zips',
     checked: false
   },
   {
     id: 4,
     image: ZavesaBezObkov,
-    text: 'Без обков (стационарен)',
+    text: 'without_fitting',
     checked: false
   },
   {
     id: 5,
     image: ZavesaKopchetaSvrata,
-    text: 'Пластмасови въртящи копчета',
+    text: 'plastic_knobs',
     checked: true
   },
   {
     id: 6,
     image: ZavesaElipsaSvrata,
-    text: 'Кръгов обков',
+    text: 'fitting',
     checked: true
   },
   {
     id: 7,
     image: ZavesaCipoveSvrata,
-    text: 'Ципове',
+    text: 'zips',
     checked: true
   },
   {
     id: 8,
     image: ZavesaBezObkovSvrata,
-    text: 'Без обков (стационарен)',
+    text: 'without_fitting',
     checked: true
   }
 ];

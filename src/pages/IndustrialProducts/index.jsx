@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import Gallery from "../../components/Gallery";
 import Hr from "../../components/Hr";
 import PageTitle from "../../components/PageTitle";
@@ -6,23 +7,21 @@ import { industrialProducts } from "../../constants";
 import './industrialProducts.scss';
 
 function IndustrialProducts({ hideMain, isMobile }) {
-  PageTitle('Информация за Индустриални Изделия | Покривала НЕТ');
+  const { t } = useTranslation();
+  PageTitle(t('industrial_products_page_title'));
 
   return <>{!hideMain &&
     <div className={`container ${isMobile ? '' : 'my-4'}`}>
       {isMobile ? <p className="text-wrapper mb-1">
-        За да Ви предоставим ценова оферта за този продукт ни е необходима повече информация.
-        Моля, свържете се с нас за да ни предоставите такава.
-        Можете да ни изпратите скица с размери или схема по имейл или вайбър.
+        {t('main_text6')}
       </p>
         : <>
-          <p className="text-start mb-0">За да Ви предоставим ценова оферта за този продукт ни е необходима повече информация.</p>
-          <p className="text-start mb-0">Моля, свържете се с нас за да ни предоставите такава.</p>
-          <p className="text-start">Можете да ни изпратите скица с размери или схема по имейл или вайбър.</p>
+          <p className="text-start mb-0">{t('main_text7')}</p>
+          <p className="text-start">{t('main_text8')}</p>
         </>
       }
       <Gallery images={industrialProducts} isMobile={isMobile} />
-      <Hr isMobile={isMobile} text="индустриални изделия" />
+      <Hr isMobile={isMobile} text={`${t('industrial_products_link')}`} />
     </div>
   }</>
 

@@ -19,8 +19,7 @@ import Logo from '../../images/logo.png';
 import { links } from "../../constants";
 import './header.scss';
 
-function Header({ isMobile, isOpen, toggleClass }) {
-  const [selectedItem, setSelectedItem] = useState(localStorage.getItem("i18nextLng"));
+function Header({ isMobile, isOpen, toggleClass, selectedItem, setSelectedItem }) {
   const { t } = useTranslation();
   // console.log('isOpen', isOpen);
 

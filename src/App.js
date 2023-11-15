@@ -30,6 +30,7 @@ const App = () => {
   const [hideMain, setHideMain] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(localStorage.getItem("i18nextLng"));
   const { t } = useTranslation();
 
   const toggleClass = (e) => {
@@ -47,14 +48,14 @@ const App = () => {
     <div className="app">
       <Suspense fallback={null}>
         <header className="top-navbar">
-          <Header isMobile={isMobile} isOpen={isOpen} toggleClass={toggleClass} />
+          <Header isMobile={isMobile} isOpen={isOpen} toggleClass={toggleClass} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
         </header>
         <main role="main">
           <Routes>
             <Route exact path="/" element={<Home hideMain={hideMain} isMobile={isMobile} />} />
             <Route exact path="/truck-covers" element={<TruckCovers isMobile={isMobile} hideMain={hideMain} />} preventScrollReset={true} />
             <Route exact path="/truck-covers/calculator" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} preventScrollReset={true} />
-            <Route exact path="/windproof-curtains" element={<WindproofCurtains isMobile={isMobile} hideMain={hideMain} />} preventScrollReset={true} />
+            <Route exact path="/windproof-curtains" element={<WindproofCurtains isMobile={isMobile} hideMain={hideMain} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />} preventScrollReset={true} />
             <Route exact path="/awnings-and-shades" element={<AwningsAndShades isMobile={isMobile} hideMain={hideMain} />} preventScrollReset={true} />
             <Route exact path="/covers-for-fishponds-and-lagoons" element={<CoversForFishpondsAndLagoons isMobile={isMobile} hideMain={hideMain} />} />
             <Route exact path="/curtains-for-cow-farms" element={<CurtainsCowFarms isMobile={isMobile} hideMain={hideMain} preventScrollReset={true} />} />

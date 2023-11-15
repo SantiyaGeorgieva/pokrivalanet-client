@@ -215,7 +215,7 @@ function Contact({ hideMain, isMobile }) {
                   {loading ? t('send_button_text2') : t('send_button_text1')}
                 </Button>
               </FormGroup>
-              {visible ? <Message isVisible={visible} onDismiss={onDismiss} text={`${t('names')}`} /> : <></>}
+              {visible ? <Message isVisible={visible} onDismiss={onDismiss} text={`${t('thank_you_message')}`} /> : <></>}
             </Form>
           </Col>
         </Row>

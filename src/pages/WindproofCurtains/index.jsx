@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { saveAs } from 'file-saver';
 import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
 import { Row, Col, Form, FormFeedback, FormGroup, Input, Label, Button } from "reactstrap";
@@ -12,7 +12,7 @@ import { windproofCurtains, windproofCurtainsOptions } from "../../constants";
 import './windproofCurtains.scss';
 import Offer from "../../components/reports/Offer.jsx";
 
-const WindproofCurtains = memo(({ hideMain, isMobile }) => {
+const WindproofCurtains = ({ hideMain, isMobile, selectedItem, setSelectedItem }) => {
   const { t } = useTranslation();
   PageTitle(t('windproof_curtains_page_title'));
 
@@ -34,6 +34,10 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
 
   const [messageOpen, setMessageOpen] = useState(false);
 
+  const selectRef = useRef(null);
+
+  console.log(localStorage.getItem("i18nextLng"));
+
   useEffect(() => {
     console.log(hasWidthError, hasHeightError, values.length);
 
@@ -48,6 +52,13 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
       setClicked(false);
     }
   }, [hasWidthError, hasHeightError, hasZipCountError, hasKnobCountError, values])
+
+  // useEffect(() => {
+  //   console.log('select', select);
+  //   if (localStorage.getItem("i18nextLng") === 'bg') {
+  //     setSelect("Плас")
+  //   }
+  // }, [localStorage.getItem("i18nextLng")]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -118,6 +129,21 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
     saveAs(blob, fileName);
   };
 
+  useEffect(() => {
+    // console.log('test', windproofCurtainsOptions.filter(option => (t(`${option.text}`))));
+    // console.log('select', select);
+    // console.log('selectRef', selectRef.current.value);
+  }, [localStorage.getItem("i18nextLng")])
+
+  const handleChange = (e) => {
+    console.log('e', e.target.value);
+    if (localStorage.getItem("i18nextLng")) {
+      setSelect(e.target.value);
+    } else {
+      setSelect(select);
+    }
+  }
+
   return <>{!hideMain &&
     <div className={`container ${isMobile ? '' : 'my-4'}`}>
       {isMobile ? <p className="text-wrapper mb-3">
@@ -125,16 +151,17 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
       </p>
         : <p className="text-start mb-5">{t('main_text2')}</p>
       }
-      <Row>
+      {/* <Row>
         <Col md="6" className={`${!isMobile ? 'text-start' : ''}`}>
-          {!checked ? windproofCurtainsOptions.filter(option => t(option.text) === select && !option.checked === !checked).map(option => {
+          {!checked ? windproofCurtainsOptions.filter(option => (t(`${option.text}`) === select) && !option.checked === !checked).map(option => {
             return <img
               key={option.id}
               className={isMobile ? 'w-100' : 'w-75'}
               src={option.image}
             />
           })
-            : windproofCurtainsOptions.filter(option => t(option.text) === select && option.checked === checked).map(option => {
+            // console.log(t(`${option.text}`) === select && !option.checked === !checked),
+            : windproofCurtainsOptions.filter(option => (t(`${option.text}`) === select && !option.checked === !checked)).map(option => {
               return <img
                 key={option.id}
                 className={isMobile ? 'w-100' : 'w-75'}
@@ -183,6 +210,7 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
                         name="select"
                         type="select"
                         defaultValue={select}
+                        ref={selectRef}
                         onChange={e => setSelect(e.target.value)}>
                         {windproofCurtainsOptions.map(option => {
                           return !option.checked && <option key={option.id}>{t(`${option.text}`)}</option>
@@ -262,7 +290,7 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
               <Row className="mt-2">
                 <Col>
                   {!clicked ?
-                    <PDFDownloadLink document={<Offer invoice={invoice} />} fileName={t('fileName')} className="text-decoration-none">
+                    <PDFDownloadLink document={<Offer invoice={invoice} />} fileName={t('file_name')} className="text-decoration-none">
                       {({ blob, url, loading, error }) => {
                         setSingleFile(btoa(blob));
                         return loading ? 'Loading document...' :
@@ -273,7 +301,7 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
                     </PDFDownloadLink>
                     :
                     <div className="d-flex align-items-center justify-content-between">
-                      <PDFDownloadLink document={<Offer invoice={invoice} />} fileName={t('fileName')} className="text-decoration-none">
+                      <PDFDownloadLink document={<Offer invoice={invoice} />} fileName={t('file_name')} className="text-decoration-none">
                         {({ blob, url, loading, error }) =>
                           loading ? 'Loading document...' :
                             <Button type="button" outline block href={url} target="_blank">
@@ -284,7 +312,7 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
                       <Button
                         type="button"
                         className="bc-blue w-65"
-                        onClick={() => { generatePdfDocument(`${t('fileName')}`, <Offer invoice={invoice} />); }}
+                        onClick={() => { generatePdfDocument(`${t('file_name')}`, <Offer invoice={invoice} />); }}
                       >
                         <span className="fw-bold text-transform">{t('download_button')}</span>
                       </Button>
@@ -295,11 +323,11 @@ const WindproofCurtains = memo(({ hideMain, isMobile }) => {
             </div>
           </Form>
         </Col>
-      </Row>
-      <Hr isMobile={isMobile} text={`${t('windproof_curtains_link')}`} />
+      </Row> */}
       <Gallery images={windproofCurtains} isMobile={isMobile} />
+      <Hr isMobile={isMobile} text={`${t('windproof_curtains_link')}`} />
     </div>
   }</>
-})
+}
 
 export default WindproofCurtains;

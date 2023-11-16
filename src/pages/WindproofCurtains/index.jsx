@@ -36,19 +36,19 @@ const WindproofCurtains = ({ hideMain, isMobile, selectedItem, setSelectedItem }
 
   const selectRef = useRef(null);
 
-  console.log(localStorage.getItem("i18nextLng"));
+  // console.log(localStorage.getItem("i18nextLng"));
 
   useEffect(() => {
-    console.log(hasWidthError, hasHeightError, values.length);
+    // console.log(hasWidthError, hasHeightError, values.length);
 
     if (!hasWidthError && !hasHeightError && values.length > 0) {
-      console.log('here');
+      // console.log('here');
       setClicked(true);
       // const fileReader = new FileReader();
       // const a = fileReader.readAsDataURL(<Invoice invoice={invoice} />).toBlob();
       fetchOffer('PokrivalaOffer.pdf', selectedFile);
     } else {
-      console.log('here2');
+      // console.log('here2');
       setClicked(false);
     }
   }, [hasWidthError, hasHeightError, hasZipCountError, hasKnobCountError, values])
@@ -130,13 +130,17 @@ const WindproofCurtains = ({ hideMain, isMobile, selectedItem, setSelectedItem }
   };
 
   useEffect(() => {
-    // console.log('test', windproofCurtainsOptions.filter(option => (t(`${option.text}`))));
+    // console.log('test', windproofCurtainsOptions.map(option => (t(`${option.text}`))));x 
+    const test = windproofCurtainsOptions.map(option => (t(`${option.text}`)));
+    // console.log('test', test);
     // console.log('select', select);
-    // console.log('selectRef', selectRef.current.value);
+    // if (test !== select) {
+
+    // }
   }, [localStorage.getItem("i18nextLng")])
 
   const handleChange = (e) => {
-    console.log('e', e.target.value);
+    // console.log('e', e.target.value);
     if (localStorage.getItem("i18nextLng")) {
       setSelect(e.target.value);
     } else {
@@ -151,7 +155,7 @@ const WindproofCurtains = ({ hideMain, isMobile, selectedItem, setSelectedItem }
       </p>
         : <p className="text-start mb-5">{t('main_text2')}</p>
       }
-      {/* <Row>
+      {/* <Row className="mb-5">
         <Col md="6" className={`${!isMobile ? 'text-start' : ''}`}>
           {!checked ? windproofCurtainsOptions.filter(option => (t(`${option.text}`) === select) && !option.checked === !checked).map(option => {
             return <img

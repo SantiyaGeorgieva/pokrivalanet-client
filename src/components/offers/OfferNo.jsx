@@ -25,14 +25,14 @@ const styles = StyleSheet.create({
   }
 });
 
-const OfferNo = ({ invoice, offerNoTitle, offerDateTitle }) => {
+const OfferNo = ({ offerNoTitle, offerDateTitle }) => {
   const { t } = useTranslation();
 
   return (
     <Fragment>
       <View style={styles.invoiceNoContainer}>
         <Text style={styles.label}>{`${t(offerNoTitle)}`}</Text>
-        <Text style={styles.invoiceDate}>{invoice?.invoice_no}</Text>
+        {/* <Text style={styles.invoiceDate}>{invoice?.invoice_no}</Text> */}
       </View>
       <View style={styles.invoiceDateContainer}>
         <Text style={styles.label}>{`${t(offerDateTitle)}`}</Text>

@@ -7,6 +7,7 @@ const cors = require('cors');
 const nodemailer = require('nodemailer');
 const path = require('path');
 const fs = require('fs');
+const request = require('request');
 const creds = require('./config/db.config.js');
 const { googleSecretApiKey } = require('./config/configApi');
 
@@ -167,9 +168,49 @@ app.post("/contact", async (req, res, next) => {
   });
 });
 
+app.post("/priceOffer", async (req, res, next) => {
+  const { width, height, thick, edge } = req.body;
+  let priceThick = 0;
+  let finalPrice = 0;
+  const w = Number(width);
+  const h = Number(height);
+  const e = (Number(edge) * 2) / 100;
+
+  // console.log('req.body', req.body);
+
+  if (+thick === 0.8) {
+    priceThick = 24;
+  } else {
+    priceThick = 20;
+  }
+
+  finalPrice = ((w + e) * (h + e));
+  finalPrice = (finalPrice.toFixed(2) * priceThick).toFixed(2);
+  console.log('finalPrice', finalPrice);
+
+  res.status(200).json({
+    'status': 'success',
+    'result': finalPrice
+  });
+});
+
 app.post("/offer", async (req, res, next) => {
   const { document } = req.body;
   console.log('req.body', req.body);
+  var PassThrough = require('stream').PassThrough;
+
+  var nameOfAttachment = 'PokrivalaNET_offer.pdf';
+  var imageUrlStream = new PassThrough();
+  request
+    .get({
+      proxy: 'http://localhost:8080', // if needed
+      // url: document
+    })
+    .on('error', function (err) {
+      // I should consider adding additional logic for handling errors here
+      console.log(err);
+    })
+    .pipe(imageUrlStream);
 
   let transporter = nodemailer.createTransport({
     host: creds.HOST_EMAIL,
@@ -183,19 +224,23 @@ app.post("/offer", async (req, res, next) => {
   // var filePath = path.join(__dirname, document.name);
 
   const mailOptions = {
-    from: 'Клиент за оферта',
+    from: 'test@test.com',
     subject: 'Оферта',
     to: 'sales@pokrivala.net',
     html: `<h1>Оферта от клиент</h1>`,
     attachments: [
       {
-        filename: document.name,
-        content: fs.createReadStream(`${document}`)
+        filename: nameOfAttachment,
+        content: imageUrlStream
+        // filename: "test.pdf",
+        // content: `data:text/plain;base64,${document}`,
+        // content: fs.createReadStream(`${document}`)
         // streamSource: fs.createReadStream(filePath)
         // path: path.join(__dirname, `../output/PokrivalaOffer.pdf`),
         // href: document,
-        // contentType: "application/pdf"
         // content: `${document}`,
+        // contentType: "application/pdf",
+        // encoding: 'utf-8',
         // encoding: 'base64',
       }
     ]

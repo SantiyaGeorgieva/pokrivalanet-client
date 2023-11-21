@@ -7,10 +7,9 @@ import Roboto from '../../fonts/roboto/Roboto-Regular.ttf';
 Font.register({ family: 'Roboto', fonts: [{ src: Roboto, fontWeight: 'bold' }] });
 
 const styles = StyleSheet.create({
-
   titleContainer: {
     flexDirection: 'row',
-    marginTop: 12
+    marginTop: 25
   },
   reportTitle: {
     fontFamily: 'Roboto',

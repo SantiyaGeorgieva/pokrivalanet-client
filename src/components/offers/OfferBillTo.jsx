@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const OfferBillTo = ({ invoice }) => {
+const OfferBillTo = () => {
   const { t } = useTranslation();
 
   return (

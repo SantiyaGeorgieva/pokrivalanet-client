@@ -4,9 +4,9 @@ import { useTranslation } from "react-i18next";
 import OfferTitle from './OfferTitle';
 import OfferBillTo from './OfferBillTo';
 import OfferNo from './OfferNo';
-import OfferItemsTable from './OfferItemsTable';
 import OfferThankYouMsg from './OfferThankYouMsg';
 import PageTitle from '../PageTitle';
+import OfferTable from './OfferTable';
 
 const styles = StyleSheet.create({
   page: {
@@ -23,17 +23,17 @@ const styles = StyleSheet.create({
   }
 });
 
-const Offer = ({ invoice }) => {
+const Offer = ({ items, totalPrice }) => {
   const { t } = useTranslation();
   PageTitle(t('windproof_curtains_page_title'));
 
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <OfferBillTo invoice={invoice} />
+        <OfferBillTo />
         <OfferTitle title="title_оffer" />
-        <OfferNo offerNoTitle="title_offer_no" offerDateTitle="offer_date_title" invoice={invoice} />
-        <OfferItemsTable invoice={invoice} />
+        <OfferNo offerNoTitle="title_offer_no" offerDateTitle="offer_date_title" />
+        <OfferTable items={items} totalPrice={totalPrice} message="pdf_thankyou_msg" />
         <OfferThankYouMsg message="pdf_thankyou_msg" />
       </Page>
     </Document>

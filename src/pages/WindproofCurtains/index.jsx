@@ -6,8 +6,7 @@ import { useTranslation } from "react-i18next";
 import Gallery from "../../components/Gallery";
 import Hr from "../../components/Hr";
 import PageTitle from "../../components/PageTitle";
-import Offer from "../../components/offers/Offer.jsx";
-import invoice from "../../data/invoice.js";
+import Offer from "../../components/offers/Offer";
 import { thickCount, windproofCurtains, windproofCurtainsOptions } from "../../constants";
 
 import './windproofCurtains.scss';
@@ -29,6 +28,7 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
 
   const [edge, setEdge] = useState('');
   const [values, setValues] = useState([]);
+  const [items, setItems] = useState([]);
   const [hasWidthError, setWidthError] = useState(false);
   const [hasHeightError, setHeightError] = useState(false);
   const [hasEdgeError, setEdgeError] = useState(false);
@@ -39,22 +39,44 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
 
   const [messageOpen, setMessageOpen] = useState(false);
 
-  useEffect(() => {
-    // console.log(hasWidthError, hasHeightError, values.length);
+  const [totalPrice, setTotalPrice] = useState('');
 
-    if (!hasWidthError && !hasHeightError && values.length > 0) {
+  useEffect(() => {
+    if (!hasWidthError && !hasHeightError && !hasEdgeError && values.length > 0) {
       // console.log('here');
       setClicked(true);
-      // const fileReader = new FileReader();
-      // const a = fileReader.readAsDataURL(<Invoice invoice={invoice} />).toBlob();
-      // fetchOffer(t('file_name'), selectedFile);
-      // createFileForEmail();
-      handlePdf();
+      fetchPriceOffer();
+      // generatePdfDocument(`${t('file_name')}`, <Offer items={items} totalPrice={totalPrice} />);
+      // handlePdf();
+      fetchOffer(selectedFile);
     } else {
       // console.log('here2');
       setClicked(false);
     }
   }, [hasWidthError, hasHeightError, hasEdgeError, values])
+
+  useEffect(() => {
+    if (values.length > 0) {
+      values.map((value, idx) => {
+        setItems([{
+          'width_text': value.width,
+          'height_text': value.height,
+          'depth_text': value.thick,
+          'edges': value.edge,
+          'hardware_text': radioCheck,
+          'additional_description': value.description,
+        }
+        ], ...items);
+      })
+    }
+
+    zipsCheck && setItems(prevState => [...prevState, { zips: "+" }]);
+    lowerApronCheck && setItems(prevState => [...prevState, { lower_apron: "+" }]);
+    pipePocketCheck && setItems(prevState => [...prevState, { pipe_pocket: "+" }]);
+    knobsCheck && setItems(prevState => [...prevState, { knobs: "+" }]);
+    checked && setItems(prevState => [...prevState, { curtain_have_door: "+" }]);
+
+  }, [values])
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -82,8 +104,8 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
 
   const getPdfBlob = async () => {
     try {
-      const blobPdf = await pdf(<Offer invoice={invoice} />).toBlob();
-  
+      const blobPdf = await pdf(<Offer items={items} totalPrice={totalPrice} />).toBlob();
+
       return blobPdf;
     } catch (err) {
       console.log(err);
@@ -91,9 +113,10 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
   };
 
   const handlePdf = async () => {
-    const pdf = await getPdfBlob();
+    // const pdf = await getPdfBlob();
+    console.log('selectedFile', selectedFile)
     const fileName = t('file_name');
-    const file = new File([pdf], fileName, {
+    const file = new File([selectedFile], fileName, {
       lastModified: (new Date()).getTime()
     }); /*create file*/
 
@@ -103,16 +126,36 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
     }
   };
 
+  function fetchPriceOffer() {
+    if (values) {
+      const response = fetch(`http://localhost:8080/priceOffer`, {
+        method: "POST",
+        body: JSON.stringify(values[0]),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      }).then(
+        (response) => (response.json())
+      ).then((response) => {
+        if (response.status === 'success') {
+          setTotalPrice(response.result);
+        } else if (response.status === 'fail') {
+          console.log("Message failed to send.", response);
+        }
+      });
+
+      return response;
+    }
+  }
+
   function fetchOffer(document) {
-    // console.log('document', document);
-    console.log('values', values);
+    console.log('document', document);
     if (document) {
       console.log('document', document);
       const response = fetch(`http://localhost:8080/offer`, {
         method: "POST",
-        body: document,
-        // body: JSON.stringify(document),
-        // body: JSON.stringify(values[0]),
+        body: JSON.stringify({ document }),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -130,14 +173,16 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
           console.log("Message failed to send.", response);
         }
       });
-  
+
       return response;
     }
   }
 
   const generatePdfDocument = async (fileName, pdfDocumentComponent) => {
     const blob = await pdf(pdfDocumentComponent).toBlob();
+    setSingleFile(blob);
     saveAs(blob, fileName);
+    handlePdf();
   };
 
   return <>{!hideMain &&
@@ -213,6 +258,7 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
               </Row>
               <Row>
                 <Col md="12" className="text-start">
+                  <Label for="edge" className="fw-bold">{t('hardware_text')}</Label>
                   <div className="flex">
                     <input type="radio" name="radio" id="without_fitting" defaultChecked />
                     <Label check className="mb-0" onClick={e => setRadioCheck('without_fitting')} for="without_fitting">
@@ -319,12 +365,18 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
                   </FormGroup>
                 </Col>
               </Row>
+              <Row>
+                <Col md="12" className="text-start">
+                  {t('total_price_text')} {totalPrice && <span className="fw-bold">{`${totalPrice} BGN`}</span>}
+                </Col>
+              </Row>
               <Row className="mt-2">
                 <Col>
                   {!clicked ?
-                    <PDFDownloadLink document={<Offer invoice={invoice} />} fileName={t('file_name')} className="text-decoration-none">
+                    <PDFDownloadLink document={<Offer items={items} totalPrice={totalPrice} />} fileName={t('file_name')} className="text-decoration-none">
                       {({ blob, url, loading, error }) => {
-                        setSingleFile(btoa(blob));
+                        setSingleFile(url);
+                        // setSingleFile(btoa(blob));
                         return loading ? 'Loading document...' :
                           <Button block type="submit" className="bc-blue d-flex mt-3">
                             <span className="fw-bold mx-auto text-transform">{t('order_button')}</span>
@@ -333,7 +385,7 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
                     </PDFDownloadLink>
                     :
                     <div className="d-flex align-items-center justify-content-between">
-                      <PDFDownloadLink document={<Offer invoice={invoice} />} fileName={t('file_name')} className="text-decoration-none">
+                      <PDFDownloadLink document={<Offer items={items} totalPrice={totalPrice} />} fileName={t('file_name')} className="text-decoration-none">
                         {({ blob, url, loading, error }) =>
                           loading ? 'Loading document...' :
                             <Button type="button" outline block href={url} target="_blank">
@@ -344,7 +396,7 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
                       <Button
                         type="button"
                         className="bc-blue w-65"
-                        onClick={() => { generatePdfDocument(`${t('file_name')}`, <Offer invoice={invoice} />); }}
+                        onClick={() => { generatePdfDocument(`${t('file_name')}`, <Offer items={items} totalPrice={totalPrice} />); }}
                       >
                         <span className="fw-bold text-transform">{t('download_button')}</span>
                       </Button>

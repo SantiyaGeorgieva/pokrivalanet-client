@@ -77,12 +77,14 @@ import ZavesaKopchetaSvrata from './images/zavesa-kopcheta-s-vrata.jpg';
 import ZavesaElipsaSvrata from './images/zavesa-krygyl-obkov-vrata.jpg';
 import ZavesaCipoveSvrata from './images/zavesa-cipove-s-vrata.jpg';
 import ZavesaBezObkovSvrata from './images/zavesa-bez-obkov-sys-vrata.jpg';
+import KaishkaSpObrazni from './images/kaishka-p-obrazni.jpg';
 
 import TavanShtora from './images/pokrivala_za_kamioni/0-02-05-5c9ca7dec67c92e1b5111724e35fb3824346ae81f3029bee7f9c85798e3c773e_1ded37fba3581175.jpg';
 import ShtoraPoluremarke from './images/pokrivala_za_kamioni/0-02-05-72a980e606f6b977e61521ee76e5836f81d36a83396493f11f46563d096c57ea_6f193ca04ae5d076.jpg';
 import ShtoraPoluremarkeKapaci from './images/pokrivala_za_kamioni/0-02-05-f1a207804051d2989ca3c92520cff8774289574c75a2f15c073d6f000e797656_b541c86197e98bdd.jpg';
 import PokrivaloZyrnovot from './images/pokrivala_za_kamioni/18056333_940929649343507_9187667431850749039_o.jpg';
 import TristrannaShtora from './images/pokrivala_za_kamioni/27503173_1152068168229653_1753673864796201805_o.jpg';
+import ObiknovenoPokrivaloZaTresachka from './images/pokrivala_za_kamioni/0-02-05-c00d2d38f96b73a4d598aebcc8fc03c8caa67e928d18435bce155332ddcbf433_812463212183339d.jpg';
 import ObiknovenoPokrivalo from './images/pokrivala_za_kamioni/393711189_802369458558867_2543073741770309246_n.jpg';
 import ShtoraBezKapaciKomlektOtDve from './images/pokrivala_za_kamioni/66785853_1766036520166145_1529046337771798528_n.jpg';
 import StraniciShtoraSkapaciKomplektOtDve from './images/pokrivala_za_kamioni/248156970_4411504175607542_8164656237683932178_n.jpg';
@@ -329,7 +331,7 @@ export const cardslItems = [
     key: 4,
     className: 'column-image',
     title: 'card_text4',
-    subtitle: 'card_text_subtitle5'
+    subtitle: 'card_text_subtitle7'
   },
   {
     src: TristrannaShtora,
@@ -340,7 +342,7 @@ export const cardslItems = [
     subtitle: 'card_text_subtitle4'
   },
   {
-    src: ObiknovenoPokrivalo,
+    src: ObiknovenoPokrivaloZaTresachka,
     altText: 'Slide 5',
     key: 6,
     className: 'column-image',
@@ -353,7 +355,7 @@ export const cardslItems = [
     key: 7,
     className: 'column-image',
     title: 'card_text7',
-    subtitle: 'card_text_subtitle5',
+    subtitle: 'card_text_subtitle7',
   },
   {
     src: ShtoraBezKapaciKomlektOtDve,
@@ -361,7 +363,7 @@ export const cardslItems = [
     key: 8,
     className: 'column-image',
     title: 'card_text8',
-    subtitle: 'card_text_subtitle5'
+    subtitle: 'card_text_subtitle7'
   },
   {
     src: ReklamniNadpisi,
@@ -384,6 +386,14 @@ export const cardslItems = [
     className: 'column-image',
     title: 'card_text11',
     subtitle: ''
+  },
+  {
+    src: ObiknovenoPokrivalo,
+    altText: 'Slide 6',
+    key: 12,
+    className: 'column-image',
+    title: 'card_text12',
+    subtitle: 'card_text_subtitle6'
   }
 ];
 
@@ -397,7 +407,7 @@ export const windproofCurtainsOptions = [
   {
     id: 2,
     image: ZavesaElipsa,
-    text: 'fitting',
+    text: 'metal_knobs',
     checked: false
   },
   {
@@ -414,26 +424,61 @@ export const windproofCurtainsOptions = [
   },
   {
     id: 5,
+    image: ZavesaElipsa,
+    text: 'pockets',
+    checked: false
+  },
+  {
+    id: 6,
+    image: KaishkaSpObrazni,
+    text: 'strap_plates',
+    checked: false
+  },
+  {
+    id: 7,
     image: ZavesaKopchetaSvrata,
     text: 'plastic_knobs',
     checked: true
   },
   {
-    id: 6,
+    id: 8,
     image: ZavesaElipsaSvrata,
-    text: 'fitting',
+    text: 'metal_knobs',
     checked: true
   },
   {
-    id: 7,
+    id: 9,
     image: ZavesaCipoveSvrata,
     text: 'zips',
     checked: true
   },
   {
-    id: 8,
+    id: 10,
     image: ZavesaBezObkovSvrata,
     text: 'without_fitting',
     checked: true
+  },
+  {
+    id: 11,
+    image: KaishkaSpObrazni,
+    text: 'strap_plates',
+    checked: true
+  },
+  {
+    id: 12,
+    image: ZavesaElipsaSvrata,
+    text: 'pockets',
+    checked: true
+  }
+];
+
+export const thickCount = [
+  {
+    id: 1,
+    text: '0.8'
+  },
+  {
+    id: 2,
+    text: '0.6',
   }
 ];

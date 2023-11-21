@@ -25,3 +25,30 @@
     }
   }
 }
+
+input[type="radio"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  padding: 5px;
+  background-clip: content-box;
+  border: 2px solid #bbbbbb;
+  background-color: #e7e6e7;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+/* appearance for checked radiobutton */
+input[type="radio"]:checked {
+  background-color: rgb(64, 122, 199);
+}
+
+/* optional styles, I'm using this for centering radiobuttons */
+.flex {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}

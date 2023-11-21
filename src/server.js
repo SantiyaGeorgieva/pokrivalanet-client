@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
+const path = require('path');
+const fs = require('fs');
 const creds = require('./config/db.config.js');
 const { googleSecretApiKey } = require('./config/configApi');
 
@@ -150,7 +152,7 @@ app.post("/contact", async (req, res, next) => {
       console.log(err);
       res.json('Opps error occured')
     } else {
-      res.send(200).json('thanks for e-mailing me', result.response);
+      res.send(200).json('Thanks for e-mailing me', result.response);
     }
   });
 
@@ -163,6 +165,60 @@ app.post("/contact", async (req, res, next) => {
       res.status(200).json({ message: "Contact registered sucessfully" });
     }
   });
+});
+
+app.post("/offer", async (req, res, next) => {
+  const { document } = req.body;
+  console.log('req.body', req.body);
+
+  let transporter = nodemailer.createTransport({
+    host: creds.HOST_EMAIL,
+    port: creds.PORT_EMAIL,
+    auth: {
+      user: creds.USER_EMAIL,
+      pass: creds.PASSWORD_EMAIL
+    }
+  });
+
+  // var filePath = path.join(__dirname, document.name);
+
+  const mailOptions = {
+    from: 'Клиент за оферта',
+    subject: 'Оферта',
+    to: 'sales@pokrivala.net',
+    html: `<h1>Оферта от клиент</h1>`,
+    attachments: [
+      {
+        filename: document.name,
+        content: fs.createReadStream(`${document}`)
+        // streamSource: fs.createReadStream(filePath)
+        // path: path.join(__dirname, `../output/PokrivalaOffer.pdf`),
+        // href: document,
+        // contentType: "application/pdf"
+        // content: `${document}`,
+        // encoding: 'base64',
+      }
+    ]
+  }
+
+  transporter.sendMail(mailOptions, (err, result) => {
+    if (err) {
+      console.log(err);
+      res.json('Opps error occured')
+    } else {
+      res.send(200).json('Email sent: ' + result.response);
+    }
+  });
+
+  // pool.query('INSERT INTO contacts SET ?', req.body, function (error, results, fields) {
+  //   pool.release();
+
+  //   if (error) {
+  //     res.status(400).json({ message: error });
+  //   } else {
+  //     res.status(200).json({ message: "Contact registered sucessfully" });
+  //   }
+  // });
 });
 
 app.use((err, req, res, next) => {

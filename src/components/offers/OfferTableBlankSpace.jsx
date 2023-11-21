@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
 });
 
 const OfferTableBlankSpace = ({ rowsCount }) => {
-  const blankRows = Array(rowsCount).fill(0)
-  const rows = blankRows.map((x, i) =>
+  const blankRows = Array(rowsCount).fill(0);
+  const rows = blankRows && blankRows.length > 0 && blankRows.map((x, i) =>
     <View style={styles.row} key={`BR${i}`}>
       <Text style={styles.description}>-</Text>
       <Text style={styles.qty}>-</Text>

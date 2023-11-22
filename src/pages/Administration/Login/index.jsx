@@ -4,6 +4,7 @@ import { Button, Col, FormFeedback, FormGroup, Input, Label, Row, Form } from "r
 import Hr from "../../../components/Hr";
 import PageTitle from "../../../components/PageTitle";
 import AdminPanelImage from '../../../images/admin-panel.png';
+import { linkUrl } from "../../../utils";
 
 import './login.scss';
 
@@ -31,7 +32,7 @@ function Login({ hideMain, isMobile }) {
       setPasswordError(false);
     }
 
-    const response = await fetch(`/login`, {
+    const response = await fetch(`${linkUrl()}/login`, {
       method: "POST",
       body: JSON.stringify({ username: username, password: password }),
       headers: {

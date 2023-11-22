@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import ReCAPTCHA from 'react-google-recaptcha';
 import Hr from '../../components/Hr';
 import PageTitle from '../../components/PageTitle';
-import { removeSpaces } from '../../utils';
+import { linkUrl, removeSpaces } from '../../utils';
 import Message from '../../components/Message';
 
 import './contact.scss';
@@ -41,7 +41,7 @@ function Contact({ hideMain, isMobile }) {
 
   const verifyToken = async (token) => {
     try {
-      let response = await fetch(`/verify-token`, {
+      let response = await fetch(`${linkUrl()}/verify-token`, {
         method: 'POST',
         secret: process.env.googleSecretApiKey,
         token
@@ -112,7 +112,7 @@ function Contact({ hideMain, isMobile }) {
 
   const fetchMessage = async () => {
     setLoading(true);
-    const response = await fetch(`/contact`, {
+    const response = await fetch(`${linkUrl()}/contact`, {
       method: "POST",
       body: JSON.stringify(values[0]),
       headers: {

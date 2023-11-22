@@ -13,7 +13,7 @@ const { linkUrl } = require('./utils');
 dotenv.config();
 
 const pool = mysql.createPool({
-  host: process.env.HOST,
+  host: process.env.HOSTING,
   user: process.env.USER,
   password: process.env.PASSWORD,
   database: process.env.DB

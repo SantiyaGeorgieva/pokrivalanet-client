@@ -9,6 +9,7 @@ import PageTitle from "../../components/PageTitle";
 import Offer from "../../components/offers/Offer";
 import Message from "../../components/Message";
 import { thickCount, windproofCurtains, windproofCurtainsOptions } from "../../constants";
+import { linkUrl } from "../../utils";
 
 import './windproofCurtains.scss';
 
@@ -143,9 +144,10 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
 
   function fetchPriceOffer() {
     // console.log('values', values);
+    console.log('process.env.REACT_APP_DEVELOPMENT_DATABASE_URL', process.env.REACT_APP_DEVELOPMENT_DATABASE_URL);
 
     if (values) {
-      const response = fetch(`/priceOffer`, {
+      const response = fetch(`${linkUrl()}/priceOffer`, {
         method: "POST",
         body: JSON.stringify(values[0]),
         headers: {
@@ -169,7 +171,7 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
   function fetchOffer(document) {
     if (document) {
       console.log('document', document);
-      const response = fetch(`/offer`, {
+      const response = fetch(`${linkUrl()}/offer`, {
         method: "POST",
         body: JSON.stringify({ document }),
         headers: {
@@ -208,10 +210,11 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
     setDescription('');
     setTotalPrice('');
     setRadioCheck('without_fitting');
-    setLoweApronCheck(!lowerApronCheck);
-    setPipePocketCheck(!pipePocketCheck);
-    setKnobsCheck(!knobsCheck);
-    setChecked(!checked);
+    setZipsCheck(false);
+    setLoweApronCheck(false);
+    setPipePocketCheck(false);
+    setKnobsCheck(false);
+    setChecked(false);
     setValues([]);
   }
 

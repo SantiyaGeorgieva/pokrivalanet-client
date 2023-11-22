@@ -4,6 +4,7 @@ import { Button, Col, FormFeedback, FormGroup, Input, Label, Row, Form } from "r
 import Hr from "../../../components/Hr";
 import PageTitle from "../../../components/PageTitle";
 import AdminPanelImage from '../../../images/admin-panel.png';
+import { linkUrl } from "../../../utils";
 
 import './register.scss';
 
@@ -33,7 +34,7 @@ function Register({ hideMain, isMobile }) {
 
     console.log('username, password', username, password);
 
-    const response = await fetch(`/register`, {
+    const response = await fetch(`${linkUrl()}/register`, {
       method: "POST",
       body: JSON.stringify({ username: username, password: password }),
       headers: {

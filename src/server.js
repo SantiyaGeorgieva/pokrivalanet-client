@@ -169,14 +169,27 @@ app.post("/contact", async (req, res, next) => {
 });
 
 app.post("/priceOffer", async (req, res, next) => {
-  const { width, height, thick, edge, hardwareText } = req.body;
+  const { width,
+    height,
+    thick,
+    edge,
+    hardwareText,
+    zips,
+    lower_apron,
+    pipe_pocket,
+    knobs,
+    curtain_have_door
+  } = req.body;
+
   let priceThick = 0;
   let finalPrice = 0;
   let hardwareTextPrice = 0;
   let plasticKnobsPrice = 2.5;
   let metalKnobsPrice = 4.5;
-  // let strapPlates = 4.5;
-  // let pockets = 4.5;
+  let strapPlatesPrice = 12;
+  let pockets = 0.5;
+  let zipPrice = 15;
+
   const w = Number(width);
   const h = Number(height);
   const e = (Number(edge) * 2) / 100;
@@ -196,22 +209,49 @@ app.post("/priceOffer", async (req, res, next) => {
 
   if (hardwareText === 'plastic_knobs') {
     hardwareTextPrice = (((2 * h) / 0.35) * plasticKnobsPrice).toFixed(2);
+    finalPrice = Number(finalPrice) + Number(hardwareTextPrice);
   }
 
   if (hardwareText === 'metal_knobs') {
     hardwareTextPrice = (((2 * h) / 0.35) * metalKnobsPrice).toFixed(2);
+    finalPrice = Number(finalPrice) + Number(hardwareTextPrice);
   }
 
-  // if (hardwareText === 'strap_plates') {
-  //   hardwareTextPrice = (((2 * h) / 0.35) * strapPlates).toFixed(2);
-  // }
+  if (hardwareText === 'strap_plates') {
+    hardwareTextPrice = ((2 * h) * strapPlatesPrice).toFixed(2);
+    finalPrice = Number(finalPrice) + Number(hardwareTextPrice);
+  }
 
-  // if (pockets === 'pockets') {
-  //   hardwareTextPrice = (((2 * h) / 0.35) * pockets).toFixed(2);
-  // }
+  if (pockets === 'pockets') {
+    hardwareTextPrice = (((2 * h) / 0.15) * pockets).toFixed(2);
+    finalPrice = Number(finalPrice) + Number(hardwareTextPrice);
+  }
 
-  finalPrice = Number(finalPrice) + Number(hardwareTextPrice);
-  console.log('hardwareTextPrice', hardwareTextPrice);
+  if (zips === true) {
+    hardwareTextPrice = (w * zipPrice).toFixed(2);
+    finalPrice = Number(finalPrice) + Number(hardwareTextPrice);
+  }
+
+  if (lower_apron === true) {
+    hardwareTextPrice = ((w * 0.35) * strapPlatesPrice).toFixed(2);
+    finalPrice = Number(finalPrice) + Number(hardwareTextPrice);
+  }
+
+  if (pipe_pocket === true) {
+    hardwareTextPrice = ((w * 0.20) * strapPlatesPrice).toFixed(2);
+    finalPrice = Number(finalPrice) + Number(hardwareTextPrice);
+  }
+
+  if (knobs === true) {
+    finalPrice = (Number(finalPrice) + 9).toFixed(2);
+  }
+
+  if (curtain_have_door === true) {
+    finalPrice = (Number(finalPrice) + 60).toFixed(2);
+  }
+
+  // finalPrice = Number(finalPrice) + Number(hardwareTextPrice);
+  // console.log('hardwareTextPrice', hardwareTextPrice);
   console.log('finalPrice', finalPrice);
 
   res.status(200).json({

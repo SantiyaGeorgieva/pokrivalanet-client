@@ -99,7 +99,19 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
       setEdgeError(false);
     }
 
-    setValues([{ width: width, height: height, thick: thick, edge: edge, description: description, hardwareText: radioCheck }, ...values]);
+    setValues([{
+      width: width,
+      height: height,
+      thick: thick,
+      edge: edge,
+      description: description,
+      hardwareText: radioCheck,
+      zips: zipsCheck,
+      lower_apron: lowerApronCheck,
+      pipe_pocket: pipePocketCheck,
+      knobs: knobsCheck,
+      curtain_have_door: checked
+    }, ...values]);
   }
 
   const getPdfBlob = async () => {

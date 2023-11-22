@@ -96,6 +96,12 @@ const styles = StyleSheet.create({
     paddingRight: 8,
     fontStyle: 'bold',
     borderLeftWidth: 0,
+  },
+  footerText: {
+    fontFamily: 'Roboto',
+    marginTop: 15,
+    fontSize: 12,
+    fontWeight: 'bold'
   }
 });
 
@@ -133,6 +139,11 @@ const OfferTable = ({ items, totalPrice, message }) => {
       <View style={styles.rowTotal}>
         <Text style={styles.descriptionTotal}>TOTAL</Text>
         <Text style={styles.total}>{totalPrice} BGN</Text>
+      </View>
+      <View>
+        <Text style={styles.footerText}>
+          {t('offer_footer_text')}
+        </Text>
       </View>
     </View>
   )

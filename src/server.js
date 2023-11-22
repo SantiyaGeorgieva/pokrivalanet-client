@@ -112,7 +112,7 @@ app.post("/login", async (req, res) => {
 app.post("/verify-token", async (req, res) => {
   try {
     let token = req.body;
-    let response = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.googleSecretApiKey}&response=${token}`);
+    let response = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.REACT_APP_googleSecretApiKey}&response=${token}`);
     return res.status(200).json({
       success: true,
       message: "Token successfully verified",

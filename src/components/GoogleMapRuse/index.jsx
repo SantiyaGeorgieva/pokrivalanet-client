@@ -20,7 +20,7 @@ function GoogleMapRuse() {
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: process.env.googleApiKey
+    googleMapsApiKey: process.env.REACT_APP_googleApiKey
   })
 
   const [mapMarker, setMapMarker] = useState(null);

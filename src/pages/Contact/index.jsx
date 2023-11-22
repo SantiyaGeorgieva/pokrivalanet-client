@@ -43,7 +43,7 @@ function Contact({ hideMain, isMobile }) {
     try {
       let response = await fetch(`${linkUrl()}/verify-token`, {
         method: 'POST',
-        secret: process.env.googleSecretApiKey,
+        secret: process.env.REACT_APP_googleSecretApiKey,
         token
       });
       return response;
@@ -205,7 +205,7 @@ function Contact({ hideMain, isMobile }) {
                 {hasMessageError && <FormFeedback>{t('message_error')}</FormFeedback>}
               </FormGroup>
               <FormGroup>
-                <ReCAPTCHA sitekey={process.env.googleSiteKey} ref={captchaRef} />
+                <ReCAPTCHA sitekey={process.env.REACT_APP_googleSiteKey} ref={captchaRef} />
               </FormGroup>
               {error && <p className="text-start textError fs-14">{t('error_text')} {error}</p>}
               {messageCaptcha && <p className="text-start textSuccess fs-14">{messageCaptcha}</p>}

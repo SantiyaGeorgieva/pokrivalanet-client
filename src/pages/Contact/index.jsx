@@ -7,7 +7,6 @@ import Hr from '../../components/Hr';
 import PageTitle from '../../components/PageTitle';
 import { removeSpaces } from '../../utils';
 import Message from '../../components/Message';
-import { googleSecretApiKey, googleSiteKey } from '../../config/configApi';
 
 import './contact.scss';
 
@@ -42,9 +41,9 @@ function Contact({ hideMain, isMobile }) {
 
   const verifyToken = async (token) => {
     try {
-      let response = await fetch(`http://localhost:8080/verify-token`, {
+      let response = await fetch(`/verify-token`, {
         method: 'POST',
-        secret: googleSecretApiKey,
+        secret: process.env.googleSecretApiKey,
         token
       });
       return response;
@@ -113,7 +112,7 @@ function Contact({ hideMain, isMobile }) {
 
   const fetchMessage = async () => {
     setLoading(true);
-    const response = await fetch('http://localhost:8080/contact', {
+    const response = await fetch(`/contact`, {
       method: "POST",
       body: JSON.stringify(values[0]),
       headers: {
@@ -206,7 +205,7 @@ function Contact({ hideMain, isMobile }) {
                 {hasMessageError && <FormFeedback>{t('message_error')}</FormFeedback>}
               </FormGroup>
               <FormGroup>
-                <ReCAPTCHA sitekey={googleSiteKey} ref={captchaRef} />
+                <ReCAPTCHA sitekey={process.env.googleSiteKey} ref={captchaRef} />
               </FormGroup>
               {error && <p className="text-start textError fs-14">{t('error_text')} {error}</p>}
               {messageCaptcha && <p className="text-start textSuccess fs-14">{messageCaptcha}</p>}

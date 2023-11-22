@@ -2,7 +2,6 @@ import { useCallback, useState } from 'react';
 import { Spinner } from 'reactstrap';
 import { useTranslation } from "react-i18next";
 import { GoogleMap, InfoWindow, Marker, useJsApiLoader } from '@react-google-maps/api';
-import { googleApiKey } from '../../config/configApi';
 
 const google = window.google;
 
@@ -21,7 +20,7 @@ function GoogleMapRuse() {
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: googleApiKey
+    googleMapsApiKey: process.env.googleApiKey
   })
 
   const [mapMarker, setMapMarker] = useState(null);

@@ -2,22 +2,21 @@ const mysql = require('mysql2');
 const dotenv = require('dotenv');
 const express = require('express');
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
-const path = require('path');
-const fs = require('fs');
 const request = require('request');
-const creds = require('./config/db.config.js');
-const { googleSecretApiKey } = require('./config/configApi');
+const { linkUrl } = require('./utils');
+// const cookieParser = require('cookie-parser');
+// const path = require('path');
+// const fs = require('fs');
 
 dotenv.config();
 
 const pool = mysql.createPool({
-  host: creds.HOST,
-  user: creds.USER,
-  password: creds.PASSWORD,
-  database: creds.DB
+  host: process.env.HOST,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DB
 }).promise();
 
 var bcrypt = require('bcrypt');
@@ -113,7 +112,7 @@ app.post("/login", async (req, res) => {
 app.post("/verify-token", async (req, res) => {
   try {
     let token = req.body;
-    let response = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${googleSecretApiKey}&response=${token}`);
+    let response = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.googleSecretApiKey}&response=${token}`);
     return res.status(200).json({
       success: true,
       message: "Token successfully verified",
@@ -131,11 +130,11 @@ app.post("/contact", async (req, res, next) => {
   const { name, email, subject, message } = req.body;
 
   let transporter = nodemailer.createTransport({
-    host: creds.HOST_EMAIL,
-    port: creds.PORT_EMAIL,
+    host: process.env.HOST_EMAIL,
+    port: process.env.PORT_EMAIL,
     auth: {
-      user: creds.USER_EMAIL,
-      pass: creds.PASSWORD_EMAIL
+      user: process.env.USER_EMAIL,
+      pass: process.env.PASSWORD_EMAIL
     }
   });
 
@@ -145,7 +144,7 @@ app.post("/contact", async (req, res, next) => {
     email: email,
     subject: subject,
     text: content,
-    to: 'sales@pokrivala.net'
+    to: process.env.USER_EMAIL
   }
 
   transporter.sendMail(mailOptions, (err, result) => {
@@ -194,7 +193,7 @@ app.post("/priceOffer", async (req, res, next) => {
   const h = Number(height);
   const e = (Number(edge) * 2) / 100;
 
-  console.log('req.body', req.body);
+  // console.log('req.body', req.body);
 
   if (+thick === 0.8) {
     priceThick = 24;
@@ -205,7 +204,7 @@ app.post("/priceOffer", async (req, res, next) => {
   finalPrice = ((w + e) * (h + e));
   finalPrice = (finalPrice.toFixed(2) * priceThick).toFixed(2);
 
-  console.log('hardwareText', hardwareText);
+  // console.log('hardwareText', hardwareText);
 
   if (hardwareText === 'plastic_knobs') {
     hardwareTextPrice = (((2 * h) / 0.35) * plasticKnobsPrice).toFixed(2);
@@ -252,7 +251,7 @@ app.post("/priceOffer", async (req, res, next) => {
 
   // finalPrice = Number(finalPrice) + Number(hardwareTextPrice);
   // console.log('hardwareTextPrice', hardwareTextPrice);
-  console.log('finalPrice', finalPrice);
+  // console.log('finalPrice', finalPrice);
 
   res.status(200).json({
     'status': 'success',
@@ -262,14 +261,14 @@ app.post("/priceOffer", async (req, res, next) => {
 
 app.post("/offer", async (req, res, next) => {
   const { document } = req.body;
-  console.log('req.body', req.body);
+  // console.log('req.body', req.body);
   var PassThrough = require('stream').PassThrough;
 
   var nameOfAttachment = 'PokrivalaNET_offer.pdf';
   var imageUrlStream = new PassThrough();
   request
     .get({
-      proxy: 'http://localhost:8080', // if needed
+      proxy: `${linkUrl}`, // if needed
       // url: document
     })
     .on('error', function (err) {
@@ -279,11 +278,11 @@ app.post("/offer", async (req, res, next) => {
     .pipe(imageUrlStream);
 
   let transporter = nodemailer.createTransport({
-    host: creds.HOST_EMAIL,
-    port: creds.PORT_EMAIL,
+    host: process.env.HOST_EMAIL,
+    port: process.env.PORT_EMAIL,
     auth: {
-      user: creds.USER_EMAIL,
-      pass: creds.PASSWORD_EMAIL
+      user: process.env.USER_EMAIL,
+      pass: process.env.PASSWORD_EMAIL
     }
   });
 
@@ -292,7 +291,7 @@ app.post("/offer", async (req, res, next) => {
   const mailOptions = {
     from: 'test@test.com',
     subject: 'Оферта',
-    to: 'sales@pokrivala.net',
+    to: process.env.USER_EMAIL,
     html: `<h1>Оферта от клиент</h1>`,
     attachments: [
       {

@@ -7,10 +7,10 @@ import Gallery from "../../components/Gallery";
 import Hr from "../../components/Hr";
 import PageTitle from "../../components/PageTitle";
 import Offer from "../../components/offers/Offer";
+import Message from "../../components/Message";
 import { thickCount, windproofCurtains, windproofCurtainsOptions } from "../../constants";
 
 import './windproofCurtains.scss';
-import Message from "../../components/Message";
 
 const WindproofCurtains = ({ hideMain, isMobile }) => {
   const { t } = useTranslation();
@@ -142,9 +142,10 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
   };
 
   function fetchPriceOffer() {
-    console.log('values', values);
+    // console.log('values', values);
+
     if (values) {
-      const response = fetch(`http://localhost:8080/priceOffer`, {
+      const response = fetch(`/priceOffer`, {
         method: "POST",
         body: JSON.stringify(values[0]),
         headers: {
@@ -166,10 +167,9 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
   }
 
   function fetchOffer(document) {
-    console.log('document', document);
     if (document) {
       console.log('document', document);
-      const response = fetch(`http://localhost:8080/offer`, {
+      const response = fetch(`/offer`, {
         method: "POST",
         body: JSON.stringify({ document }),
         headers: {
@@ -207,6 +207,11 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
     setEdge('');
     setDescription('');
     setTotalPrice('');
+    setRadioCheck('without_fitting');
+    setLoweApronCheck(!lowerApronCheck);
+    setPipePocketCheck(!pipePocketCheck);
+    setKnobsCheck(!knobsCheck);
+    setChecked(!checked);
     setValues([]);
   }
 

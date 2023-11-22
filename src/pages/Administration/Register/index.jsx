@@ -33,7 +33,7 @@ function Register({ hideMain, isMobile }) {
 
     console.log('username, password', username, password);
 
-    const response = await fetch('http://localhost:8080/register', {
+    const response = await fetch(`/register`, {
       method: "POST",
       body: JSON.stringify({ username: username, password: password }),
       headers: {

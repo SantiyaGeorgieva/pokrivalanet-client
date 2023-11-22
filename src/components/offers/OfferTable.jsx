@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const OfferTable = ({ items, totalPrice, message }) => {
+const OfferTable = ({ items, totalPrice }) => {
   const { t } = useTranslation();
 
   return (

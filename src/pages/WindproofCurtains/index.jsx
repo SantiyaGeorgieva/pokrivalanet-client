@@ -10,6 +10,7 @@ import Offer from "../../components/offers/Offer";
 import { thickCount, windproofCurtains, windproofCurtainsOptions } from "../../constants";
 
 import './windproofCurtains.scss';
+import Message from "../../components/Message";
 
 const WindproofCurtains = ({ hideMain, isMobile }) => {
   const { t } = useTranslation();
@@ -37,7 +38,9 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
   const [checked, setChecked] = useState(false);
   const [selectedFile, setSingleFile] = useState(null);
 
-  const [messageOpen, setMessageOpen] = useState(false);
+  // const [messageOpen, setMessageOpen] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const onDismiss = () => setVisible(false);
 
   const [totalPrice, setTotalPrice] = useState('');
 
@@ -181,7 +184,7 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
           setWidth('');
           setHeight('');
           setDescription('');
-          setMessageOpen(true);
+          setVisible(true);
         } else if (response.status === 'fail') {
           console.log("Message failed to send.", response);
         }
@@ -197,6 +200,15 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
     saveAs(blob, fileName);
     handlePdf();
   };
+
+  const clearForm = () => {
+    setWidth('');
+    setHeight('');
+    setEdge('');
+    setDescription('');
+    setTotalPrice('');
+    setValues([]);
+  }
 
   return <>{!hideMain &&
     <div className={`container ${isMobile ? '' : 'my-4'}`}>
@@ -383,6 +395,12 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
                   {t('total_price_text')} {totalPrice && <span className="fw-bold">{`${totalPrice} BGN`}</span>}
                 </Col>
               </Row>
+              {visible ?
+                <Row>
+                  <Col>
+                    <Message isVisible={visible} onDismiss={onDismiss} text={`${t('thank_you_message_offer')}`} />
+                  </Col>
+                </Row> : <></>}
               <Row className="mt-2">
                 <Col>
                   {!clicked ?
@@ -417,6 +435,20 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
                   }
                 </Col>
               </Row>
+              {clicked && <Row className="mt-4">
+                <Col>
+                  <div className="d-flex">
+                    <Button
+                      type="button"
+                      color="danger"
+                      outline
+                      block
+                      onClick={clearForm}>
+                      {t('clear_button')}
+                    </Button>
+                  </div>
+                </Col>
+              </Row>}
             </div>
           </Form>
         </Col>
@@ -424,7 +456,8 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
       <Gallery images={windproofCurtains} isMobile={isMobile} />
       <Hr isMobile={isMobile} text={`${t('windproof_curtains_link')}`} />
     </div>
-  }</>
+  }
+  </>
 }
 
 export default WindproofCurtains;

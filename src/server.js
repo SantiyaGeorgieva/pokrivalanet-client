@@ -169,14 +169,19 @@ app.post("/contact", async (req, res, next) => {
 });
 
 app.post("/priceOffer", async (req, res, next) => {
-  const { width, height, thick, edge } = req.body;
+  const { width, height, thick, edge, hardwareText } = req.body;
   let priceThick = 0;
   let finalPrice = 0;
+  let hardwareTextPrice = 0;
+  let plasticKnobsPrice = 2.5;
+  let metalKnobsPrice = 4.5;
+  // let strapPlates = 4.5;
+  // let pockets = 4.5;
   const w = Number(width);
   const h = Number(height);
   const e = (Number(edge) * 2) / 100;
 
-  // console.log('req.body', req.body);
+  console.log('req.body', req.body);
 
   if (+thick === 0.8) {
     priceThick = 24;
@@ -186,6 +191,27 @@ app.post("/priceOffer", async (req, res, next) => {
 
   finalPrice = ((w + e) * (h + e));
   finalPrice = (finalPrice.toFixed(2) * priceThick).toFixed(2);
+
+  console.log('hardwareText', hardwareText);
+
+  if (hardwareText === 'plastic_knobs') {
+    hardwareTextPrice = (((2 * h) / 0.35) * plasticKnobsPrice).toFixed(2);
+  }
+
+  if (hardwareText === 'metal_knobs') {
+    hardwareTextPrice = (((2 * h) / 0.35) * metalKnobsPrice).toFixed(2);
+  }
+
+  // if (hardwareText === 'strap_plates') {
+  //   hardwareTextPrice = (((2 * h) / 0.35) * strapPlates).toFixed(2);
+  // }
+
+  // if (pockets === 'pockets') {
+  //   hardwareTextPrice = (((2 * h) / 0.35) * pockets).toFixed(2);
+  // }
+
+  finalPrice = Number(finalPrice) + Number(hardwareTextPrice);
+  console.log('hardwareTextPrice', hardwareTextPrice);
   console.log('finalPrice', finalPrice);
 
   res.status(200).json({

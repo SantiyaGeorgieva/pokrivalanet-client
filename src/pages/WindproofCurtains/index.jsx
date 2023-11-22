@@ -99,7 +99,7 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
       setEdgeError(false);
     }
 
-    setValues([{ width: width, height: height, thick: thick, edge: edge, description: description }, ...values]);
+    setValues([{ width: width, height: height, thick: thick, edge: edge, description: description, hardwareText: radioCheck }, ...values]);
   }
 
   const getPdfBlob = async () => {
@@ -127,6 +127,7 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
   };
 
   function fetchPriceOffer() {
+    console.log('values', values);
     if (values) {
       const response = fetch(`http://localhost:8080/priceOffer`, {
         method: "POST",

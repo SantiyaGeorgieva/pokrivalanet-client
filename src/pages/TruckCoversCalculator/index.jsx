@@ -361,7 +361,7 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
                           </Col>
                         </Row>
                       </Col>
-                      <Col md="6">
+                      <Col md="6" className={`${!isMobile ? '' : 'mt-2'}`}>
                         <FormGroup className="text-start mb-2">
                           <Label for="edge" className="fw-bold">{t('date_manufacture')}</Label>
                           <div className={`datepicker ${hasDateManufactureError ? 'error' : ''}`}>
@@ -395,7 +395,7 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
                     </Col>
                   </Row>
                 }
-                <Row className="mt-4">
+                <Row className={`${!isMobile ? 'mt-4' : 'mt-2'}`}>
                   <Col md="12" className="text-start">
                     {t('total_price_text')} {totalPrice && <span className="fw-bold">{`${totalPrice} BGN`}</span>}
                   </Col>

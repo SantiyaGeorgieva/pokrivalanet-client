@@ -12,10 +12,6 @@ const CardsCover = ({ cards, handleCardTitle, isMobile }) => {
   const lastRow = result.slice(8, result.length);
   const { t } = useTranslation();
 
-  // useEffect(() => {
-  //   console.log(props);
-  // }, [props]);
-
   return (
     <div className={`container ${isMobile ? 'px-0' : ''}`}>
       <Row className={`${!isMobile ? 'mx-1' : ''}`}>

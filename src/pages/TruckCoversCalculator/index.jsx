@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router";
 import { saveAs } from 'file-saver';
 import { Row, Col, Spinner, Button, Label, Form, FormGroup, FormFeedback, Input } from "reactstrap";
 import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
@@ -15,8 +16,9 @@ import { tarpaulinCount } from "../../constants";
 
 function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
   const { t } = useTranslation();
+  const location = useLocation();
 
-  const [titlePage, setTitlePage] = useState(offerTitle);
+  const [titlePage, setTitlePage] = useState(offerTitle || localStorage.getItem('offerTitle'));
   const [width, setWidth] = useState('');
   const [length, setLength] = useState('');
   const [hood, setHood] = useState('');
@@ -52,6 +54,13 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
   const onDismiss = () => setVisible(false);
 
   const [totalPrice, setTotalPrice] = useState('');
+
+  useEffect(() => {
+    if (location.pathname) {
+      localStorage.setItem("offerTitle", titlePage);
+    }
+
+  }, [location.pathname])
 
   useEffect(() => {
     if (!hasWidthError && !hasLengthError && !hasHoodError && !hasBackCoverError && !hasFallingPipeError

@@ -5,12 +5,16 @@ import Hr from "../Hr";
 import './cardsCover.scss';
 import { useTranslation } from "react-i18next";
 
-function CardsCover({ cards, isMobile }) {
+const CardsCover = ({ cards, handleCardTitle, isMobile }) => {
   const result = cards.map(img => img);
   const firstRow = result.slice(0, 4);
   const secondRow = result.slice(4, 8);
   const lastRow = result.slice(8, result.length);
   const { t } = useTranslation();
+
+  // useEffect(() => {
+  //   console.log(props);
+  // }, [props]);
 
   return (
     <div className={`container ${isMobile ? 'px-0' : ''}`}>
@@ -19,8 +23,8 @@ function CardsCover({ cards, isMobile }) {
           return <Col md="3" key={idx} className={`${isMobile ? 'mb-3' : ''}`}>
             {!row?.src ? <Spinner className="m-5" color="primary" /> :
               <>
-                {row.subtitle === 'Изчислете цена' ?
-                  <Link className="text-decoration-none" to="/truck-covers/calculator">
+                {t(`${row?.subtitle}`) === 'Изчислете цена' ?
+                  <Link className="text-decoration-none" to="/truck-covers/calculator" onClick={(e) => handleCardTitle(e, row?.title)}>
                     <Card className="h-100">
                       <img src={row?.src} className="gallery-image" />
                       <CardBody>
@@ -60,8 +64,8 @@ function CardsCover({ cards, isMobile }) {
           return <Col md="3" key={idx} className={`h-100 ${isMobile ? 'mb-3' : ''}`}>
             {!row?.src ? <Spinner className="m-5" color="primary" /> :
               <>
-                {row.subtitle === 'Изчислете цена' ?
-                  <Link className="text-decoration-none" to="/truck-covers/calculator">
+                {t(`${row?.subtitle}`) === 'Изчислете цена' ?
+                  <Link className="text-decoration-none" to="/truck-covers/calculator" onClick={(e) => handleCardTitle(e, row?.title)}>
                     <Card className="h-100">
                       <img src={row?.src} className="gallery-image" />
                       <CardBody>
@@ -102,8 +106,8 @@ function CardsCover({ cards, isMobile }) {
           return <Col md="3" key={idx} className={`${isMobile ? 'mb-3' : ''}`}>
             {!row?.src ? <Spinner className="m-5" color="primary" /> :
               <>
-                {row.subtitle === 'Изчислете цена' ?
-                  <Link className="text-decoration-none" to="/truck-covers/calculator">
+                {t(`${row?.subtitle}`) === 'Изчислете цена' ?
+                  <Link className="text-decoration-none" to="/truck-covers/calculator" onClick={(e) => handleCardTitle(e, row?.title)}>
                     <Card>
                       <img src={row?.src} className="gallery-image" />
                       <CardBody>

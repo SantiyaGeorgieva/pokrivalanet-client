@@ -143,11 +143,8 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
   };
 
   function fetchPriceOffer() {
-    // console.log('values', values);
-    console.log('process.env.REACT_APP_DEVELOPMENT_DATABASE_URL', process.env.REACT_APP_DEVELOPMENT_DATABASE_URL);
-
     if (values) {
-      const response = fetch(`${linkUrl()}/priceOffer`, {
+      const response = fetch(`${linkUrl()}/priceWindproofOffer`, {
         method: "POST",
         body: JSON.stringify(values[0]),
         headers: {
@@ -225,6 +222,9 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
       </p>
         : <p className="text-start mb-5">{t('main_text2')}</p>
       }
+      <Row className="my-5">
+        <h3 className="">{t('offer_windproof_curtain')}</h3>
+      </Row>
       <Row className="mb-5">
         <Col md="6" className={`${!isMobile ? 'text-start' : ''}`}>
           {!checked ? windproofCurtainsOptions.filter(option => (option.text === radioCheck) && !option.checked === !checked).map(option => {
@@ -412,7 +412,9 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
               <Row className="mt-2">
                 <Col>
                   {!clicked ?
-                    <PDFDownloadLink document={<Offer items={items} totalPrice={totalPrice} />} fileName={t('file_name')} className="text-decoration-none">
+                    <PDFDownloadLink document={
+                      <Offer title="offer_windproof_curtain" parametersText="offer_parameters_text" items={items} totalPrice={totalPrice} />}
+                      fileName={t('file_name')} className="text-decoration-none">
                       {({ blob, url, loading, error }) => {
                         setSingleFile(url);
                         // setSingleFile(btoa(blob));
@@ -424,7 +426,9 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
                     </PDFDownloadLink>
                     :
                     <div className="d-flex align-items-center justify-content-between">
-                      <PDFDownloadLink document={<Offer items={items} totalPrice={totalPrice} />} fileName={t('file_name')} className="text-decoration-none">
+                      <PDFDownloadLink document={
+                        <Offer title="offer_windproof_curtain" parametersText="offer_parameters_text" items={items} totalPrice={totalPrice} />}
+                        fileName={t('file_name')} className="text-decoration-none">
                         {({ blob, url, loading, error }) =>
                           loading ? 'Loading document...' :
                             <Button type="button" outline block href={url} target="_blank">
@@ -435,7 +439,10 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
                       <Button
                         type="button"
                         className="bc-blue w-65"
-                        onClick={() => { generatePdfDocument(`${t('file_name')}`, <Offer items={items} totalPrice={totalPrice} />); }}
+                        onClick={() => {
+                          generatePdfDocument(`${t('file_name')}`,
+                            <Offer title="offer_windproof_curtain" parametersText="offer_parameters_text" items={items} totalPrice={totalPrice} />);
+                        }}
                       >
                         <span className="fw-bold text-transform">{t('download_button')}</span>
                       </Button>

@@ -13,21 +13,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: -120,
   },
-  reportTitle: {
+  offerTitle: {
     fontFamily: 'Roboto',
     letterSpacing: 4,
     fontSize: 25,
     textAlign: 'center',
     textTransform: 'uppercase',
+  },
+  title: {
+    fontFamily: 'Roboto',
+    fontSize: 13,
+    textAlign: 'center'
   }
 });
 
-const OfferTitle = ({ title }) => {
+const OfferTitle = ({ offerTitle, title }) => {
   const { t } = useTranslation();
 
   return (
     <View style={styles.titleContainer}>
-      <Text style={styles.reportTitle}>{`${t(title)}`}</Text>
+      <Text style={styles.offerTitle}>{`${t(offerTitle)}`}</Text>
+      <Text style={styles.title}>{`${t(title)}`}</Text>
     </View>
   )
 };

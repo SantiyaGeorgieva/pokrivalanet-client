@@ -5,40 +5,18 @@ import Roboto from '../../fonts/roboto/Roboto-Regular.ttf';
 
 Font.register({ family: 'Roboto', src: Roboto, fontStyle: 'normal', fontWeight: 'normal' });
 
-// const styles = StyleSheet.create({
-//   container: {
-//     fontFamily: 'Roboto',
-//     flexDirection: 'row',
-//     borderBottomWidth: 1,
-//     alignItems: 'center',
-//     height: 24,
-//     textAlign: 'center',
-//     flexGrow: 1,
-//   },
-//   description: {
-//     fontFamily: 'Roboto',
-//     width: '70%',
-//     borderRightWidth: 1,
-//   },
-//   amount: {
-//     fontFamily: 'Roboto',
-//     width: '30%'
-//   },
-// });
-
 const styles = StyleSheet.create({
+  title: {
+    fontFamily: 'Roboto',
+    fontSize: 13,
+    textAlign: 'left',
+    marginTop: 25,
+  },
   table: {
     display: "table",
     width: "auto",
     borderStyle: "solid",
-    borderWidth: 1,
-    borderRightWidth: 0,
-    // borderLeftWidth: 0,
-    borderBottomWidth: 0,
-    marginTop: 25,
-    '&:last-child': {
-      borderLeftWidth: 0,
-    }
+    borderWidth: 1
   },
   tableRow: {
     margin: "auto",
@@ -105,11 +83,12 @@ const styles = StyleSheet.create({
   }
 });
 
-const OfferTable = ({ items, totalPrice }) => {
+const OfferTable = ({ items, parametersText, totalPrice }) => {
   const { t } = useTranslation();
 
   return (
     <View>
+      <Text style={styles.title}>{`${t(parametersText)}`}</Text>
       <View style={styles.table}>
         <View style={styles.tableRow}>
           <View style={styles.tableCol}>

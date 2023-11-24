@@ -93,10 +93,10 @@ import RemontPokrivala from './images/pokrivala_za_kamioni/26132737.png';
 import KonstrukciyaBrezent from './images/pokrivala_za_kamioni/1684150263340333218_common--23051514021554027700.jpg';
 
 export const links = [
-  {
-    to: '/',
-    name: 'home_link'
-  },
+  // {
+  //   to: '/',
+  //   name: 'home_link'
+  // },
   {
     to: '/truck-covers',
     name: 'truck_cover_link'
@@ -480,5 +480,16 @@ export const thickCount = [
   {
     id: 2,
     text: '0.6',
+  }
+];
+
+export const tarpaulinCount = [
+  {
+    id: 1,
+    text: '680гр/кв.м'
+  },
+  {
+    id: 2,
+    text: '900гр/кв.м',
   }
 ];

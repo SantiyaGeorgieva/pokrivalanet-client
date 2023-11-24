@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useState } from 'react';
-import { Navigate, Route, Routes } from 'react-router';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router';
 import CookieConsent from 'react-cookie-consent';
 import { useTranslation } from 'react-i18next';
 import './i18n'
@@ -8,6 +8,7 @@ import Footer from './components/Footer';
 import AboutMe from './pages/AboutMe';
 import Home from './pages/Home';
 import TruckCovers from './pages/TruckCovers';
+import TruckCoversCalculator from './pages/TruckCoversCalculator';
 import AwningsAndShades from './pages/AwningsAndShades';
 import WindproofCurtains from './pages/WindproofCurtains';
 import IndustrialProducts from './pages/IndustrialProducts';
@@ -20,9 +21,9 @@ import WagonCovers from './pages/WagonCovers';
 import Contact from './pages/Contact';
 import Register from './pages/Administration/Register';
 import Login from './pages/Administration/Login';
-import UnderConstruction from './pages/UnderConstruction';
 import Administration from './pages/Administration';
 import NotFound from './pages/NotFound';
+// import UnderConstruction from './pages/UnderConstruction';
 
 import './App.css';
 
@@ -30,8 +31,11 @@ const App = () => {
   const [hideMain, setHideMain] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [offerTitle, setOfferTitle] = useState('');
   const [selectedItem, setSelectedItem] = useState(localStorage.getItem("i18nextLng"));
   const { t } = useTranslation();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const toggleClass = (e) => {
     setIsOpen(!isOpen);
@@ -42,7 +46,15 @@ const App = () => {
     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
       setIsMobile(true);
     }
+
+    if (pathname === '/') {
+      navigate("/truck-covers", { replace: true });
+    }
   }, []);
+
+  const handleCardTitle = (e, title) => {
+    setOfferTitle(title);
+  }
 
   return (
     <div className="app">
@@ -53,8 +65,9 @@ const App = () => {
         <main role="main">
           <Routes>
             <Route exact path="/" element={<Home hideMain={hideMain} isMobile={isMobile} />} />
-            <Route exact path="/truck-covers" element={<TruckCovers isMobile={isMobile} hideMain={hideMain} />} preventScrollReset={true} />
-            <Route exact path="/truck-covers/calculator" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} preventScrollReset={true} />
+            <Route index exact path="/truck-covers" element={<TruckCovers handleCardTitle={handleCardTitle} isMobile={isMobile} hideMain={hideMain} />} preventScrollReset={true} />
+            <Route exact path="/truck-covers/calculator" element={<TruckCoversCalculator isMobile={isMobile} hideMain={hideMain} offerTitle={offerTitle} />} preventScrollReset={true} />
+            {/* <Route exact path="/truck-covers/calculator" element={<UnderConstruction isMobile={isMobile} hideMain={hideMain} />} preventScrollReset={true} /> */}
             <Route exact path="/windproof-curtains" element={<WindproofCurtains isMobile={isMobile} hideMain={hideMain} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />} preventScrollReset={true} />
             <Route exact path="/awnings-and-shades" element={<AwningsAndShades isMobile={isMobile} hideMain={hideMain} />} preventScrollReset={true} />
             <Route exact path="/covers-for-fishponds-and-lagoons" element={<CoversForFishpondsAndLagoons isMobile={isMobile} hideMain={hideMain} />} />

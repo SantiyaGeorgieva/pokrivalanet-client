@@ -19,8 +19,8 @@ const pool = mysql.createPool({
   database: process.env.DB
 }).promise();
 
-var bcrypt = require('bcrypt');
-var saltRounds = 10;
+// var bcrypt = require('bcrypt');
+// var saltRounds = 10;
 
 const app = express();
 
@@ -42,71 +42,67 @@ app.use(cors(corsOptions));
 // app.use(cookieParser());
 
 //Routes
-app.post("/register", async (req, res, next) => {
-  console.log('req', req.body);
-  const password = req.body.password;
-  const encryptedPassword = await bcrypt.hash(password, saltRounds);
-  let users = {
-    "username": req.body.username,
-    "password": encryptedPassword
-  };
+// app.post("/register", async (req, res, next) => {
+//   const password = req.body.password;
+//   const encryptedPassword = await bcrypt.hash(password, saltRounds);
+//   let users = {
+//     "username": req.body.username,
+//     "password": encryptedPassword
+//   };
 
-  pool.query('INSERT INTO users SET ?', users, function (error, results, fields) {
-    console.log('error', error);
-    console.log('results', results);
-    console.log('fields', fields);
-    if (error) {
-      res.send({
-        "code": 400,
-        "status": error
-      })
-    } else {
-      res.send({
-        "code": 200,
-        "status": "User registered sucessfully"
-      });
-    }
-  });
-  next();
-});
+//   pool.query('INSERT INTO users SET ?', users, function (error, results, fields) {
+//     if (error) {
+//       res.send({
+//         "code": 400,
+//         "status": error
+//       })
+//     } else {
+//       res.send({
+//         "code": 200,
+//         "status": "User registered sucessfully"
+//       });
+//     }
+//   });
+//   next();
+// });
 
-app.post("/login", async (req, res) => {
-  var username = req.body.username;
-  var password = req.body.password;
+// app.post("/login", async (req, res) => {
+//   var username = req.body.username;
+//   var password = req.body.password;
 
-  pool.query('SELECT users.*, count(roles.role_id) AS rolesUser FROM users LEFT JOIN roles ON roles.role_id=user.id WHERE username = ?', [username], async function (error, results, fields) {
-    if (error) {
-      res.send({
-        "code": 400,
-        "failed": "error occurred",
-        "error": error
-      })
-    } else {
-      if (results.length > 0) {
-        const comparison = await bcrypt.compare(password, results[0].password);
+//   pool.query('SELECT users.*, count(roles.role_id) AS rolesUser FROM users LEFT JOIN roles ON roles.role_id=user.id WHERE username = ?', [username], async function (error, results, fields) {
+//     if (error) {
+//       res.send({
+//         "code": 400,
+//         "failed": "error occurred",
+//         "error": error
+//       })
+//     } else {
+//       if (results.length > 0) {
+//         const comparison = await bcrypt.compare(password, results[0].password);
 
-        if (comparison) {
-          res.send({
-            "code": 200,
-            "success": "Login successful",
-            "id": results[0].id,
-            "userName": results[0].user_name,
-          })
-        } else {
-          res.send({
-            "code": 204,
-            "error": "Username and password does not match"
-          })
-        }
-      } else {
-        res.send({
-          "code": 206,
-          "error": "Username does not exist"
-        });
-      }
-    }
-  });
-});
+//         if (comparison) {
+//           res.send({
+//             "code": 200,
+//             "success": "Login successful",
+//             "id": results[0].id,
+//             "userName": results[0].user_name,
+//           })
+//         } else {
+//           res.send({
+//             "code": 204,
+//             "error": "Username and password does not match"
+//           })
+//         }
+//       } else {
+//         res.send({
+//           "code": 206,
+//           "error": "Username does not exist"
+//         });
+//       }
+//     }
+//   });
+// });
 
 // verify reCAPTCHA response
 app.post("/verify-token", async (req, res) => {
@@ -152,7 +148,7 @@ app.post("/contact", async (req, res, next) => {
       console.log(err);
       res.json('Opps error occured')
     } else {
-      res.send(200).json('Thanks for e-mailing me', result.response);
+      res.send(200).json({ 'message': result.response });
     }
   });
 
@@ -167,8 +163,9 @@ app.post("/contact", async (req, res, next) => {
   });
 });
 
-app.post("/priceOffer", async (req, res, next) => {
-  const { width,
+app.post("/priceWindproofOffer", async (req, res, next) => {
+  const {
+    width,
     height,
     thick,
     edge,
@@ -329,6 +326,86 @@ app.post("/offer", async (req, res, next) => {
   //     res.status(200).json({ message: "Contact registered sucessfully" });
   //   }
   // });
+});
+
+app.post("/priceCoverOffer", async (req, res, next) => {
+  const {
+    width,
+    length,
+    hood,
+    back_cover,
+    falling_pipe,
+    falling_right,
+    number_stretches,
+    date_manufacture,
+    tarpaulin_type,
+    longitudinal_pocket,
+    fitting_left,
+    fitting_right,
+    assembly
+  } = req?.body?.values;
+  const { title } = req?.body;
+
+  var finalPrice;
+  let l = Number(length) + 0.6;
+
+  if (title === 'card_text4') {
+    let totalLength = 0;
+    let priceTarpaulin = 0;
+    const longitudinalPocketPrice = 0.3;
+    const fittingPrice = 50;
+    const assemblyPrice = 1.2;
+    let totalWidth = 0;
+    // let finalPrice = 0;
+
+    let w = Number(width) + 0.8;
+    const hood_value = Number(hood);
+    const back_cover_value = Number(back_cover);
+    const falling_pipe_value = Number(falling_pipe);
+    const falling_right_value = Number(falling_right);
+    const number_stretches_value = (Number(number_stretches) * 0.2);
+
+    totalWidth = (w + hood_value + back_cover_value + number_stretches_value).toFixed(2);
+    totalLength = (l + falling_pipe_value + falling_right_value + number_stretches_value).toFixed(2);
+
+    if (longitudinal_pocket) {
+      totalLength = (Number(totalLength) + Number(longitudinalPocketPrice)).toFixed(2);
+    }
+
+    if (tarpaulin_type === '680гр/кв.м') {
+      priceTarpaulin = 12;
+    } else {
+      priceTarpaulin = 16;
+    }
+
+    finalPrice = (Number(totalWidth) * Number(totalLength) * Number(priceTarpaulin)).toFixed(2);
+
+    if (fitting_right || fitting_left) {
+      finalPrice = (Number(finalPrice) + Number(fittingPrice)).toFixed(2);
+    }
+
+    if (assembly) {
+      finalPrice = (Number(finalPrice) * Number(assemblyPrice)).toFixed(2);
+    }
+  } else {
+    // var finalPrice = 0;
+    let totalLength = 0;
+    let h = 3;
+    totalLength = l * h * 15;
+
+    if (title === 'card_text8') {
+      console.log('here', totalLength);
+      finalPrice = (totalLength + 50).toFixed(2);
+    } else if (title === 'card_text7') {
+      console.log('here2');
+      finalPrice = (totalLength + 25).toFixed(2);
+    }
+  }
+
+  res.status(200).json({
+    'status': 'success',
+    'result': finalPrice
+  });
 });
 
 app.use((err, req, res, next) => {

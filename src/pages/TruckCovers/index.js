@@ -5,7 +5,7 @@ import { cardslItems } from "../../constants";
 
 import './truckCovers.scss';
 
-function TruckCovers({ hideMain, isMobile }) {
+function TruckCovers({ hideMain, handleCardTitle, isMobile }) {
   const { t } = useTranslation();
   PageTitle(t('truck_covers_page_title'));
 
@@ -18,7 +18,7 @@ function TruckCovers({ hideMain, isMobile }) {
           <p className="text-start mb-3">{t('main_text1')}</p>
         </div>
       }
-      <CardsCover cards={cardslItems} isMobile={isMobile} />
+      <CardsCover handleCardTitle={handleCardTitle} cards={cardslItems} isMobile={isMobile} />
     </div>
   }</>
 

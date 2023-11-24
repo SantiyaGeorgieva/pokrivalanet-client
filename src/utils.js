@@ -9,10 +9,10 @@ const removeSpaces = (string) => {
   return string.split(' ').join('');
 }
 const linkUrl = () => {
-  if (process.env.NODE_ENV === 'production') {
-    return process.env.REACT_APP_PRODUCTION_DATABASE_URL;
+  if (process.env.NODE_ENV === 'development') {
+    return process.env.REACT_APP_DEVELOPMENT_API_URL;
   } else {
-    return process.env.REACT_APP_DEVELOPMENT_DATABASE_URL;
+    return process.env.REACT_APP_PRODUCTION_API_URL;
   }
 };
 

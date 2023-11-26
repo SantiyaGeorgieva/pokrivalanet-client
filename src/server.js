@@ -1,13 +1,14 @@
 const mysql = require('mysql2');
 const dotenv = require('dotenv');
 const express = require('express');
+const logger = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
 const request = require('request');
 const { linkUrl } = require('./utils');
+const path = require('path');
 // const cookieParser = require('cookie-parser');
-// const path = require('path');
 // const fs = require('fs');
 
 dotenv.config();
@@ -23,6 +24,7 @@ const pool = mysql.createPool({
 // var saltRounds = 10;
 
 const app = express();
+app.use(logger('dev'));
 
 const corsOptions = {
   origin: '*',
@@ -190,8 +192,6 @@ app.post("/priceWindproofOffer", async (req, res, next) => {
   const h = Number(height);
   const e = (Number(edge) * 2) / 100;
 
-  // console.log('req.body', req.body);
-
   if (+thick === 0.8) {
     priceThick = 24;
   } else {
@@ -200,8 +200,6 @@ app.post("/priceWindproofOffer", async (req, res, next) => {
 
   finalPrice = ((w + e) * (h + e));
   finalPrice = (finalPrice.toFixed(2) * priceThick).toFixed(2);
-
-  // console.log('hardwareText', hardwareText);
 
   if (hardwareText === 'plastic_knobs') {
     hardwareTextPrice = (((2 * h) / 0.35) * plasticKnobsPrice).toFixed(2);
@@ -356,7 +354,6 @@ app.post("/priceCoverOffer", async (req, res, next) => {
     const fittingPrice = 50;
     const assemblyPrice = 1.2;
     let totalWidth = 0;
-    // let finalPrice = 0;
 
     let w = Number(width) + 0.8;
     const hood_value = Number(hood);
@@ -394,10 +391,8 @@ app.post("/priceCoverOffer", async (req, res, next) => {
     totalLength = l * h * 15;
 
     if (title === 'card_text8') {
-      console.log('here', totalLength);
       finalPrice = (totalLength + 50).toFixed(2);
     } else if (title === 'card_text7') {
-      console.log('here2');
       finalPrice = (totalLength + 25).toFixed(2);
     }
   }
@@ -412,6 +407,16 @@ app.use((err, req, res, next) => {
   console.error(err.stack)
   res.status(500).send('Something broke!');
 });
+
+if (process.env.NODE_ENV === 'production') {
+  // Serve any static files
+  app.use(express.static(path.join(__dirname, 'build')));
+
+  // Handle React routing, return all requests to React app
+  app.get('*', function (req, res) {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  });
+}
 
 app.listen(8080, () => {
   console.log('Server is running on port 8080');

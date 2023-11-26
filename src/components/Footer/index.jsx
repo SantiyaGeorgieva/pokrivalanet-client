@@ -16,15 +16,15 @@ function Footer({ isMobile }) {
           <div className="container">
             <Row className="footer-menu">
               <Col md="4" className={`d-flex flex-column text-start ${isMobile ? 'w-50' : ''}`}>
-                <Link onClick={scrollToTop} to="/">{t('home_link')}</Link>
+                {/* <Link onClick={scrollToTop} to="/">{t('home_link')}</Link> */}
                 <Link onClick={scrollToTop} to="/truck-covers">{t('truck_cover_link')}</Link>
                 <Link onClick={scrollToTop} to="/windproof-curtains">{t('windproof_curtains_link')}</Link>
                 <Link onClick={scrollToTop} to="/awnings-and-shades">{t('awnings_and_shades_link')}</Link>
                 <Link onClick={scrollToTop} to="/covers-for-fishponds-and-lagoons">{t('covers_for_fishponds_and_lagoons_link')}</Link>
                 <Link onClick={scrollToTop} to="/curtains-for-cow-farms">{t('curtains_for_cow_farms_link')}</Link>
+                <Link onClick={scrollToTop} to="/industrial-products">{t('industrial_products_link')}</Link>
               </Col>
               <Col md="4" className="d-flex flex-column text-start">
-                <Link onClick={scrollToTop} to="/industrial-products">{t('industrial_products_link')}</Link>
                 <Link onClick={scrollToTop} to="/prefabricated-tents">{t('prefabricated_tents_link')}</Link>
                 <Link onClick={scrollToTop} to="/large-bedspreads">{t('large_covers_link')}</Link>
                 <Link onClick={scrollToTop} to="/linings-and-covers">{t('linings_and_covers_link')}</Link>
@@ -33,7 +33,7 @@ function Footer({ isMobile }) {
               </Col>
               {!isMobile && <Col md="4" className="d-flex align-items-end justify-content-center">
                 <div className="d-flex flex-column align-items-center social-icons">
-                  <Link to="/">
+                  <Link onClick={scrollToTop} to="/truck-covers">
                     <img src={LogoWhite} alt="Logo white" className="w-50" />
                   </Link>
                   <div className="d-flex mt-2">
@@ -59,7 +59,7 @@ function Footer({ isMobile }) {
                     <Link to="https://www.facebook.com/CreativeIdeaGroup/?fref=ts" target="_blank">
                       <i className="fa-brands fa-facebook fs-4 text-light"></i>
                     </Link>
-                    <Link to="/">
+                    <Link onClick={scrollToTop} to="/truck-covers">
                       <img src={LogoWhite} alt="Logo white" className="w-50" />
                     </Link>
                   </div>

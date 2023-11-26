@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
   Button,
   Row,
@@ -18,9 +18,16 @@ import { useTranslation } from "react-i18next";
 import Logo from '../../images/logo.png';
 import { links } from "../../constants";
 import './header.scss';
+import { scrollToTop } from "../../utils";
 
 function Header({ isMobile, isOpen, toggleClass, selectedItem, setSelectedItem }) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  const navigateToContact = () => {
+    navigate('/contact');
+  };
+
   // console.log('isOpen', isOpen);
 
   useEffect(() => {
@@ -34,7 +41,7 @@ function Header({ isMobile, isOpen, toggleClass, selectedItem, setSelectedItem }
       <div className="mb-3">
         <nav className="navbar navbar-expand-lg py-0">
           <div className="container-fluid">
-            <NavLink to="/" className={`navbar-brand text-start ${!isMobile ? 'ms-4' : ''}`}>
+            <NavLink onClick={scrollToTop} to="/truck-covers" className={`navbar-brand text-start ${!isMobile ? 'ms-4' : ''}`}>
               <img src={Logo} alt="Pokrivala.net logo" className="w-50" />
             </NavLink>
             <div className="d-flex align-items-center justify-content-end collapse navbar-collapse" id="navbars-host">
@@ -52,7 +59,7 @@ function Header({ isMobile, isOpen, toggleClass, selectedItem, setSelectedItem }
               <Button color="dark" size="sm" className="cursor-default me-2" outline>
                 <i className="fa fa-phone my-2 px-2" />+359 877 614 029
               </Button>
-              <Button color="dark" size="sm" className="location-link me-2" outline>
+              <Button onClick={() => { scrollToTop(); navigateToContact(); }} color="dark" size="sm" className="location-link me-2" outline>
                 <Link className="text-dark text-decoration-none" to="/contact">
                   <i className="fa-solid fa-location-dot my-2 px-2" />{t('city')}
                 </Link>
@@ -137,7 +144,7 @@ function Header({ isMobile, isOpen, toggleClass, selectedItem, setSelectedItem }
       <Navbar expand="md" className={`small ${isOpen ? 'bc-blue' : ''}`}>
         {!isOpen &&
           <>
-            <NavLink to="/" className="navbar-brand text-start">
+            <NavLink onClick={scrollToTop} to="/truck-covers" className="navbar-brand text-start">
               <img src={Logo} alt="Pokrivala.net logo" className="w-50" />
             </NavLink>
             <Navbar expand="sm" className="py-0 px-0 mt-5 me-2 text-end">

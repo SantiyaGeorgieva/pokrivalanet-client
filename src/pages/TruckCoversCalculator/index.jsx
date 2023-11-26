@@ -78,7 +78,7 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
     hasFallingRightError, hasNumberStretchesError, hasDateManufactureError, values])
 
   useEffect(() => {
-    if (values.length > 0) {
+    if (values.length > 0 && titlePage === 'card') {
       values.map((value, idx) => {
         setItems([{
           'width_cover_text': value.width,
@@ -92,13 +92,21 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
           "tarpaulin_type": value.tarpaulin_type
         }
         ], ...items);
-      })
-    }
+      });
 
-    longitudinalPocketCheck && setItems(prevState => [...prevState, { longitudinal_pocket: "+" }]);
-    fittingLeftCheck && setItems(prevState => [...prevState, { fitting_left: "+" }]);
-    fittingRightCheck && setItems(prevState => [...prevState, { fitting_right: "+" }]);
-    assemblyCheck && setItems(prevState => [...prevState, { assembly: "+" }]);
+      longitudinalPocketCheck && setItems(prevState => [...prevState, { longitudinal_pocket: "+" }]);
+      fittingLeftCheck && setItems(prevState => [...prevState, { fitting_left: "+" }]);
+      fittingRightCheck && setItems(prevState => [...prevState, { fitting_right: "+" }]);
+      assemblyCheck && setItems(prevState => [...prevState, { assembly: "+" }]);
+    } else {
+      values.map((value, idx) => {
+        setItems([{
+          'length_cover_text': value.length,
+          'date_manufacture': new Date(value?.date_manufacture).toLocaleDateString("ro-RO")
+        }
+        ], ...items);
+      });
+    }
   }, [values])
 
   const handleSubmit = (event) => {
@@ -190,6 +198,7 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
     setFittingRightCheck(false);
     setAssemblyCheck(false);
     setValues([]);
+    setClicked(false);
   }
 
   function fetchPriceOffer() {
@@ -410,7 +419,7 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
                   <Col>
                     {!clicked ?
                       <PDFDownloadLink document={
-                        <Offer title={offerTitle} parametersText="offer_parameters_text2" items={items} totalPrice={totalPrice} />}
+                        <Offer title={titlePage} parametersText="offer_parameters_text2" items={items} totalPrice={totalPrice} />}
                         fileName={t('file_name')} className="text-decoration-none">
                         {({ blob, url, loading, error }) => {
                           setSingleFile(url);
@@ -424,7 +433,7 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
                       :
                       <div className="d-flex align-items-center justify-content-between">
                         <PDFDownloadLink document={
-                          <Offer title={offerTitle} parametersText="offer_parameters_text2" items={items} totalPrice={totalPrice} />}
+                          <Offer title={titlePage} parametersText="offer_parameters_text2" items={items} totalPrice={totalPrice} />}
                           fileName={t('file_name')} className="text-decoration-none">
                           {({ blob, url, loading, error }) =>
                             loading ? 'Loading document...' :
@@ -438,7 +447,7 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
                           className="bc-blue w-65"
                           onClick={() => {
                             generatePdfDocument(`${t('file_name')}`,
-                              <Offer title={offerTitle} parametersText="offer_parameters_text2" items={items} totalPrice={totalPrice} />);
+                              <Offer title={titlePage} parametersText="offer_parameters_text2" items={items} totalPrice={totalPrice} />);
                           }}
                         >
                           <span className="fw-bold text-transform">{t('download_button')}</span>

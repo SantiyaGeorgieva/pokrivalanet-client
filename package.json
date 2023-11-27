@@ -1,7 +1,7 @@
 {
   "name": "pokrivala-net",
-  "homepage": "",
-  "version": "0.1.7",
+  "homepage": "https://pokrivala.net",
+  "version": "0.1.8",
   "browser": {
     "fs": false,
     "os": false,

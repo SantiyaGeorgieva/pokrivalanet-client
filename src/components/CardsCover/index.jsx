@@ -19,7 +19,7 @@ const CardsCover = ({ cards, handleCardTitle, isMobile }) => {
           return <Col md="3" key={idx} className={`${isMobile ? 'mb-3' : ''}`}>
             {!row?.src ? <Spinner className="m-5" color="primary" /> :
               <>
-                {t(`${row?.subtitle}`) === 'Изчислете цена' ?
+                {t(`${row?.subtitle}`) === t('card_text_subtitle7') ?
                   <Link className="text-decoration-none" to="/truck-covers/calculator" onClick={(e) => handleCardTitle(e, row?.title)}>
                     <Card className="h-100">
                       <img src={row?.src} className="gallery-image" />
@@ -60,7 +60,7 @@ const CardsCover = ({ cards, handleCardTitle, isMobile }) => {
           return <Col md="3" key={idx} className={`h-100 ${isMobile ? 'mb-3' : ''}`}>
             {!row?.src ? <Spinner className="m-5" color="primary" /> :
               <>
-                {t(`${row?.subtitle}`) === 'Изчислете цена' ?
+                {t(`${row?.subtitle}`) === t('card_text_subtitle7') ?
                   <Link className="text-decoration-none" to="/truck-covers/calculator" onClick={(e) => handleCardTitle(e, row?.title)}>
                     <Card className="h-100">
                       <img src={row?.src} className="gallery-image" />
@@ -102,7 +102,7 @@ const CardsCover = ({ cards, handleCardTitle, isMobile }) => {
           return <Col md="3" key={idx} className={`${isMobile ? 'mb-3' : ''}`}>
             {!row?.src ? <Spinner className="m-5" color="primary" /> :
               <>
-                {t(`${row?.subtitle}`) === 'Изчислете цена' ?
+                {t(`${row?.subtitle}`) === t('card_text_subtitle7') ?
                   <Link className="text-decoration-none" to="/truck-covers/calculator" onClick={(e) => handleCardTitle(e, row?.title)}>
                     <Card>
                       <img src={row?.src} className="gallery-image" />

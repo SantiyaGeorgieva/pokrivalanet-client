@@ -78,7 +78,7 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
     hasFallingRightError, hasNumberStretchesError, hasDateManufactureError, values])
 
   useEffect(() => {
-    if (values.length > 0 && titlePage === 'card') {
+    if (values.length > 0 && titlePage === 'card_text4') {
       values.map((value, idx) => {
         setItems([{
           'width_cover_text': value.width,

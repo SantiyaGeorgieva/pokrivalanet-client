@@ -165,7 +165,7 @@ app.post("/contact", async (req, res, next) => {
   });
 });
 
-app.post("/priceWindproofOffer", async (req, res, next) => {
+app.post("/windproofcurtains-priceoffer", async (req, res, next) => {
   const {
     width,
     height,
@@ -254,8 +254,9 @@ app.post("/priceWindproofOffer", async (req, res, next) => {
   });
 });
 
-app.post("/offer", async (req, res, next) => {
+app.post("/windproofcurtains-offer-email", async (req, res, next) => {
   const { document } = req.body;
+  console.log('document', document);
   // console.log('req.body', req.body);
   var PassThrough = require('stream').PassThrough;
 
@@ -291,7 +292,7 @@ app.post("/offer", async (req, res, next) => {
     attachments: [
       {
         filename: nameOfAttachment,
-        content: imageUrlStream
+        content: document
         // filename: "test.pdf",
         // content: `data:text/plain;base64,${document}`,
         // content: fs.createReadStream(`${document}`)
@@ -326,7 +327,7 @@ app.post("/offer", async (req, res, next) => {
   // });
 });
 
-app.post("/priceCoverOffer", async (req, res, next) => {
+app.post("/truckcovers-priceoffer", async (req, res, next) => {
   const {
     width,
     length,

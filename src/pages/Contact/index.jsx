@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Button, Col, Form, FormFeedback, FormGroup, Input, Label, Row } from "reactstrap";
+import { Button, Col, Form, FormFeedback, FormGroup, Input, Label, Row, Spinner } from "reactstrap";
 import GoogleMapRuse from '../../components/GoogleMapRuse';
 import { useTranslation } from "react-i18next";
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -30,6 +30,7 @@ function Contact({ hideMain, isMobile }) {
   const [messageCaptcha, setMessageCaptcha] = useState('');
   const [error, setError] = useState('');
 
+  const [loaded, setLoaded] = useState(false);
   const [visible, setVisible] = useState(false);
   const onDismiss = () => setVisible(false);
 
@@ -120,8 +121,9 @@ function Contact({ hideMain, isMobile }) {
         'Accept': 'application/json'
       },
       responseType: 'json'
-    }).then((response) => {
+    }, setLoaded(true)).then((response) => {
       if (response.status === 200) {
+        setLoaded(false);
         setValues([]);
         setName('');
         setEmail('');
@@ -208,13 +210,13 @@ function Contact({ hideMain, isMobile }) {
                 <ReCAPTCHA sitekey={process.env.REACT_APP_googleSiteKey} ref={captchaRef} />
               </FormGroup>
               {error && <p className="text-start textError fs-14">{t('error_text')} {error}</p>}
-              {messageCaptcha && <p className="text-start textSuccess fs-14">{messageCaptcha}</p>}
+              {!loaded && <p className="text-start textSuccess fs-14">{messageCaptcha}</p>}
               <FormGroup>
                 <Button type="submit" outline className="d-flex text-start mt-4" id="btn-submit" disabled={loading}>
                   {loading ? t('send_button_text2') : t('send_button_text1')}
                 </Button>
               </FormGroup>
-              {visible ? <Message isVisible={visible} onDismiss={onDismiss} text={`${t('thank_you_message')}`} /> : <></>}
+              {loaded ? <Spinner color="primary" /> : <>{visible && <Message isVisible={visible} onDismiss={onDismiss} text={`${t('thank_you_message')}`} />}</>}
             </Form>
           </Col>
         </Row>

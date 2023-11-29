@@ -2,6 +2,7 @@ const mysql = require('mysql2');
 const dotenv = require('dotenv');
 const express = require('express');
 const logger = require('morgan');
+const multer = require('multer');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
@@ -25,6 +26,10 @@ const pool = mysql.createPool({
 
 const app = express();
 app.use(logger('dev'));
+
+const upload = multer({
+  storage: multer.memoryStorage()
+});
 
 const corsOptions = {
   origin: '*',
@@ -244,10 +249,6 @@ app.post("/windproofcurtains-priceoffer", async (req, res, next) => {
     finalPrice = (Number(finalPrice) + 60).toFixed(2);
   }
 
-  // finalPrice = Number(finalPrice) + Number(hardwareTextPrice);
-  // console.log('hardwareTextPrice', hardwareTextPrice);
-  // console.log('finalPrice', finalPrice);
-
   res.status(200).json({
     'status': 'success',
     'result': finalPrice
@@ -386,7 +387,6 @@ app.post("/truckcovers-priceoffer", async (req, res, next) => {
       finalPrice = (Number(finalPrice) * Number(assemblyPrice)).toFixed(2);
     }
   } else {
-    // var finalPrice = 0;
     let totalLength = 0;
     let h = 3;
     totalLength = l * h * 15;
@@ -401,6 +401,64 @@ app.post("/truckcovers-priceoffer", async (req, res, next) => {
   res.status(200).json({
     'status': 'success',
     'result': finalPrice
+  });
+});
+
+app.post("/truckcovers-offer-file", async (req, res) => {
+  try {
+    let response = await pool.query("INSERT INTO `truck-covers` SET ?", req.body, function (error, results, fields) {
+      pool.release();
+      return results;
+    });
+    return res.status(200).json({
+      success: true,
+      status: "success",
+      message: "File information saved sucessfully!",
+      offerId: response[0].insertId
+    });
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      message: error
+    });
+  }
+});
+
+app.post('/truckcovers-offer-email', async (req, res, next) => {
+  console.warn(' req.body\n\n', req);
+  const buffer = await req.body.file;
+  console.log('buffer', buffer);
+
+  let transporter = nodemailer.createTransport({
+    host: process.env.HOST_EMAIL,
+    port: process.env.PORT_EMAIL,
+    auth: {
+      user: process.env.USER_EMAIL,
+      pass: process.env.PASSWORD_EMAIL
+    }
+  });
+
+  const mailOptions = {
+    from: 'Client',
+    subject: 'Оферта',
+    to: process.env.USER_EMAIL,
+    html: `<h1>Оферта от клиент</h1>`,
+    attachments: [
+      {
+        filename: 'PokrivalaNET_offer.pdf',
+        // content: 'raboti'
+        content: Buffer.from(JSON.stringify(req.body.file), "utf-8")
+      }
+    ]
+  };
+
+  transporter.sendMail(mailOptions, (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(400).json({ "message": err })
+    } else {
+      res.status(200).json({ 'status': "success", 'message': 'Email sent:' + result.response });
+    }
   });
 });
 

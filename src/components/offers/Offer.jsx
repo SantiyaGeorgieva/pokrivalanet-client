@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const Offer = ({ items, title, parametersText, totalPrice }) => {
+const Offer = ({ items, title, offerNo, parametersText, totalPrice }) => {
   const { t } = useTranslation();
   PageTitle(t('windproof_curtains_page_title'));
 
@@ -32,7 +32,7 @@ const Offer = ({ items, title, parametersText, totalPrice }) => {
       <Page size="A4" style={styles.page}>
         <OfferBillTo />
         <OfferTitle offerTitle="title_оffer" title={title} />
-        <OfferNo offerNoTitle="title_offer_no" offerDateTitle="offer_date_title" />
+        <OfferNo offerNoTitle="title_offer_no" offerNo={offerNo} offerDateTitle="offer_date_title" />
         <OfferTable parametersText={parametersText} items={items} totalPrice={totalPrice} message="pdf_thankyou_msg" />
         <OfferThankYouMsg message="pdf_thankyou_msg" />
       </Page>

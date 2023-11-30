@@ -47,10 +47,8 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
 
   const [clicked, setClicked] = useState(false);
   const [isLoading, setLoading] = useState(false);
-  // const [checked, setChecked] = useState(false);
 
   const [selectedFile, setSingleFile] = useState(null);
-  const [blob, setBlob] = useState(null);
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState('');
 
@@ -72,12 +70,9 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
       && !hasFallingRightError && !hasNumberStretchesError && !hasDateManufactureError && titlePage === 'card4' && values.length > 0) {
       setClicked(true);
       fetchPriceOffer();
-      // handlePdf();
     } else if (!hasLengthError && !hasDateManufactureError && titlePage !== 'card4' && values.length > 0) {
       setClicked(true);
       fetchPriceOffer();
-      handlePdf(`${t('file_name')}`,
-        <Offer title={titlePage} parametersText="offer_parameters_text2" items={items} totalPrice={totalPrice} />);
     }
   }, [hasWidthError, hasLengthError, hasHoodError, hasBackCoverError, hasFallingPipeError,
     hasFallingRightError, hasNumberStretchesError, hasDateManufactureError, values])
@@ -112,6 +107,27 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
       });
     }
   }, [values])
+
+  useEffect(() => {
+    if (totalPrice > 0 && Object.keys(items).length > 0 && offerNumber !== '') {
+      handlePdf(`${t('file_name')}`,
+        <Offer offerNo={offerNumber} title={titlePage} parametersText="offer_parameters_text2" items={items} totalPrice={totalPrice} />, items);
+    }
+  }, [totalPrice, offerNumber, items]);
+
+
+  useEffect(() => {
+    if (file !== null && totalPrice > 0) {
+      setTimeout(() => {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+          let dataUrl = reader.result;
+          fetchOffer(dataUrl);
+        }
+      })
+    }
+  }, [file]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -180,22 +196,21 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
     }, ...values]);
   }
 
-  const handlePdf = async (name, pdfDocumentComponent) => {
+  const handlePdf = async (name, pdfDocumentComponent, items) => {
     setFileName(name);
-    setLoading(true);
-    const blobConvertFile = await pdf(pdfDocumentComponent).toBlob();
-    setBlob(blobConvertFile);
-  }
-
-  useEffect(() => {
-    let fileBlob = new File([blob], `${t('file_name')}`, { type: 'application/pdf' });
-    setFile(fileBlob);
     setLoading(false);
+    let blobConvertFile = null;
+    let fileBlob = null;
 
-    if (file !== null) {
-      fetchOfferFile();
+    if (Object.keys(items).length > 0) {
+      blobConvertFile = await pdf(pdfDocumentComponent).toBlob();
     }
-  }, [blob]);
+
+    if (blobConvertFile !== null) {
+      fileBlob = await new File([blobConvertFile], `${t('file_name')}`, { type: 'application/pdf' });
+      setFile(fileBlob);
+    }
+  }
 
   const generatePdfDocument = async (fileName, pdfDocumentComponent) => {
     setLoading(true);
@@ -221,6 +236,7 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
     setAssemblyCheck(false);
     setValues([]);
     setClicked(false);
+    setVisible(false);
   }
 
   function fetchPriceOffer() {
@@ -238,6 +254,7 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
       ).then((response) => {
         if (response.status === 'success') {
           setTotalPrice(response.result);
+          fetchOfferFile();
         } else if (response.status === 'fail') {
           console.log("Message failed to send.", response);
         }
@@ -247,11 +264,11 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
     }
   }
 
-  function fetchOfferFile() {
-    if (file) {
-      const response = fetch(`${linkUrl()}/truckcovers-offer-file`, {
+  async function fetchOfferFile() {
+    if (selectedFile) {
+      const response = await fetch(`${linkUrl()}/truckcovers-offer-file`, {
         method: "POST",
-        body: JSON.stringify({ filename: fileName, type: file.type, size: file.size }),
+        body: JSON.stringify({ filename: fileName, type: selectedFile.type, size: selectedFile.size }),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -261,7 +278,6 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
       ).then((response) => {
         if (response.status === 'success') {
           setOfferNumber(response.offerId);
-          fetchOffer();
         } else if (response.status === 'fail') {
           console.log("Message failed to send.", response);
         }
@@ -271,32 +287,27 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
     }
   }
 
-  async function fetchOffer() {
-    if (file) {
-      const buffer = await blob.arrayBuffer();
-      if (buffer) {
-        console.log('buffer', buffer);
-        const response = fetch(`${linkUrl()}/truckcovers-offer-email`, {
-          method: "POST",
-          body: { file: buffer.toString('base64') },
-          headers: {
-            'Accept': 'application/pdf',
-            'Content-Type': 'application/pdf'
-          },
-        }, setLoading(true)).then(
-          (response) => (response.json())
-        ).then((response) => {
-          if (response.status === 'success') {
-            console.log('response: ' + response);
-            setVisible(true);
-          } else if (response.status === 'fail') {
-            console.log("Message failed to send.", response);
-          }
-        });
-        setLoading(false);
+  function fetchOffer(dataUrl) {
+    if (dataUrl !== '') {
+      const response = fetch(`${linkUrl()}/truckcovers-offer-email`, {
+        method: "POST",
+        body: JSON.stringify({ filename: fileName, file: dataUrl }),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      }, setLoading(true)).then(
+        (response) => (response.json())
+      ).then((response) => {
+        if (response.status === 'success') {
+          setVisible(true);
+        } else if (response.status === 'fail') {
+          console.log("Message failed to send.", response);
+        }
+      });
+      setLoading(false);
 
-        return response;
-      }
+      return response;
     }
   }
 
@@ -316,7 +327,7 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
             />
           </Col>
           <Col md="6">
-            <Form className={`${isMobile ? 'mt-3' : ''}`} onSubmit={handleSubmit} method="POST" id="form">
+            <Form className={`${isMobile ? 'mt-3' : ''}`} onSubmit={handleSubmit} method="POST" id="form" encType="multipart/form-data">
               <h4 className={`${isMobile ? 'mb-3' : 'mb-5'}`}>{t('cover_data_text')}</h4>
               <div className={`container ${isMobile ? 'mt-3' : 'mt-5'}`}>
                 {titlePage === 'card_text4' ?
@@ -491,12 +502,12 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
                     {t('total_price_text')} {totalPrice && <span className="fw-bold">{`${totalPrice} BGN`}</span>}
                   </Col>
                 </Row>}
-                {visible ?
+                {visible &&
                   <Row>
                     <Col>
                       <Message isVisible={visible} onDismiss={onDismiss} text={`${t('thank_you_message_offer')}`} />
                     </Col>
-                  </Row> : <></>}
+                  </Row>}
                 {!isLoading ?
                   <>
                     <Row className="mt-2">
@@ -506,7 +517,7 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
                             <Offer title={titlePage} offerNo={offerNumber} parametersText="offer_parameters_text2" items={items} totalPrice={totalPrice} />}
                             fileName={t('file_name')} className="text-decoration-none">
                             {({ blob, url, loading, error }) => {
-                              setSingleFile(url);
+                              setSingleFile(btoa(blob));
                               return loading ? <Spinner color="primary" /> :
                                 <Button block type="submit" className="bc-blue d-flex mt-3">
                                   <span className={`fw-bold mx-auto text-transform ${!isMobile ? '' : 'fs-14 text-nowrap'}`}>{t('calculate_price_button')}</span>

@@ -42,24 +42,22 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
   const [clicked, setClicked] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [checked, setChecked] = useState(false);
-  const [selectedFile, setSingleFile] = useState(null);
 
-  // const [messageOpen, setMessageOpen] = useState(false);
+  const [selectedFile, setSingleFile] = useState(null);
+  const [file, setFile] = useState(null);
+  const [fileName, setFileName] = useState('');
+
   const [visible, setVisible] = useState(false);
   const onDismiss = () => setVisible(false);
 
+  const [offerNumber, setOfferNumber] = useState('');
   const [totalPrice, setTotalPrice] = useState('');
 
   useEffect(() => {
     if (!hasWidthError && !hasHeightError && !hasEdgeError && !hasDateManufactureError && values.length > 0) {
-      // console.log('here');
       setClicked(true);
       fetchPriceOffer();
-      // generatePdfDocument(`${t('file_name')}`, <Offer items={items} totalPrice={totalPrice} />);
-      // handlePdf();
-      // fetchOffer(selectedFile);
     } else {
-      // console.log('here2');
       setClicked(false);
     }
   }, [hasWidthError, hasHeightError, hasEdgeError, values])
@@ -87,6 +85,27 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
     checked && setItems(prevState => [...prevState, { curtain_have_door: "+" }]);
 
   }, [values])
+
+  useEffect(() => {
+    if (totalPrice > 0 && Object.keys(items).length > 0 && offerNumber !== '') {
+      handlePdf(`${t('file_name')}`,
+        <Offer title="offer_windproof_curtain" offerNo={offerNumber} parametersText="offer_parameters_text" items={items} totalPrice={totalPrice} />, items);
+    }
+  }, [totalPrice, offerNumber, items]);
+
+
+  useEffect(() => {
+    if (file !== null && totalPrice > 0) {
+      setTimeout(() => {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+          let dataUrl = reader.result;
+          fetchOffer(dataUrl);
+        }
+      })
+    }
+  }, [file]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -131,81 +150,19 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
     }, ...values]);
   }
 
-  const getPdfBlob = async () => {
-    try {
-      const blobPdf = await pdf(<Offer items={items} totalPrice={totalPrice} />).toBlob();
+  const handlePdf = async (name, pdfDocumentComponent, items) => {
+    setFileName(name);
+    setLoading(false);
+    let blobConvertFile = null;
+    let fileBlob = null;
 
-      return blobPdf;
-    } catch (err) {
-      console.log(err);
+    if (Object.keys(items).length > 0) {
+      blobConvertFile = await pdf(pdfDocumentComponent).toBlob();
     }
-  };
 
-  const handlePdf = async () => {
-    // const pdf = await getPdfBlob();
-    console.log('selectedFile', selectedFile)
-    const fileName = t('file_name');
-    const file = new File([selectedFile], fileName, {
-      lastModified: (new Date()).getTime()
-    }); /*create file*/
-
-    if (file) {
-      console.log('file', file);
-      fetchOffer(file);
-    }
-  };
-
-  function fetchPriceOffer() {
-    if (values) {
-      const response = fetch(`${linkUrl()}/windproofcurtains-priceoffer`, {
-        method: "POST",
-        body: JSON.stringify(values[0]),
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-      }, setLoading(true)).then(
-        (response) => (response.json())
-      ).then((response) => {
-        if (response.status === 'success') {
-          setTotalPrice(response.result);
-          setVisible(true);
-        } else if (response.status === 'fail') {
-          console.log("Message failed to send.", response);
-        }
-        setLoading(false);
-      });
-
-      return response;
-    }
-  }
-
-  function fetchOffer(document) {
-    if (document) {
-      console.log('document', document);
-      const response = fetch(`${linkUrl()}/windproofcurtains-offer-email`, {
-        method: "POST",
-        body: JSON.stringify({ document }),
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-      }, setLoading(true)).then(
-        (response) => (response.json())
-      ).then((response) => {
-        if (response.status === 'success') {
-          setValues([]);
-          setWidth('');
-          setHeight('');
-          setDescription('');
-          setVisible(true);
-          setLoading(false);
-        } else if (response.status === 'fail') {
-          console.log("Message failed to send.", response);
-        }
-      });
-
-      return response;
+    if (blobConvertFile !== null) {
+      fileBlob = await new File([blobConvertFile], `${t('file_name')}`, { type: 'application/pdf' });
+      setFile(fileBlob);
     }
   }
 
@@ -215,7 +172,6 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
     setSingleFile(blob);
     saveAs(blob, fileName);
     setLoading(false);
-    // handlePdf();
   };
 
   const clearForm = () => {
@@ -233,6 +189,78 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
     setChecked(false);
     setValues([]);
     setVisible(false);
+  }
+
+  function fetchPriceOffer() {
+    if (values) {
+      const response = fetch(`${linkUrl()}/windproofcurtains-priceoffer`, {
+        method: "POST",
+        body: JSON.stringify(values[0]),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      }, setLoading(true)).then(
+        (response) => (response.json())
+      ).then((response) => {
+        if (response.status === 'success') {
+          setTotalPrice(response.result);
+          fetchOfferFile();
+        } else if (response.status === 'fail') {
+          console.log("Message failed to send.", response);
+        }
+        setLoading(false);
+      });
+
+      return response;
+    }
+  }
+
+  async function fetchOfferFile() {
+    if (selectedFile) {
+      const response = await fetch(`${linkUrl()}/windproofcurtains-offer-file`, {
+        method: "POST",
+        body: JSON.stringify({ filename: fileName, type: selectedFile.type, size: selectedFile.size }),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      }, setLoading(true)).then(
+        (response) => (response.json())
+      ).then((response) => {
+        if (response.status === 'success') {
+          setOfferNumber(response.offerId);
+        } else if (response.status === 'fail') {
+          console.log("Message failed to send.", response);
+        }
+      });
+
+      return response;
+    }
+  }
+
+  function fetchOffer(dataUrl) {
+    if (dataUrl !== '') {
+      const response = fetch(`${linkUrl()}/windproofcurtains-offer-email`, {
+        method: "POST",
+        body: JSON.stringify({ filename: fileName, file: dataUrl }),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      }, setLoading(true)).then(
+        (response) => (response.json())
+      ).then((response) => {
+        if (response.status === 'success') {
+          setVisible(true);
+        } else if (response.status === 'fail') {
+          console.log("Message failed to send.", response);
+        }
+      });
+      setLoading(false);
+
+      return response;
+    }
   }
 
   return <>{!hideMain &&
@@ -444,15 +472,21 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
                       {t('total_price_text')} {totalPrice && <span className="fw-bold">{`${totalPrice} BGN`}</span>}
                     </Col>
                   </Row>
+                  {visible &&
+                    <Row>
+                      <Col>
+                        <Message isVisible={visible} onDismiss={onDismiss} text={`${t('thank_you_message_offer')}`} />
+                      </Col>
+                    </Row>
+                  }
                   <Row className="mt-2">
                     <Col>
                       {!clicked ?
                         <PDFDownloadLink document={
-                          <Offer title="offer_windproof_curtain" parametersText="offer_parameters_text" items={items} totalPrice={totalPrice} />}
+                          <Offer title="offer_windproof_curtain" offerNo={offerNumber} parametersText="offer_parameters_text" items={items} totalPrice={totalPrice} />}
                           fileName={t('file_name')} className="text-decoration-none">
                           {({ blob, url, loading, error }) => {
-                            setSingleFile(url);
-                            // setSingleFile(btoa(blob));
+                            setSingleFile(btoa(blob));
                             return loading ? <Spinner color="primary" /> :
                               <Button block type="submit" className="bc-blue d-flex mt-3">
                                 <span className={`fw-bold mx-auto text-transform ${!isMobile ? '' : 'fs-14 text-nowrap'}`}>{t('order_button')}</span>
@@ -462,7 +496,7 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
                         :
                         <div className="d-flex align-items-center justify-content-between">
                           <PDFDownloadLink document={
-                            <Offer title="offer_windproof_curtain" parametersText="offer_parameters_text" items={items} totalPrice={totalPrice} />}
+                            <Offer title="offer_windproof_curtain" offerNo={offerNumber} parametersText="offer_parameters_text" items={items} totalPrice={totalPrice} />}
                             fileName={t('file_name')} className={`text-decoration-none ${!isMobile ? '' : 'me-2'}`}>
                             {({ blob, url, loading, error }) =>
                               loading ? 'Loading document...' :
@@ -498,13 +532,6 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
                             {t('clear_button')}
                           </Button>
                         </div>
-                      </Col>
-                    </Row>
-                  }
-                  {visible &&
-                    <Row>
-                      <Col>
-                        <Message isVisible={visible} onDismiss={onDismiss} text={`${t('thank_you_message_offer')}`} />
                       </Col>
                     </Row>
                   }

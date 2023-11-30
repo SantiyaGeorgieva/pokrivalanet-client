@@ -1,16 +1,15 @@
-const mysql = require('mysql2');
 const dotenv = require('dotenv');
+const mysql = require('mysql2');
+const compression = require('compression');
 const express = require('express');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const xss = require('xss-clean');
 const logger = require('morgan');
-const multer = require('multer');
-const bodyParser = require('body-parser');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
-const request = require('request');
-const { linkUrl } = require('./utils');
 const path = require('path');
-// const cookieParser = require('cookie-parser');
-// const fs = require('fs');
 
 dotenv.config();
 
@@ -25,12 +24,31 @@ const pool = mysql.createPool({
 // var saltRounds = 10;
 
 const app = express();
-app.use(logger('dev'));
 
-const upload = multer({
-  storage: multer.memoryStorage()
+// Set security HTTP headers
+app.use(helmet());
+
+// Data sanitization against XSS (cross-side script attack)
+app.use(xss());
+
+app.disable('x-powered-by');
+app.use(compression());
+
+// Development logging
+if (process.env.NODE_ENV === 'development') {
+  app.use(logger('dev'));
+}
+
+// Limit requests from same API
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: 'Too many requests from this IP, please try again in an hour!'
 });
 
+app.use('/', limiter);
+
+//Set Cors
 const corsOptions = {
   origin: '*',
   credentials: true,
@@ -45,8 +63,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // enable CORS using npm package
 app.use(cors(corsOptions));
-
-// app.use(cookieParser());
 
 //Routes
 // app.post("/register", async (req, res, next) => {
@@ -255,24 +271,27 @@ app.post("/windproofcurtains-priceoffer", async (req, res, next) => {
   });
 });
 
-app.post("/windproofcurtains-offer-email", async (req, res, next) => {
-  const { document } = req.body;
-  console.log('document', document);
-  // console.log('req.body', req.body);
-  var PassThrough = require('stream').PassThrough;
+app.post("/windproofcurtains-offer-file", async (req, res) => {
+  try {
+    let response = await pool.query("INSERT INTO `windproof-curtains` SET ?", req.body, function (error, results, fields) {
+      pool.release();
+      return results;
+    });
+    return res.status(200).json({
+      success: true,
+      status: "success",
+      message: "File information saved sucessfully!",
+      offerId: response[0].insertId
+    });
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      message: error
+    });
+  }
+});
 
-  var nameOfAttachment = 'PokrivalaNET_offer.pdf';
-  var imageUrlStream = new PassThrough();
-  request
-    .get({
-      proxy: `${linkUrl}`, // if needed
-      // url: document
-    })
-    .on('error', function (err) {
-      // I should consider adding additional logic for handling errors here
-      console.log(err);
-    })
-    .pipe(imageUrlStream);
+app.post("/windproofcurtains-offer-email", async (req, res, next) => {
 
   let transporter = nodemailer.createTransport({
     host: process.env.HOST_EMAIL,
@@ -283,49 +302,27 @@ app.post("/windproofcurtains-offer-email", async (req, res, next) => {
     }
   });
 
-  // var filePath = path.join(__dirname, document.name);
-
   const mailOptions = {
-    from: 'test@test.com',
-    subject: 'Оферта',
+    from: 'Клиент',
+    subject: 'Оферта за ветроупорна завеса',
     to: process.env.USER_EMAIL,
     html: `<h1>Оферта от клиент</h1>`,
     attachments: [
       {
-        filename: nameOfAttachment,
-        content: document
-        // filename: "test.pdf",
-        // content: `data:text/plain;base64,${document}`,
-        // content: fs.createReadStream(`${document}`)
-        // streamSource: fs.createReadStream(filePath)
-        // path: path.join(__dirname, `../output/PokrivalaOffer.pdf`),
-        // href: document,
-        // content: `${document}`,
-        // contentType: "application/pdf",
-        // encoding: 'utf-8',
-        // encoding: 'base64',
+        filename: req.body.filename,
+        path: req.body.file
       }
     ]
-  }
+  };
 
   transporter.sendMail(mailOptions, (err, result) => {
     if (err) {
-      console.log(err);
-      res.json('Opps error occured')
+      console.error(err);
+      res.status(400).json({ "message": err })
     } else {
-      res.send(200).json('Email sent: ' + result.response);
+      res.status(200).json({ 'status': "success", 'message': 'Email sent:' + result.response });
     }
   });
-
-  // pool.query('INSERT INTO contacts SET ?', req.body, function (error, results, fields) {
-  //   pool.release();
-
-  //   if (error) {
-  //     res.status(400).json({ message: error });
-  //   } else {
-  //     res.status(200).json({ message: "Contact registered sucessfully" });
-  //   }
-  // });
 });
 
 app.post("/truckcovers-priceoffer", async (req, res, next) => {
@@ -425,9 +422,6 @@ app.post("/truckcovers-offer-file", async (req, res) => {
 });
 
 app.post('/truckcovers-offer-email', async (req, res, next) => {
-  console.warn(' req.body\n\n', req);
-  const buffer = await req.body.file;
-  console.log('buffer', buffer);
 
   let transporter = nodemailer.createTransport({
     host: process.env.HOST_EMAIL,
@@ -439,15 +433,14 @@ app.post('/truckcovers-offer-email', async (req, res, next) => {
   });
 
   const mailOptions = {
-    from: 'Client',
-    subject: 'Оферта',
+    from: 'Клиент',
+    subject: 'Оферта за покривало',
     to: process.env.USER_EMAIL,
     html: `<h1>Оферта от клиент</h1>`,
     attachments: [
       {
-        filename: 'PokrivalaNET_offer.pdf',
-        // content: 'raboti'
-        content: Buffer.from(JSON.stringify(req.body.file), "utf-8")
+        filename: req.body.filename,
+        path: req.body.file
       }
     ]
   };

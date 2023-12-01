@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
   Button,
@@ -19,20 +19,30 @@ import Logo from '../../images/logo.png';
 import { links } from "../../constants";
 import './header.scss';
 import { scrollToTop } from "../../utils";
+import CloseIcon from "../CloseIcon";
+import HamburgerIcon from "../HamburgerIcon";
 
-function Header({ isMobile, isOpen, toggleClass, selectedItem, setSelectedItem }) {
+const Header = memo(function Header({ isMobile, selectedItem, setSelectedItem }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
 
   const navigateToContact = () => {
     navigate('/contact');
   };
 
-  // console.log('isOpen', isOpen);
+  const toggleMobileMenu = () => {
+    setIsOpen(prevState => !prevState);
+  };
+
+  const handleLinkClick = () => {
+    setIsOpen(false);
+  };
 
   useEffect(() => {
-    if (isMobile && document.querySelectorAll('.container-fluid')[1]) {
-      document.querySelectorAll('.container-fluid')[1].classList.add("px-0");
+    const element = window.parent.document.querySelector('.navbar-expand-sm > .container-fluid');
+    if (isMobile && element) {
+      element.classList.add("px-0");
     }
   }, [isMobile, isOpen])
 
@@ -149,7 +159,7 @@ function Header({ isMobile, isOpen, toggleClass, selectedItem, setSelectedItem }
             </NavLink>
             <Navbar expand="sm" className="py-0 px-0 mt-5 me-2 text-end">
               <Nav className=" ms-auto" navbar>
-                <UncontrolledDropdown setActiveFromChild className="cursor-notAllowed">
+                <UncontrolledDropdown setActiveFromChild>
                   <DropdownToggle
                     caret
                     className="nav-link pointer-events-none"
@@ -234,19 +244,16 @@ function Header({ isMobile, isOpen, toggleClass, selectedItem, setSelectedItem }
             </div>
           </>
         }
-        <div className={`menuToggle ${isOpen ? 'close' : ''}`} onClick={(e) => toggleClass(e)}>
-          <input type="checkbox" />
-          <span></span>
-          <span></span>
-          <span></span>
+        <div className="menuToggle" onClick={toggleMobileMenu}>
+          {isOpen ? <CloseIcon /> : <HamburgerIcon />}
         </div>
         <Collapse isOpen={isOpen} navbar>
           <Nav className="menu" navbar>
             {links.map((element, i) => {
               return (isOpen && <NavItem
                 onClick={({ target }) => {
-                  target && target?.classList.toggle('active')
-                  toggleClass(false);
+                  target && target?.classList.toggle('active');
+                  handleLinkClick();
                 }}
                 key={i}>
                 <NavLink to={element.to}>
@@ -260,6 +267,6 @@ function Header({ isMobile, isOpen, toggleClass, selectedItem, setSelectedItem }
     }
     </>
   )
-};
+});
 
 export default Header;

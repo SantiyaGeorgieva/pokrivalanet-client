@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import Gallery from "../../components/Gallery";
 import Hr from "../../components/Hr";
@@ -6,7 +7,8 @@ import { curtainsCowFarmsImages } from "../../constants";
 
 import './curtainsCowFarmsImages.scss';
 
-function CurtainsCowFarms({ hideMain, isMobile }) {
+
+const CurtainsCowFarms = memo(function CurtainsCowFarms({ hideMain, isMobile }) {
   const { t } = useTranslation();
   PageTitle(t('curtains_cow_farms_page_title'));
 
@@ -26,6 +28,6 @@ function CurtainsCowFarms({ hideMain, isMobile }) {
       </div>
     }
   </>
-}
+});
 
 export default CurtainsCowFarms;

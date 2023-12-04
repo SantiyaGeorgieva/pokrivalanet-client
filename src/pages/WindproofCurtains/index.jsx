@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { saveAs } from 'file-saver';
 import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
 import { Row, Col, Form, FormFeedback, FormGroup, Input, Label, Button, Spinner } from "reactstrap";
 import { useTranslation } from "react-i18next";
+import { DayPicker } from 'react-day-picker';
+import { bg, ro, enGB } from 'date-fns/locale';
 import Gallery from "../../components/Gallery";
 import Hr from "../../components/Hr";
 import PageTitle from "../../components/PageTitle";
@@ -11,13 +13,50 @@ import Message from "../../components/Message";
 import { thickCount, windproofCurtains, windproofCurtainsOptions } from "../../constants";
 import { linkUrl } from "../../utils";
 
-import './windproofCurtains.scss';
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-const WindproofCurtains = ({ hideMain, isMobile }) => {
+import 'react-day-picker/dist/style.css';
+import './windproofCurtains.scss';
+
+const css = `
+.my-selected:not([disabled]) { 
+  font-weight: bold; 
+  border: 1px solid currentColor;
+}
+.my-selected:hover:not([disabled]) { 
+  border-color: blue;
+  color: blue;
+}
+.my-today { 
+  font-weight: bold;
+  color: blue;
+}`;
+
+const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }) {
   const { t } = useTranslation();
   PageTitle(t('windproof_curtains_page_title'));
+
+  const [selectedDate, setSelectedDate] = useState(null);
+  const lastMonth = new Date();
+  const today = lastMonth.setMonth(lastMonth.getMonth() - 2);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const wrapperRef = useRef(null);
+
+  const useOutsideAlerter = (ref) => {
+    useEffect(() => {
+      function handleClickOutside(event) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          hideDatePicker();
+        }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref]);
+  }
+
+  useOutsideAlerter(wrapperRef);
 
   const [width, setWidth] = useState('');
   const [height, setHeight] = useState('');
@@ -57,20 +96,22 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
     if (!hasWidthError && !hasHeightError && !hasEdgeError && !hasDateManufactureError && values.length > 0) {
       setClicked(true);
       fetchPriceOffer();
+      fetchOfferFile();
     } else {
       setClicked(false);
     }
-  }, [hasWidthError, hasHeightError, hasEdgeError, values])
+  }, [hasWidthError, hasHeightError, hasEdgeError, hasDateManufactureError, values])
 
   useEffect(() => {
     if (values.length > 0) {
       values.map((value, idx) => {
+        console.log('value:', value);
         setItems([{
           'width_text': value.width,
           'height_text': value.height,
           'depth_text': value.thick,
           'edges': value.edge,
-          'date_manufacture': new Date(value?.date_manufacture).toLocaleDateString("ro-RO"),
+          'date_manufacture': selectedDate?.toLocaleDateString("ro-RO"),
           'hardware_text': radioCheck,
           'additional_description': value.description,
         }
@@ -93,7 +134,6 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
     }
   }, [totalPrice, offerNumber, items]);
 
-
   useEffect(() => {
     if (file !== null && totalPrice > 0) {
       setTimeout(() => {
@@ -104,8 +144,52 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
           fetchOffer(dataUrl);
         }
       })
+
+      console.log('file.size', file.size)
+      console.log('selectedFile.size', selectedFile.size)
+
+      if (file.size !== selectedFile.size && file !== null) {
+        fetchOfferComapedFiles(offerNumber);
+      }
     }
   }, [file]);
+
+  const getLocale = (item) => {
+    if (item === 'bg') {
+      return bg;
+    } else if (item === 'ro') {
+      return ro;
+    } else {
+      return enGB;
+    }
+  };
+
+  const isToday = (day) => {
+    const today = new Date();
+    console.log('day', day);
+    return (
+      day.getFullYear() === today.getFullYear() &&
+      day.getMonth() === today.getMonth() &&
+      day.getDate() === today.getDate()
+    );
+  };
+
+  const handleInputClick = (date) => {
+    if (selectedDate === '') {
+      setShowDatePicker(!showDatePicker);
+    } else {
+      setShowDatePicker(!showDatePicker);
+      setDateManufacture(selectedDate);
+    }
+  };
+
+  const hideDatePicker = () => {
+    setShowDatePicker(false);
+  };
+  const handleDayClick = (day) => {
+    setSelectedDate(day);
+    hideDatePicker();
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -128,9 +212,9 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
       setEdgeError(false);
     }
 
-    if (dateManufacture === null) {
+    if (selectedDate === null) {
       setDateManufactureError(true);
-    } else if (dateManufacture !== null) {
+    } else if (selectedDate !== null) {
       setDateManufactureError(false);
     }
 
@@ -139,7 +223,7 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
       height: height,
       thick: thick,
       edge: edge,
-      date_manufacture: dateManufacture,
+      date_manufacture: selectedDate?.toLocaleDateString("ro-RO"),
       description: description,
       hardwareText: radioCheck,
       zips: zipsCheck,
@@ -205,12 +289,11 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
       ).then((response) => {
         if (response.status === 'success') {
           setTotalPrice(response.result);
-          fetchOfferFile();
         } else if (response.status === 'fail') {
           console.log("Message failed to send.", response);
         }
-        setLoading(false);
       });
+      setLoading(false);
 
       return response;
     }
@@ -240,6 +323,7 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
   }
 
   function fetchOffer(dataUrl) {
+    console.log('file', file);
     if (dataUrl !== '') {
       const response = fetch(`${linkUrl()}/windproofcurtains-offer-email`, {
         method: "POST",
@@ -262,6 +346,36 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
       return response;
     }
   }
+
+  async function fetchOfferComapedFiles(fileId) {
+    console.log('file', file);
+    if (fileId !== null) {
+      const response = await fetch(`${linkUrl()}/windproofcurtains-offer-file-edit`, {
+        method: "PUT",
+        body: JSON.stringify({ id: fileId, filename: fileName, type: file.type, size: file.size }),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      }, setLoading(true)).then(
+        (response) => (response.json())
+      ).then((response) => {
+        if (response.status === 'success') {
+        } else if (response.status === 'fail') {
+          console.log("Message failed to send.", response);
+        }
+      });
+
+      return response;
+    }
+  }
+
+  const disabledDays = {
+    after: new Date(), // Disables all days after today
+    before: new Date(), // Disables all days before today
+    daysOfWeek: [], // Optional: specify days of the week to disable
+    custom: isToday, // Disables today's date
+  };
 
   return <>{!hideMain &&
     <div className={`container ${isMobile ? '' : 'my-4'}`}>
@@ -437,16 +551,44 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
                   <FormGroup className="text-start mb-2">
                     <Label for="date" className="fw-bold">{t('date_manufacture')}</Label>
                     <div className={`datepicker ${hasDateManufactureError ? 'error' : ''}`}>
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker label="" value={dateManufacture === '' ? '' : dateManufacture} onChange={newValue => {
-                          if (dateManufacture === '') {
-                            setDateManufacture(null);
-                          } else {
-                            setDateManufacture(newValue);
-                          }
-                        }} />
-                      </LocalizationProvider>
+                      <Input
+                        type="text"
+                        value={selectedDate === null ? null : selectedDate.toLocaleDateString("ro-RO")}
+                        id="dateManufacture"
+                        placeholder="Select Date"
+                        name="dateManufacture"
+                        onFocus={handleInputClick}
+                        onChange={handleInputClick}
+                      />
                     </div>
+                    {showDatePicker && (
+                      <div ref={wrapperRef}>
+                        <style>{css}</style>
+                        <DayPicker
+                          locale={getLocale(localStorage.getItem("i18nextLng"))}
+                          max={1}
+                          mode="single"
+                          initialMonth={today}
+                          weekStartsOn={1}
+                          disabledDays={disabledDays}
+                          fromMonth={lastMonth}
+                          fromDate={lastMonth}
+                          captionLayout="dropdown"
+                          fromYear={2015}
+                          toYear={2035}
+                          selected={selectedDate}
+                          onDayClick={handleDayClick}
+                          onSelect={setSelectedDate}
+                          modifiersClassNames={{
+                            selected: 'my-selected',
+                            today: 'my-today'
+                          }}
+                          modifiersStyles={{
+                            disabled: { fontSize: '75%' }
+                          }}
+                        />
+                      </div>)
+                    }
                     {hasDateManufactureError && <div className="date-error mt-1">{t('has_date_manufacture_error')}</div>}
                   </FormGroup>
                 </Col>
@@ -486,7 +628,10 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
                           <Offer title="offer_windproof_curtain" offerNo={offerNumber} parametersText="offer_parameters_text" items={items} totalPrice={totalPrice} />}
                           fileName={t('file_name')} className="text-decoration-none">
                           {({ blob, url, loading, error }) => {
-                            setSingleFile(btoa(blob));
+                            if (!loading && url !== '') {
+                              setSingleFile(blob);
+                              setFileName(`${t('file_name')}`);
+                            }
                             return loading ? <Spinner color="primary" /> :
                               <Button block type="submit" className="bc-blue d-flex mt-3">
                                 <span className={`fw-bold mx-auto text-transform ${!isMobile ? '' : 'fs-14 text-nowrap'}`}>{t('order_button')}</span>
@@ -546,6 +691,6 @@ const WindproofCurtains = ({ hideMain, isMobile }) => {
     </div>
   }
   </>
-}
+});
 
 export default WindproofCurtains;

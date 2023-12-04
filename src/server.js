@@ -130,6 +130,10 @@ app.use(cors(corsOptions));
 // verify reCAPTCHA response
 app.post("/verify-token", async (req, res) => {
   try {
+    if (Object.keys(req.body).length === 0) {
+      return res.status(400).send('Empty object provided');
+    }
+
     let token = req.body;
     let response = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.REACT_APP_googleSecretApiKey}&response=${token}`);
     return res.status(200).json({
@@ -273,10 +277,15 @@ app.post("/windproofcurtains-priceoffer", async (req, res, next) => {
 
 app.post("/windproofcurtains-offer-file", async (req, res) => {
   try {
-    let response = await pool.query("INSERT INTO `windproof-curtains` SET ?", req.body, function (error, results, fields) {
+    if (Object.keys(req.body).length === 0) {
+      return res.status(400).send('Empty object provided');
+    }
+
+    let response = await pool.query("INSERT INTO `windproof_curtains` SET ?", req.body, function (error, results, fields) {
       pool.release();
       return results;
     });
+    console.log('response', response);
     return res.status(200).json({
       success: true,
       status: "success",
@@ -291,8 +300,36 @@ app.post("/windproofcurtains-offer-file", async (req, res) => {
   }
 });
 
-app.post("/windproofcurtains-offer-email", async (req, res, next) => {
+app.put("/windproofcurtains-offer-file-edit", async (req, res) => {
+  try {
+    const newData = req.body;
 
+    if (!newData.id || !newData.filename || !newData.type || !newData.size) {
+      return res.status(400).send('Missing required parameters');
+    }
+
+    let response = await pool.query('UPDATE windproof_curtains SET filename = ?,type = ?,size = ? WHERE id=?', [newData.id, newData.filename, newData.type, newData.size],
+      function (error, results, fields) {
+        pool.release();
+        return results;
+      });
+    console.log('response', response[0])
+    return res.status(200).json({
+      success: true,
+      status: "success",
+      message: "File information edited sucessfully!",
+      offerId: response[0].insertId
+    });
+  } catch (error) {
+    console.log('error', error);
+    return res.status(500).json({
+      success: false,
+      message: error
+    });
+  }
+});
+
+app.post("/windproofcurtains-offer-email", async (req, res, next) => {
   let transporter = nodemailer.createTransport({
     host: process.env.HOST_EMAIL,
     port: process.env.PORT_EMAIL,
@@ -326,84 +363,97 @@ app.post("/windproofcurtains-offer-email", async (req, res, next) => {
 });
 
 app.post("/truckcovers-priceoffer", async (req, res, next) => {
-  const {
-    width,
-    length,
-    hood,
-    back_cover,
-    falling_pipe,
-    falling_right,
-    number_stretches,
-    date_manufacture,
-    tarpaulin_type,
-    longitudinal_pocket,
-    fitting_left,
-    fitting_right,
-    assembly
-  } = req?.body?.values;
-  const { title } = req?.body;
-
-  var finalPrice;
-  let l = Number(length) + 0.6;
-
-  if (title === 'card_text4') {
-    let totalLength = 0;
-    let priceTarpaulin = 0;
-    const longitudinalPocketPrice = 0.3;
-    const fittingPrice = 50;
-    const assemblyPrice = 1.2;
-    let totalWidth = 0;
-
-    let w = Number(width) + 0.8;
-    const hood_value = Number(hood);
-    const back_cover_value = Number(back_cover);
-    const falling_pipe_value = Number(falling_pipe);
-    const falling_right_value = Number(falling_right);
-    const number_stretches_value = (Number(number_stretches) * 0.2);
-
-    totalWidth = (w + hood_value + back_cover_value + number_stretches_value).toFixed(2);
-    totalLength = (l + falling_pipe_value + falling_right_value + number_stretches_value).toFixed(2);
-
-    if (longitudinal_pocket) {
-      totalLength = (Number(totalLength) + Number(longitudinalPocketPrice)).toFixed(2);
+  try {
+    if (Object.keys(req.body).length === 0 || Object.keys(req.body.values).length === 0) {
+      return res.status(400).send('Empty object provided');
     }
 
-    if (tarpaulin_type === '680гр/кв.м') {
-      priceTarpaulin = 12;
+    const {
+      width,
+      length,
+      hood,
+      back_cover,
+      falling_pipe,
+      falling_right,
+      number_stretches,
+      date_manufacture,
+      tarpaulin_type,
+      longitudinal_pocket,
+      fitting_left,
+      fitting_right,
+      assembly
+    } = req?.body?.values;
+    const { title } = req?.body;
+    var finalPrice;
+    let l = Number(length) + 0.6;
+
+    if (title === 'card_text4') {
+      let totalLength = 0;
+      let priceTarpaulin = 0;
+      const longitudinalPocketPrice = 0.3;
+      const fittingPrice = 50;
+      const assemblyPrice = 1.2;
+      let totalWidth = 0;
+
+      let w = Number(width) + 0.8;
+      const hood_value = Number(hood);
+      const back_cover_value = Number(back_cover);
+      const falling_pipe_value = Number(falling_pipe);
+      const falling_right_value = Number(falling_right);
+      const number_stretches_value = (Number(number_stretches) * 0.2);
+
+      totalWidth = (w + hood_value + back_cover_value + number_stretches_value).toFixed(2);
+      totalLength = (l + falling_pipe_value + falling_right_value + number_stretches_value).toFixed(2);
+
+      if (longitudinal_pocket) {
+        totalLength = (Number(totalLength) + Number(longitudinalPocketPrice)).toFixed(2);
+      }
+
+      if (tarpaulin_type === '680гр/кв.м') {
+        priceTarpaulin = 12;
+      } else {
+        priceTarpaulin = 16;
+      }
+
+      finalPrice = (Number(totalWidth) * Number(totalLength) * Number(priceTarpaulin)).toFixed(2);
+
+      if (fitting_right || fitting_left) {
+        finalPrice = (Number(finalPrice) + Number(fittingPrice)).toFixed(2);
+      }
+
+      if (assembly) {
+        finalPrice = (Number(finalPrice) * Number(assemblyPrice)).toFixed(2);
+      }
     } else {
-      priceTarpaulin = 16;
-    }
+      let totalLength = 0;
+      let h = 3;
+      totalLength = l * h * 15;
 
-    finalPrice = (Number(totalWidth) * Number(totalLength) * Number(priceTarpaulin)).toFixed(2);
-
-    if (fitting_right || fitting_left) {
-      finalPrice = (Number(finalPrice) + Number(fittingPrice)).toFixed(2);
+      if (title === 'card_text8') {
+        finalPrice = (totalLength + 50).toFixed(2);
+      } else if (title === 'card_text7') {
+        finalPrice = (totalLength + 25).toFixed(2);
+      }
     }
-
-    if (assembly) {
-      finalPrice = (Number(finalPrice) * Number(assemblyPrice)).toFixed(2);
-    }
-  } else {
-    let totalLength = 0;
-    let h = 3;
-    totalLength = l * h * 15;
-
-    if (title === 'card_text8') {
-      finalPrice = (totalLength + 50).toFixed(2);
-    } else if (title === 'card_text7') {
-      finalPrice = (totalLength + 25).toFixed(2);
-    }
+    res.status(200).json({
+      'status': 'success',
+      'result': finalPrice
+    });
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      message: error
+    });
   }
-
-  res.status(200).json({
-    'status': 'success',
-    'result': finalPrice
-  });
 });
 
 app.post("/truckcovers-offer-file", async (req, res) => {
   try {
-    let response = await pool.query("INSERT INTO `truck-covers` SET ?", req.body, function (error, results, fields) {
+    if (Object.keys(req.body).length === 0) {
+      return res.status(400).send('Empty object provided');
+    }
+
+    let response = await pool.query("INSERT INTO `truck_covers` SET ?", req.body, function (error, results, fields) {
       pool.release();
       return results;
     });
@@ -421,7 +471,37 @@ app.post("/truckcovers-offer-file", async (req, res) => {
   }
 });
 
+app.put("/truckcovers-offer-file-edit", async (req, res) => {
+  try {
+    const newData = req.body;
+
+    if (!newData.id || !newData.filename || !newData.type || !newData.size) {
+      return res.status(400).send('Missing required parameters');
+    }
+
+    let response = await pool.query('UPDATE truck_covers SET filename = ?, type = ?, size = ? WHERE id = ?', [newData.id, newData.filename, newData.type, newData.size],
+      function (error, results, fields) {
+        pool.release();
+        return results;
+      });
+    return res.status(200).json({
+      success: true,
+      status: "success",
+      message: "File information edited sucessfully!",
+      offerId: response[0].insertId
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error
+    });
+  }
+});
+
 app.post('/truckcovers-offer-email', async (req, res, next) => {
+  if (Object.keys(req.body).length === 0) {
+    return res.status(400).send('Empty object provided');
+  }
 
   let transporter = nodemailer.createTransport({
     host: process.env.HOST_EMAIL,

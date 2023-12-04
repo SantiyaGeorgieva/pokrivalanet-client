@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router";
 import { saveAs } from 'file-saver';
 import { Row, Col, Spinner, Button, Label, Form, FormGroup, FormFeedback, Input } from "reactstrap";
 import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useTranslation } from "react-i18next";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { DayPicker } from 'react-day-picker';
+import { bg, ro, enGB } from 'date-fns/locale';
+import PageTitle from "../../components/PageTitle";
 import Offer from "../../components/offers/Offer";
 import Message from "../../components/Message";
 import CoverScheme from '../../images/cover_scheme.png';
@@ -14,9 +15,47 @@ import { tarpaulinCount } from "../../constants";
 
 import './truckCoversCalculator.scss';
 
-function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
+const css = `
+.my-selected:not([disabled]) { 
+  font-weight: bold; 
+  border: 1px solid currentColor;
+}
+.my-selected:hover:not([disabled]) { 
+  border-color: blue;
+  color: blue;
+}
+.my-today { 
+  font-weight: bold;
+  color: blue;
+}`;
+
+const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
   const { t } = useTranslation();
   const location = useLocation();
+  PageTitle(t('truck_covers_calculator_page_title'));
+
+  const [selectedDate, setSelectedDate] = useState(null);
+  const lastMonth = new Date();
+  const today = lastMonth.setMonth(lastMonth.getMonth() - 2);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  const wrapperRef = useRef(null);
+
+  const useOutsideAlerter = (ref) => {
+    useEffect(() => {
+      function handleClickOutside(event) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          hideDatePicker();
+        }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref]);
+  }
+
+  useOutsideAlerter(wrapperRef);
 
   const [titlePage, setTitlePage] = useState(offerTitle || localStorage.getItem('offerTitle'));
   const [width, setWidth] = useState('');
@@ -66,19 +105,34 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
   }, [location.pathname])
 
   useEffect(() => {
-    if (!hasWidthError && !hasLengthError && !hasHoodError && !hasBackCoverError && !hasFallingPipeError
-      && !hasFallingRightError && !hasNumberStretchesError && !hasDateManufactureError && titlePage === 'card4' && values.length > 0) {
-      setClicked(true);
-      fetchPriceOffer();
-    } else if (!hasLengthError && !hasDateManufactureError && titlePage !== 'card4' && values.length > 0) {
-      setClicked(true);
-      fetchPriceOffer();
+    console.log('test', values[0] && (Object.values(values[0]).includes(null) || Object.values(values[0]) === ""));
+    console.log('test2', values[0] && values[0]);
+    // console.log('values.length', values[0] && Object.entries(values[0]).length);
+    if (values.length > 0) {
+      if (titlePage === 'card_text4') {
+        if (!hasWidthError && !hasLengthError && !hasHoodError && !hasBackCoverError && !hasFallingPipeError
+          && !hasFallingRightError && !hasNumberStretchesError && !hasDateManufactureError) {
+          console.log('HERE1');
+          setClicked(true);
+          fetchOfferPrice();
+          fetchOfferFile();
+        }
+      } else if (titlePage !== 'card_text4') {
+        if (!hasLengthError && !hasDateManufactureError) {
+          console.log('HERE2', hasLengthError, hasDateManufactureError);
+          setClicked(true);
+          fetchOfferPrice();
+          fetchOfferFile();
+        }
+      }
     }
   }, [hasWidthError, hasLengthError, hasHoodError, hasBackCoverError, hasFallingPipeError,
     hasFallingRightError, hasNumberStretchesError, hasDateManufactureError, values])
 
+  // console.log('titlePage', titlePage);
   useEffect(() => {
     if (values.length > 0 && titlePage === 'card_text4') {
+      console.log('HEREEE1');
       values.map((value, idx) => {
         setItems([{
           'width_cover_text': value.width,
@@ -88,7 +142,7 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
           'falling_pipe': value.falling_pipe,
           'falling_to_right': value.falling_right,
           'number_stretches': value.number_stretches,
-          'date_manufacture': new Date(value?.date_manufacture).toLocaleDateString("ro-RO"),
+          'date_manufacture': selectedDate?.toLocaleDateString("ro-RO"),
           "tarpaulin_type": value.tarpaulin_type
         }
         ], ...items);
@@ -98,11 +152,12 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
       fittingLeftCheck && setItems(prevState => [...prevState, { fitting_left: "+" }]);
       fittingRightCheck && setItems(prevState => [...prevState, { fitting_right: "+" }]);
       assemblyCheck && setItems(prevState => [...prevState, { assembly: "+" }]);
-    } else {
+    } else if (values.length > 0 && titlePage !== 'card_text4') {
       values.map((value, idx) => {
+        console.log('HEREEE2');
         setItems([{
           'length_cover_text': value.length,
-          'date_manufacture': new Date(value?.date_manufacture).toLocaleDateString("ro-RO")
+          'date_manufacture': selectedDate?.toLocaleDateString("ro-RO"),
         }], ...items);
       });
     }
@@ -115,7 +170,6 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
     }
   }, [totalPrice, offerNumber, items]);
 
-
   useEffect(() => {
     if (file !== null && totalPrice > 0) {
       setTimeout(() => {
@@ -126,74 +180,150 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
           fetchOffer(dataUrl);
         }
       })
+
+      console.log('file.size', file.size)
+      console.log('selectedFile.size', selectedFile.size)
+
+      if (file.size !== selectedFile.size && file !== null) {
+        fetchOfferComapedFiles(offerNumber);
+      }
     }
   }, [file]);
+
+  const getLocale = (item) => {
+    if (item === 'bg') {
+      return bg;
+    } else if (item === 'ro') {
+      return ro;
+    } else {
+      return enGB;
+    }
+  };
+
+  const handleInputClick = (date) => {
+    if (selectedDate === '') {
+      setShowDatePicker(!showDatePicker);
+    } else {
+      setShowDatePicker(!showDatePicker);
+      setDateManufacture(selectedDate);
+    }
+  };
+
+  const hideDatePicker = () => {
+    setShowDatePicker(false);
+  };
+
+  const handleDayClick = (day) => {
+    if (day >= lastMonth) {
+      setSelectedDate(day);
+    }
+  };
+
+  const disabledDays = { before: lastMonth };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (width === '') {
-      setWidthError(true);
-    } else if (width !== '') {
-      setWidthError(false);
+    if (titlePage === 'card_text4') {
+      console.log('HERE1')
+      if (width === '') {
+        setWidthError(true);
+      } else if (width !== '') {
+        setWidthError(false);
+      }
+
+      if (length === '') {
+        setLengthError(true);
+      } else if (length !== '') {
+        setLengthError(false);
+      }
+
+      if (hood === '') {
+        setHoodError(true);
+      } else if (hood !== '') {
+        setHoodError(false);
+      }
+
+      if (backCover === '') {
+        setBackCoverError(true);
+      } else if (hood !== '') {
+        setBackCoverError(false);
+      }
+
+      if (fallingPipe === '') {
+        setFallingPipeError(true);
+      } else if (fallingPipe !== '') {
+        setFallingPipeError(false);
+      }
+
+      if (fallingRight === '') {
+        setFallingRightError(true);
+      } else if (fallingRight !== '') {
+        setFallingRightError(false);
+      }
+
+      if (numberStretches === '') {
+        setNumberStretchesError(true);
+      } else if (numberStretches !== '') {
+        setNumberStretchesError(false);
+      }
+
+      if (selectedDate === null) {
+        setDateManufactureError(true);
+      } else if (selectedDate !== null) {
+        setDateManufactureError(false);
+      }
+    } else {
+      console.log('HERE2')
+      if (length === '') {
+        console.log('here1');
+        setLengthError(true);
+      } else if (length !== '') {
+        setLengthError(false);
+      }
+
+      if (selectedDate === null) {
+        console.log('here2');
+        setDateManufactureError(true);
+      } else if (selectedDate !== null) {
+        setDateManufactureError(false);
+      }
     }
 
-    if (length === '') {
-      setLengthError(true);
-    } else if (length !== '') {
-      setLengthError(false);
+    if (titlePage === 'card_text4') {
+      console.log('HERE1');
+
+      if ((!hasWidthError && !hasLengthError && !hasHoodError && !hasBackCoverError && !hasFallingPipeError
+        && !hasFallingRightError && !hasNumberStretchesError && !hasDateManufactureError)) {
+        console.log('HERE1');
+        setValues([{
+          width: width,
+          length: length,
+          hood: hood,
+          back_cover: backCover,
+          falling_pipe: fallingPipe,
+          falling_right: fallingRight,
+          number_stretches: numberStretches,
+          tarpaulin_type: tarpaulin,
+          date_manufacture: selectedDate,
+          fitting_right: fittingRightCheck,
+          longitudinal_pocket: longitudinalPocketCheck,
+          assembly: assemblyCheck
+        }, ...values]);
+      }
     }
 
-    if (hood === '') {
-      setHoodError(true);
-    } else if (hood !== '') {
-      setHoodError(false);
-    }
+    else if (titlePage !== 'card_text4') {
+      console.log('HERE2');
 
-    if (backCover === '') {
-      setBackCoverError(true);
-    } else if (hood !== '') {
-      setBackCoverError(false);
+      if (!hasLengthError && !hasDateManufactureError) {
+        console.log('HERE2');
+        setValues([{
+          length: length,
+          date_manufacture: selectedDate
+        }]);
+      }
     }
-
-    if (fallingPipe === '') {
-      setFallingPipeError(true);
-    } else if (fallingPipe !== '') {
-      setFallingPipeError(false);
-    }
-
-    if (fallingRight === '') {
-      setFallingRightError(true);
-    } else if (fallingRight !== '') {
-      setFallingRightError(false);
-    }
-
-    if (numberStretches === '') {
-      setNumberStretchesError(true);
-    } else if (numberStretches !== '') {
-      setNumberStretchesError(false);
-    }
-
-    if (dateManufacture === null) {
-      setDateManufactureError(true);
-    } else if (dateManufacture !== null) {
-      setDateManufactureError(false);
-    }
-
-    setValues([{
-      width: width,
-      length: length,
-      hood: hood,
-      back_cover: backCover,
-      falling_pipe: fallingPipe,
-      falling_right: fallingRight,
-      number_stretches: numberStretches,
-      tarpaulin_type: tarpaulin,
-      date_manufacture: dateManufacture,
-      fitting_right: fittingRightCheck,
-      longitudinal_pocket: longitudinalPocketCheck,
-      assembly: assemblyCheck
-    }, ...values]);
   }
 
   const handlePdf = async (name, pdfDocumentComponent, items) => {
@@ -239,7 +369,8 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
     setVisible(false);
   }
 
-  function fetchPriceOffer() {
+  function fetchOfferPrice() {
+    console.log('values', values);
     if (values) {
       const response = fetch(`${linkUrl()}/truckcovers-priceoffer`, {
         method: "POST",
@@ -254,7 +385,6 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
       ).then((response) => {
         if (response.status === 'success') {
           setTotalPrice(response.result);
-          fetchOfferFile();
         } else if (response.status === 'fail') {
           console.log("Message failed to send.", response);
         }
@@ -306,6 +436,29 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
         }
       });
       setLoading(false);
+
+      return response;
+    }
+  }
+
+  async function fetchOfferComapedFiles(fileId) {
+    console.log('file', file);
+    if (fileId !== null) {
+      const response = await fetch(`${linkUrl()}/truckcovers-offer-file-edit`, {
+        method: "PUT",
+        body: JSON.stringify({ id: fileId, filename: fileName, type: file.type, size: file.size }),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+      }, setLoading(true)).then(
+        (response) => (response.json())
+      ).then((response) => {
+        if (response.status === 'success') {
+        } else if (response.status === 'fail') {
+          console.log("Message failed to send.", response);
+        }
+      });
 
       return response;
     }
@@ -459,18 +612,47 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
                       </Col>
                       <Col md="6" className={`${!isMobile ? '' : 'mt-2'}`}>
                         <FormGroup className="text-start mb-2">
-                          <Label for="date" className="fw-bold">{t('date_manufacture')}</Label>
+                          <Label for="dateManufacture" className="fw-bold">{t('date_manufacture')}</Label>
                           <div className={`datepicker ${hasDateManufactureError ? 'error' : ''}`}>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                              <DatePicker label="" value={dateManufacture === '' ? '' : dateManufacture} onChange={newValue => {
-                                if (dateManufacture === '') {
-                                  setDateManufacture(null);
-                                } else {
-                                  setDateManufacture(newValue);
-                                }
-                              }} />
-                            </LocalizationProvider>
+                            <Input
+                              type="text"
+                              value={selectedDate === null ? null : selectedDate.toLocaleDateString("ro-RO")}
+                              id="dateManufacture"
+                              placeholder="Select Date"
+                              name="dateManufacture"
+                              onFocus={handleInputClick}
+                              onChange={handleInputClick}
+                            />
                           </div>
+                          {showDatePicker && (
+                            <div ref={wrapperRef}>
+                              <style>{css}</style>
+                              <DayPicker
+                                locale={getLocale(localStorage.getItem("i18nextLng"))}
+                                max={1}
+                                mode="single"
+                                initialMonth={today}
+                                weekStartsOn={1}
+                                selected={selectedDate}
+                                onDayClick={handleDayClick}
+                                disabledDays={disabledDays}
+                                fromMonth={lastMonth}
+                                fromDate={lastMonth}
+                                todayButton="Go to Today"
+                                captionLayout="dropdown"
+                                fromYear={2015}
+                                toYear={2035}
+                                onSelect={setSelectedDate}
+                                modifiersClassNames={{
+                                  selected: 'my-selected',
+                                  today: 'my-today'
+                                }}
+                                modifiersStyles={{
+                                  disabled: { fontSize: '75%' }
+                                }}
+                              />
+                            </div>)
+                          }
                           {hasDateManufactureError && <div className="date-error mt-1">{t('has_date_manufacture_error')}</div>}
                         </FormGroup>
                       </Col>
@@ -486,12 +668,47 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
                     </Col>
                     <Col md="6">
                       <FormGroup className="text-start mb-2">
-                        <Label for="edge" className="fw-bold">{t('date_manufacture')}</Label>
+                        <Label for="date" className="fw-bold">{t('date_manufacture')}</Label>
                         <div className={`datepicker ${hasDateManufactureError ? 'error' : ''}`}>
-                          <LocalizationProvider dateAdapter={AdapterDayjs}>
-                            <DatePicker label="" value={dateManufacture} onChange={newValue => setDateManufacture(newValue)} />
-                          </LocalizationProvider>
+                          <Input
+                            type="text"
+                            value={selectedDate === null ? null : selectedDate.toLocaleDateString("ro-RO")}
+                            id="dateManufacture"
+                            placeholder="Select Date"
+                            name="dateManufacture"
+                            onFocus={handleInputClick}
+                            onChange={handleInputClick}
+                          />
                         </div>
+                        {showDatePicker && (
+                          <div ref={wrapperRef}>
+                            <style>{css}</style>
+                            <DayPicker
+                              locale={getLocale(localStorage.getItem("i18nextLng"))}
+                              max={1}
+                              mode="single"
+                              initialMonth={lastMonth}
+                              weekStartsOn={1}
+                              selected={selectedDate}
+                              onDayClick={handleDayClick}
+                              disabledDays={disabledDays}
+                              fromMonth={lastMonth}
+                              fromDate={lastMonth}
+                              todayButton="Go to Today"
+                              captionLayout="dropdown"
+                              fromYear={2015}
+                              toYear={2035}
+                              onSelect={setSelectedDate}
+                              modifiersClassNames={{
+                                selected: 'my-selected',
+                                today: 'my-today'
+                              }}
+                              modifiersStyles={{
+                                disabled: { fontSize: '75%' }
+                              }}
+                            />
+                          </div>)
+                        }
                         {hasDateManufactureError && <div className="date-error mt-1">{t('has_date_manufacture_error')}</div>}
                       </FormGroup>
                     </Col>
@@ -517,7 +734,10 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
                             <Offer title={titlePage} offerNo={offerNumber} parametersText="offer_parameters_text2" items={items} totalPrice={totalPrice} />}
                             fileName={t('file_name')} className="text-decoration-none">
                             {({ blob, url, loading, error }) => {
-                              setSingleFile(btoa(blob));
+                              if (!loading && url !== '') {
+                                setSingleFile(blob);
+                                setFileName(`${t('file_name')}`);
+                              }
                               return loading ? <Spinner color="primary" /> :
                                 <Button block type="submit" className="bc-blue d-flex mt-3">
                                   <span className={`fw-bold mx-auto text-transform ${!isMobile ? '' : 'fs-14 text-nowrap'}`}>{t('calculate_price_button')}</span>
@@ -574,6 +794,6 @@ function TruckCoversCalculator({ hideMain, isMobile, offerTitle }) {
       </div>
     }
   </>
-}
+});
 
 export default TruckCoversCalculator;

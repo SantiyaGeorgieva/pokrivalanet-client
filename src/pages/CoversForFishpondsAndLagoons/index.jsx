@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Gallery from "../../components/Gallery";
 import Hr from "../../components/Hr";
@@ -6,7 +7,8 @@ import { coversForFishpondsAndLagoonsImages } from "../../constants";
 
 import './coversForFishpondsAndLagoons.scss';
 
-function CoversForFishpondsAndLagoons({ hideMain, isMobile }) {
+
+const CoversForFishpondsAndLagoons = memo(function CoversForFishpondsAndLagoons({ hideMain, isMobile }) {
   const { t } = useTranslation();
   PageTitle(t('covers_for_fishponds_and_lagoons_page_title'));
 
@@ -26,6 +28,6 @@ function CoversForFishpondsAndLagoons({ hideMain, isMobile }) {
       </div>
     }
   </>
-}
+});
 
 export default CoversForFishpondsAndLagoons;

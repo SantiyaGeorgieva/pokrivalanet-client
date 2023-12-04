@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { memo, useEffect, useState, useRef } from 'react'
 import { Button, Col, Form, FormFeedback, FormGroup, Input, Label, Row, Spinner } from "reactstrap";
 import GoogleMapRuse from '../../components/GoogleMapRuse';
 import { useTranslation } from "react-i18next";
@@ -10,7 +10,7 @@ import Message from '../../components/Message';
 
 import './contact.scss';
 
-function Contact({ hideMain, isMobile }) {
+const Contact = memo(function Contact({ hideMain, isMobile }) {
   const { t } = useTranslation();
   PageTitle(t('large_and_covers_page_title'));
 
@@ -224,6 +224,6 @@ function Contact({ hideMain, isMobile }) {
     </>)
     }
   </>
-}
+});
 
 export default Contact;

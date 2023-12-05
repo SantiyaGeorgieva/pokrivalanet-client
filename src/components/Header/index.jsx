@@ -17,10 +17,9 @@ import i18next from "i18next";
 import { useTranslation } from "react-i18next";
 import Logo from '../../images/logo.png';
 import { links } from "../../constants";
-import './header.scss';
 import { scrollToTop } from "../../utils";
-import CloseIcon from "../CloseIcon";
-import HamburgerIcon from "../HamburgerIcon";
+
+import './header.scss';
 
 const Header = memo(function Header({ isMobile, selectedItem, setSelectedItem }) {
   const { t } = useTranslation();
@@ -38,6 +37,10 @@ const Header = memo(function Header({ isMobile, selectedItem, setSelectedItem })
   const handleLinkClick = () => {
     setIsOpen(false);
   };
+
+  const onEmailClick = () => {
+    window.open("mailto:office@pokrivala.net");
+  }
 
   useEffect(() => {
     const element = window.parent.document.querySelector('.navbar-expand-sm > .container-fluid');
@@ -74,7 +77,7 @@ const Header = memo(function Header({ isMobile, selectedItem, setSelectedItem })
                   <i className="fa-solid fa-location-dot my-2 px-2" />{t('city')}
                 </Link>
               </Button>
-              <Button color="dark" size="sm" outline className="cursor-default" href="mailto:office@pokrivala.net">
+              <Button color="dark" size="sm" outline className="cursor-default" onClick={onEmailClick}>
                 <i className="fa-solid fa-envelope my-2 px-2" />office@pokrivala.net
               </Button>
               <Navbar expand="sm" className="py-0">
@@ -245,7 +248,12 @@ const Header = memo(function Header({ isMobile, selectedItem, setSelectedItem })
           </>
         }
         <div className="menuToggle" onClick={toggleMobileMenu}>
-          {isOpen ? <CloseIcon /> : <HamburgerIcon />}
+          <span className={`${isOpen ? 'close-icon close' : 'hamburger-icon'}`}>
+            <input type="checkbox" />
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
         </div>
         <Collapse isOpen={isOpen} navbar>
           <Nav className="menu" navbar>

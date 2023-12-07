@@ -9,7 +9,8 @@ import { bg, ro, enGB } from 'date-fns/locale';
 import PageTitle from "../../components/PageTitle";
 import Offer from "../../components/offers/Offer";
 import Message from "../../components/Message";
-import CoverScheme from '../../images/cover_scheme.png';
+import StraniciShtoraSkapaciKomplektOtDve from '../../images/pokrivala_za_kamioni/248156970_4411504175607542_8164656237683932178_n.jpg';
+import ShtoraBezKapaciKomlektOtDve from '../../images/pokrivala_za_kamioni/66785853_1766036520166145_1529046337771798528_n.jpg';
 import { linkUrl } from "../../utils";
 import { tarpaulinCount } from "../../constants";
 
@@ -472,12 +473,18 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
         </Row>
         <Row className="mb-5">
           <Col md="6" className={`${!isMobile ? 'text-start' : ''}`}>
-            <img
+            {t(titlePage) === `${t('card_text7')}` && <img
               key="1"
               alt="cover_scheme"
               className="w-100"
-              src={CoverScheme}
-            />
+              src={StraniciShtoraSkapaciKomplektOtDve}
+            />}
+            {t(titlePage) === `${t('card_text8')}` && <img
+              key="1"
+              alt="cover_scheme"
+              className="w-100"
+              src={ShtoraBezKapaciKomlektOtDve}
+            />}
           </Col>
           <Col md="6">
             <Form className={`${isMobile ? 'mt-3' : ''}`} onSubmit={handleSubmit} method="POST" id="form" encType="multipart/form-data">

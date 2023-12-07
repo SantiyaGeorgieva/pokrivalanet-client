@@ -59,10 +59,10 @@ const Header = memo(function Header({ isMobile, selectedItem, setSelectedItem })
             </NavLink>
             <div className="d-flex align-items-center justify-content-end collapse navbar-collapse" id="navbars-host">
               <div className="social-icons me-3 text-end">
-                <Link to="https://www.facebook.com/brezentiruse" target="_blank">
+                <Link to="https://www.facebook.com/brezentiruse" aria-label="https://www.facebook.com/brezentiruse" target="_blank">
                   <i className="fa-brands fa-facebook fs-4 mx-1 my-2 text-dark"></i>
                 </Link>
-                <Link to="https://www.facebook.com/CreativeIdeaGroup/?fref=ts" target="_blank">
+                <Link to="https://www.facebook.com/CreativeIdeaGroup/?fref=ts" aria-label="https://www.facebook.com/CreativeIdeaGroup/?fref=ts" target="_blank">
                   <i className="fa-brands fa-facebook fs-4 text-dark"></i>
                 </Link>
               </div>
@@ -87,6 +87,7 @@ const Header = memo(function Header({ isMobile, selectedItem, setSelectedItem })
                       caret
                       className="nav-link"
                       tag="a"
+                      aria-current="page"
                     >
                       {selectedItem.toLocaleUpperCase()}
                     </DropdownToggle>
@@ -167,10 +168,11 @@ const Header = memo(function Header({ isMobile, selectedItem, setSelectedItem })
                     caret
                     className="nav-link pointer-events-none"
                     tag="a"
+                    aria-haspopup="listbox"
                   >
                     {selectedItem.toLocaleUpperCase()}
                   </DropdownToggle>
-                  <DropdownMenu>
+                  <DropdownMenu role="menuRole">
                     {selectedItem !== "en" && <DropdownItem
                       href="#"
                       tag="a"
@@ -238,10 +240,10 @@ const Header = memo(function Header({ isMobile, selectedItem, setSelectedItem })
               </Row>
             </div>
             <div className="d-flex flex-column align-items-center text-start social-icons">
-              <Link to="https://www.facebook.com/brezentiruse" target="_blank">
+              <Link to="https://www.facebook.com/brezentiruse" aria-label="https://www.facebook.com/brezentiruse" target="_blank">
                 <i className="fa-brands fa-facebook fs-4 mx-1 my-2 text-dark"></i>
               </Link>
-              <Link to="https://www.facebook.com/CreativeIdeaGroup/?fref=ts" target="_blank">
+              <Link to="https://www.facebook.com/CreativeIdeaGroup/?fref=ts" aria-label="https://www.facebook.com/CreativeIdeaGroup/?fref=ts" target="_blank">
                 <i className="fa-brands fa-facebook fs-4 text-dark"></i>
               </Link>
             </div>

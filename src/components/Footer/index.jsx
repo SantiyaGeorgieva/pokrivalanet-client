@@ -38,10 +38,10 @@ function Footer({ isMobile }) {
                   </Link>
                   <div className="d-flex mt-2">
                     <p className="mb-0 me-2 text-light">{t('follows_button')}</p>
-                    <Link to="https://www.facebook.com/brezentiruse" target="_blank" className="mb-0">
+                    <Link to="https://www.facebook.com/brezentiruse" aria-label="https://www.facebook.com/brezentiruse" target="_blank" className="mb-0">
                       <i className="fa-brands fa-facebook fs-4 me-2 text-light"></i>
                     </Link>
-                    <Link to="https://www.facebook.com/CreativeIdeaGroup/?fref=ts" target="_blank">
+                    <Link to="https://www.facebook.com/CreativeIdeaGroup/?fref=ts" aria-label="https://www.facebook.com/CreativeIdeaGroup/?fref=ts" target="_blank">
                       <i className="fa-brands fa-facebook fs-4 text-light"></i>
                     </Link>
                   </div>
@@ -53,10 +53,10 @@ function Footer({ isMobile }) {
                 <Col>
                   <div className="d-flex align-items-center justify-content-center mt-4 social-icons">
                     <p className="mb-0 me-2 text-light">{t('follows_button')}</p>
-                    <Link to="https://www.facebook.com/brezentiruse" target="_blank" className="mb-0">
+                    <Link to="https://www.facebook.com/brezentiruse" aria-label="https://www.facebook.com/brezentiruse" target="_blank" className="mb-0">
                       <i className="fa-brands fa-facebook fs-4 me-2 text-light"></i>
                     </Link>
-                    <Link to="https://www.facebook.com/CreativeIdeaGroup/?fref=ts" target="_blank">
+                    <Link to="https://www.facebook.com/CreativeIdeaGroup/?fref=ts" aria-label="https://www.facebook.com/CreativeIdeaGroup/?fref=ts" target="_blank">
                       <i className="fa-brands fa-facebook fs-4 text-light"></i>
                     </Link>
                     <Link onClick={scrollToTop} to="/truck-covers">

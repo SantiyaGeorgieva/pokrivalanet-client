@@ -82,6 +82,7 @@ const App = memo(function App() {
         <Footer isMobile={isMobile} />
         <div className="container-fluid px-0">
           <CookieConsent
+            ariaAcceptLabel={`${t('cookie_text')}`}
             buttonWrapperClasses={`${isMobile ? 'button-cookie-wrapper' : ''}`}
             buttonClasses={`${isMobile ? 'button-cookie' : ''}`}
             contentClasses={`${isMobile ? 'cookie-content' : ''}`}
@@ -90,7 +91,7 @@ const App = memo(function App() {
             buttonText={`${t('agree_button')}`}
             cookieName="pokrivalaCookie"
             style={{ display: 'flex', alignItems: 'center', background: "#2B373B", textAlign: 'left', padding: '10px 15px', opacity: '.85' }}
-            buttonStyle={{ background: '#fff', color: "#4e503b", fontSize: "14px", fontWeight: '600', textTransform: 'uppercase', fontSize: '13px', fontWeight: '600' }}
+            buttonStyle={{ background: '#fff', color: "#4e503b", fontSize: '13px', fontWeight: '600', textTransform: 'uppercase', margin: 0 }}
             expires={150}
           >
             <p className="mb-0">{t('cookie_text')}</p>

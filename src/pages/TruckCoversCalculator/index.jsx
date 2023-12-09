@@ -106,34 +106,27 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
   }, [location.pathname])
 
   useEffect(() => {
-    console.log('test', values[0] && (Object.values(values[0]).includes(null) || Object.values(values[0]) === ""));
-    console.log('test2', values[0] && values[0]);
-    // console.log('values.length', values[0] && Object.entries(values[0]).length);
     if (values.length > 0) {
       if (titlePage === 'card_text4') {
         if (!hasWidthError && !hasLengthError && !hasHoodError && !hasBackCoverError && !hasFallingPipeError
           && !hasFallingRightError && !hasNumberStretchesError && !hasDateManufactureError) {
-          console.log('HERE1');
           setClicked(true);
-          fetchOfferPrice();
-          fetchOfferFile();
+          // fetchOfferPrice();
+          // fetchOfferFile();
         }
       } else if (titlePage !== 'card_text4') {
         if (!hasLengthError && !hasDateManufactureError) {
-          console.log('HERE2', hasLengthError, hasDateManufactureError);
-          setClicked(true);
-          fetchOfferPrice();
-          fetchOfferFile();
+          // setClicked(true);
+          // fetchOfferPrice();
+          // fetchOfferFile();
         }
       }
     }
   }, [hasWidthError, hasLengthError, hasHoodError, hasBackCoverError, hasFallingPipeError,
     hasFallingRightError, hasNumberStretchesError, hasDateManufactureError, values])
 
-  // console.log('titlePage', titlePage);
   useEffect(() => {
     if (values.length > 0 && titlePage === 'card_text4') {
-      console.log('HEREEE1');
       values.map((value, idx) => {
         setItems([{
           'width_cover_text': value.width,
@@ -155,7 +148,6 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
       assemblyCheck && setItems(prevState => [...prevState, { assembly: "+" }]);
     } else if (values.length > 0 && titlePage !== 'card_text4') {
       values.map((value, idx) => {
-        console.log('HEREEE2');
         setItems([{
           'length_cover_text': value.length,
           'date_manufacture': selectedDate?.toLocaleDateString("ro-RO"),
@@ -182,8 +174,8 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
         }
       })
 
-      console.log('file.size', file.size)
-      console.log('selectedFile.size', selectedFile.size)
+      // console.log('file.size', file.size)
+      // console.log('selectedFile.size', selectedFile.size)
 
       if (file.size !== selectedFile.size && file !== null) {
         fetchOfferComapedFiles(offerNumber);
@@ -226,7 +218,6 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
     event.preventDefault();
 
     if (titlePage === 'card_text4') {
-      console.log('HERE1')
       if (width === '') {
         setWidthError(true);
       } else if (width !== '') {
@@ -275,16 +266,13 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
         setDateManufactureError(false);
       }
     } else {
-      console.log('HERE2')
       if (length === '') {
-        console.log('here1');
         setLengthError(true);
       } else if (length !== '') {
         setLengthError(false);
       }
 
       if (selectedDate === null) {
-        console.log('here2');
         setDateManufactureError(true);
       } else if (selectedDate !== null) {
         setDateManufactureError(false);
@@ -292,11 +280,8 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
     }
 
     if (titlePage === 'card_text4') {
-      console.log('HERE1');
-
       if ((!hasWidthError && !hasLengthError && !hasHoodError && !hasBackCoverError && !hasFallingPipeError
         && !hasFallingRightError && !hasNumberStretchesError && !hasDateManufactureError)) {
-        console.log('HERE1');
         setValues([{
           width: width,
           length: length,
@@ -315,10 +300,7 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
     }
 
     else if (titlePage !== 'card_text4') {
-      console.log('HERE2');
-
       if (!hasLengthError && !hasDateManufactureError) {
-        console.log('HERE2');
         setValues([{
           length: length,
           date_manufacture: selectedDate
@@ -371,7 +353,7 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
   }
 
   function fetchOfferPrice() {
-    console.log('values', values);
+    // console.log('values', values);
     if (values) {
       const response = fetch(`${linkUrl()}/truckcovers-priceoffer`, {
         method: "POST",
@@ -443,7 +425,7 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
   }
 
   async function fetchOfferComapedFiles(fileId) {
-    console.log('file', file);
+    // console.log('file', file);
     if (fileId !== null) {
       const response = await fetch(`${linkUrl()}/truckcovers-offer-file-edit`, {
         method: "PUT",

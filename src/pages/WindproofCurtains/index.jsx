@@ -263,6 +263,7 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
     setHeight('');
     setEdge('');
     setDateManufacture(null);
+    setSelectedDate(null);
     setDescription('');
     setTotalPrice('');
     setRadioCheck('without_fitting');
@@ -276,6 +277,8 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
   }
 
   function fetchPriceOffer() {
+    setLoading(true);
+
     if (values) {
       const response = fetch(`${linkUrl()}/windproofcurtains-priceoffer`, {
         method: "POST",
@@ -283,8 +286,8 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
-        },
-      }, setLoading(true)).then(
+        }
+      }).then(
         (response) => (response.json())
       ).then((response) => {
         if (response.status === 'success') {
@@ -300,6 +303,8 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
   }
 
   async function fetchOfferFile() {
+    setLoading(true);
+
     if (selectedFile) {
       const response = await fetch(`${linkUrl()}/windproofcurtains-offer-file`, {
         method: "POST",
@@ -307,8 +312,8 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
-        },
-      }, setLoading(true)).then(
+        }
+      }).then(
         (response) => (response.json())
       ).then((response) => {
         if (response.status === 'success') {
@@ -324,6 +329,8 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
 
   function fetchOffer(dataUrl) {
     console.log('file', file);
+    setLoading(true);
+
     if (dataUrl !== '') {
       const response = fetch(`${linkUrl()}/windproofcurtains-offer-email`, {
         method: "POST",
@@ -332,7 +339,7 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-      }, setLoading(true)).then(
+      }).then(
         (response) => (response.json())
       ).then((response) => {
         if (response.status === 'success') {
@@ -349,6 +356,7 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
 
   async function fetchOfferComapedFiles(fileId) {
     console.log('file', file);
+    setLoading(true);
     if (fileId !== null) {
       const response = await fetch(`${linkUrl()}/windproofcurtains-offer-file-edit`, {
         method: "PUT",
@@ -357,7 +365,7 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-      }, setLoading(true)).then(
+      }).then(
         (response) => (response.json())
       ).then((response) => {
         if (response.status === 'success') {

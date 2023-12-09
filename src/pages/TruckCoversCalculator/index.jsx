@@ -354,6 +354,7 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
 
   function fetchOfferPrice() {
     // console.log('values', values);
+    setLoading(true);
     if (values) {
       const response = fetch(`${linkUrl()}/truckcovers-priceoffer`, {
         method: "POST",
@@ -363,7 +364,7 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
           'Content-Type': 'application/json'
         },
 
-      }, setLoading(true)).then(
+      }).then(
         (response) => (response.json())
       ).then((response) => {
         if (response.status === 'success') {
@@ -372,12 +373,14 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
           console.log("Message failed to send.", response);
         }
       });
+      setLoading(false);
 
       return response;
     }
   }
 
   async function fetchOfferFile() {
+    setLoading(true);
     if (selectedFile) {
       const response = await fetch(`${linkUrl()}/truckcovers-offer-file`, {
         method: "POST",
@@ -386,7 +389,7 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-      }, setLoading(true)).then(
+      }).then(
         (response) => (response.json())
       ).then((response) => {
         if (response.status === 'success') {
@@ -401,6 +404,8 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
   }
 
   function fetchOffer(dataUrl) {
+    setLoading(true);
+
     if (dataUrl !== '') {
       const response = fetch(`${linkUrl()}/truckcovers-offer-email`, {
         method: "POST",
@@ -409,7 +414,7 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-      }, setLoading(true)).then(
+      }).then(
         (response) => (response.json())
       ).then((response) => {
         if (response.status === 'success') {
@@ -426,6 +431,7 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
 
   async function fetchOfferComapedFiles(fileId) {
     // console.log('file', file);
+    setLoading(true);
     if (fileId !== null) {
       const response = await fetch(`${linkUrl()}/truckcovers-offer-file-edit`, {
         method: "PUT",
@@ -434,7 +440,7 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-      }, setLoading(true)).then(
+      }).then(
         (response) => (response.json())
       ).then((response) => {
         if (response.status === 'success') {

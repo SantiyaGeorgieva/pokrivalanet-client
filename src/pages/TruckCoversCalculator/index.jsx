@@ -9,7 +9,7 @@ import { bg, ro, enGB } from 'date-fns/locale';
 import PageTitle from "../../components/PageTitle";
 import Offer from "../../components/offers/Offer";
 import Message from "../../components/Message";
-import PokrivaloZyrnovot from '../../images/pokrivala_za_kamioni/18056333_940929649343507_9187667431850749039_o.jpg';
+import CoverScheme from '../../images/cover_scheme.png';
 import StraniciShtoraSkapaciKomplektOtDve from '../../images/pokrivala_za_kamioni/248156970_4411504175607542_8164656237683932178_n.jpg';
 import ShtoraBezKapaciKomlektOtDve from '../../images/pokrivala_za_kamioni/66785853_1766036520166145_1529046337771798528_n.jpg';
 import { linkUrl } from "../../utils";
@@ -86,7 +86,8 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
   const [hasNumberStretchesError, setNumberStretchesError] = useState(false);
   const [hasDateManufactureError, setDateManufactureError] = useState(false);
 
-  const [clicked, setClicked] = useState(false);
+  const [calulatedButtonClicked, setCalculatedButtonClicked] = useState(false);
+  const [orderButtonClicked, setOrderButtonClicked] = useState(false);
   const [isLoading, setLoading] = useState(false);
 
   const [selectedFile, setSingleFile] = useState(null);
@@ -107,24 +108,19 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
   }, [location.pathname])
 
   useEffect(() => {
-    if (values.length > 0) {
+    if (values[0] && values[0].length > 0 && !Object.values(values[0]).includes(null) && Object.values(values[0]) !== "") {
       if (titlePage === 'card_text4') {
         if (!hasWidthError && !hasLengthError && !hasHoodError && !hasBackCoverError && !hasFallingPipeError
           && !hasFallingRightError && !hasNumberStretchesError && !hasDateManufactureError) {
-          // setClicked(true);
-          // fetchOfferPrice();
-          // fetchOfferFile();
+          fetchOfferPrice();
         }
       } else if (titlePage !== 'card_text4') {
         if (!hasLengthError && !hasDateManufactureError) {
-          // setClicked(true);
-          // fetchOfferPrice();
-          // fetchOfferFile();
+          fetchOfferPrice();
         }
       }
     }
-  }, [hasWidthError, hasLengthError, hasHoodError, hasBackCoverError, hasFallingPipeError,
-    hasFallingRightError, hasNumberStretchesError, hasDateManufactureError, values])
+  }, [hasWidthError, hasLengthError, hasHoodError, hasBackCoverError, hasFallingPipeError, hasFallingRightError, hasNumberStretchesError, hasDateManufactureError, values, titlePage])
 
   useEffect(() => {
     if (values.length > 0 && titlePage === 'card_text4') {
@@ -157,8 +153,10 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
     }
   }, [values])
 
+
   useEffect(() => {
     if (totalPrice > 0 && Object.keys(items).length > 0 && offerNumber !== '') {
+      console.log('HERE1', totalPrice, Object.keys(items).length > 0, offerNumber);
       handlePdf(`${t('file_name')}`,
         <Offer offerNo={offerNumber} title={titlePage} parametersText="offer_parameters_text2" items={items} totalPrice={totalPrice} />, items);
     }
@@ -166,6 +164,7 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
 
   useEffect(() => {
     if (file !== null && totalPrice > 0) {
+      console.log('HERE2');
       setTimeout(() => {
         let reader = new FileReader();
         reader.readAsDataURL(file);
@@ -174,15 +173,21 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
           fetchOffer(dataUrl);
         }
       })
-
       // console.log('file.size', file.size)
       // console.log('selectedFile.size', selectedFile.size)
 
       if (file.size !== selectedFile.size && file !== null) {
+        console.log('HERE3');
         fetchOfferComapedFiles(offerNumber);
       }
     }
   }, [file]);
+
+  useEffect(() => {
+    if (selectedDate !== "") {
+      setDateManufactureError(false);
+    }
+  }, [selectedDate])
 
   const getLocale = (item) => {
     if (item === 'bg') {
@@ -334,6 +339,9 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
     setLoading(false);
   };
 
+  console.log('file', file);
+  console.log('selectedFile', selectedFile);
+
   const clearForm = () => {
     setWidth('');
     setLength('');
@@ -344,12 +352,16 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
     setFallingRight('');
     setNumberStretches('');
     setDateManufacture(null);
+    setFileName('');
+    setFile(null);
+    setSingleFile(null);
     setLongitudinalPocketCheck(false);
     setFittingLeftCheck(false);
     setFittingRightCheck(false);
     setAssemblyCheck(false);
     setValues([]);
-    setClicked(false);
+    setCalculatedButtonClicked(false);
+    setOrderButtonClicked(false);
     setVisible(false);
   }
 
@@ -363,13 +375,13 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
-        },
-
+        }
       }).then(
         (response) => (response.json())
       ).then((response) => {
         if (response.status === 'success') {
           setTotalPrice(response.result);
+          setCalculatedButtonClicked(true);
         } else if (response.status === 'fail') {
           console.log("Message failed to send.", response);
         }
@@ -380,29 +392,48 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
     }
   }
 
-  async function fetchOfferFile() {
+  const handleFetch = () => {
+    console.log("handleFetch");
+    setOrderButtonClicked(true);
     setLoading(true);
-    if (selectedFile) {
-      const response = await fetch(`${linkUrl()}/truckcovers-offer-file`, {
-        method: "POST",
-        body: JSON.stringify({ filename: fileName, type: selectedFile.type, size: selectedFile.size }),
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-      }).then(
-        (response) => (response.json())
-      ).then((response) => {
-        if (response.status === 'success') {
-          setOfferNumber(response.offerId);
-        } else if (response.status === 'fail') {
-          console.log("Message failed to send.", response);
-        }
-      });
-
-      return response;
-    }
   }
+
+  console.log("orderButtonClicked between", orderButtonClicked);
+
+  useEffect(() => {
+    async function fetchData() {
+      console.log('orderButtonClicked', orderButtonClicked);
+
+      if (orderButtonClicked) {
+        const response = await fetch(`${linkUrl()}/truckcovers-offer-file`, {
+          method: "POST",
+          body: JSON.stringify({ filename: fileName, type: selectedFile.type, size: selectedFile.size }),
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        }).then(
+          (response) => (response.json())
+        ).then((response) => {
+          if (response.status === 'success') {
+            setOfferNumber(response.offerId);
+            setOrderButtonClicked(false);
+            setLoading(false);
+          } else if (response.status === 'fail') {
+            console.log("Message failed to send.", response);
+            setOrderButtonClicked(false);
+            setLoading(false);
+          }
+        });
+
+        return response;
+      }
+    }
+
+    if (orderButtonClicked) {
+      fetchData();
+    }
+  }, [orderButtonClicked]);
 
   function fetchOffer(dataUrl) {
     setLoading(true);
@@ -414,7 +445,7 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
-        },
+        }
       }).then(
         (response) => (response.json())
       ).then((response) => {
@@ -466,7 +497,7 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
               key="1"
               alt="cover_scheme"
               className="w-100"
-              src={PokrivaloZyrnovot}
+              src={CoverScheme}
             />}
             {t(titlePage) === `${t('card_text7')}` && <img
               key="1"
@@ -716,7 +747,7 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
                     </Col>
                   </Row>
                 }
-                {!isLoading && <Row className={`${!isMobile ? 'mt-4' : 'mt-2'}`}>
+                {!isLoading && totalPrice && <Row className={`${!isMobile ? 'mt-4' : 'mt-2'}`}>
                   <Col md="12" className="text-start">
                     {t('total_price_text')} {totalPrice && <span className="fw-bold">{`${totalPrice} BGN`}</span>}
                   </Col>
@@ -731,7 +762,7 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
                   <>
                     <Row className="mt-2">
                       <Col>
-                        {!clicked ?
+                        {!calulatedButtonClicked && !orderButtonClicked &&
                           <PDFDownloadLink document={
                             <Offer title={titlePage} offerNo={offerNumber} parametersText="offer_parameters_text2" items={items} totalPrice={totalPrice} />}
                             fileName={t('file_name')} className="text-decoration-none">
@@ -746,47 +777,88 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
                                 </Button>
                             }}
                           </PDFDownloadLink>
-                          :
-                          <div className="d-flex align-items-center justify-content-between">
-                            <PDFDownloadLink document={
-                              <Offer title={titlePage} offerNo={offerNumber} parametersText="offer_parameters_text2" items={items} totalPrice={totalPrice} />}
-                              fileName={t('file_name')} className={`text-decoration-none ${!isMobile ? '' : 'me-2'}`}>
-                              {({ blob, url, loading, error }) =>
-                                loading ? 'Loading document...' :
-                                  <Button type="button" outline block href={url} target="_blank">
-                                    <span className={`fw-bold mx-auto text-transform w-100 ${!isMobile ? '' : 'fs-14 text-nowrap'}`}>{t('print_button')}</span>
+                        }
+                        {calulatedButtonClicked && !orderButtonClicked &&
+                          <>
+                            <Row>
+                              <Col>
+                                {/* <PDFDownloadLink document={
+                                  <Offer title={titlePage} offerNo={offerNumber} parametersText="offer_parameters_text2" items={items} totalPrice={totalPrice} />}
+                                  fileName={t('file_name')} className="text-decoration-none">
+                                  {({ blob, url, loading, error }) => {
+                                    // if (!loading && url !== '') {
+                                    //   setSingleFile(blob);
+                                    //   setFileName(`${t('file_name')}`);
+                                    // }
+                                    return loading ? <Spinner color="primary" /> :
+                                      <Button block type="button" className="bc-blue d-flex mt-3" onClick={() => handleFetch()}>
+                                        <span className={`fw-bold mx-auto text-transform ${!isMobile ? '' : 'fs-14 text-nowrap'}`}>{t('order_button')}</span>
+                                      </Button>
+                                  }}
+                                </PDFDownloadLink> */}
+                                <Button block type="button" className="bc-blue d-flex mt-3" onClick={() => handleFetch()}>
+                                  <span className={`fw-bold mx-auto text-transform ${!isMobile ? '' : 'fs-14 text-nowrap'}`}>{t('order_button')}</span>
+                                </Button>
+                              </Col>
+                            </Row>
+                            <Row className="mt-3">
+                              <Col>
+                                <div className="d-flex">
+                                  <Button
+                                    type="button"
+                                    color="danger"
+                                    outline
+                                    block
+                                    onClick={clearForm}>
+                                    <span className={`fw-bold text-transform ${!isMobile ? '' : 'fs-14 ws-nw'}`}>{t('clear_button')}</span>
                                   </Button>
-                              }
-                            </PDFDownloadLink>
-                            <Button
-                              type="button"
-                              className="bc-blue w-65"
-                              onClick={() => {
-                                generatePdfDocument(`${t('file_name')}`,
-                                  <Offer title={titlePage} offerNo={offerNumber} parametersText="offer_parameters_text2" items={items} totalPrice={totalPrice} />);
-                              }}
-                            >
-                              <span className={`fw-bold text-transform ${!isMobile ? '' : 'fs-14 text-nowrap'}`}>{t('download_button')}</span>
-                            </Button>
-                          </div>
+                                </div>
+                              </Col>
+                            </Row>
+                          </>
+                        }
+                        {calulatedButtonClicked && orderButtonClicked &&
+                          <>
+                            <div className="d-flex align-items-center justify-content-between">
+                              <PDFDownloadLink document={
+                                <Offer title={titlePage} offerNo={offerNumber} parametersText="offer_parameters_text2" items={items} totalPrice={totalPrice} />}
+                                fileName={t('file_name')} className={`text-decoration-none ${!isMobile ? '' : 'me-2'}`}>
+                                {({ blob, url, loading, error }) =>
+                                  loading ? 'Loading document...' :
+                                    <Button type="button" outline block href={url} target="_blank">
+                                      <span className={`fw-bold mx-auto text-transform w-100 ${!isMobile ? '' : 'fs-14 text-nowrap'}`}>{t('print_button')}</span>
+                                    </Button>
+                                }
+                              </PDFDownloadLink>
+                              <Button
+                                type="button"
+                                className="bc-blue w-65"
+                                onClick={() => {
+                                  generatePdfDocument(`${t('file_name')}`,
+                                    <Offer title={titlePage} offerNo={offerNumber} parametersText="offer_parameters_text2" items={items} totalPrice={totalPrice} />);
+                                }}
+                              >
+                                <span className={`fw-bold text-transform ${!isMobile ? '' : 'fs-14 text-nowrap'}`}>{t('download_button')}</span>
+                              </Button>
+                            </div>
+                            <Row className="mt-3">
+                              <Col>
+                                <div className="d-flex">
+                                  <Button
+                                    type="button"
+                                    color="danger"
+                                    outline
+                                    block
+                                    onClick={clearForm}>
+                                    <span className={`fw-bold text-transform ${!isMobile ? '' : 'fs-14 ws-nw'}`}>{t('clear_button')}</span>
+                                  </Button>
+                                </div>
+                              </Col>
+                            </Row>
+                          </>
                         }
                       </Col>
                     </Row>
-                    {clicked && <Row className="mt-3">
-                      <Col>
-                        <div className="d-flex">
-                          <Button
-                            type="button"
-                            color="danger"
-                            outline
-                            block
-                            onClick={clearForm}>
-                            <span className={`fw-bold text-transform ${!isMobile ? '' : 'fs-14 ws-nw'}`}>{t('clear_button')}</span>
-                          </Button>
-                        </div>
-                      </Col>
-                    </Row>
-                    }
                   </> : <Spinner color="primary" />
                 }
               </div>

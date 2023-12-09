@@ -9,6 +9,7 @@ import { bg, ro, enGB } from 'date-fns/locale';
 import PageTitle from "../../components/PageTitle";
 import Offer from "../../components/offers/Offer";
 import Message from "../../components/Message";
+import PokrivaloZyrnovot from '../../images/pokrivala_za_kamioni/18056333_940929649343507_9187667431850749039_o.jpg';
 import StraniciShtoraSkapaciKomplektOtDve from '../../images/pokrivala_za_kamioni/248156970_4411504175607542_8164656237683932178_n.jpg';
 import ShtoraBezKapaciKomlektOtDve from '../../images/pokrivala_za_kamioni/66785853_1766036520166145_1529046337771798528_n.jpg';
 import { linkUrl } from "../../utils";
@@ -110,7 +111,7 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
       if (titlePage === 'card_text4') {
         if (!hasWidthError && !hasLengthError && !hasHoodError && !hasBackCoverError && !hasFallingPipeError
           && !hasFallingRightError && !hasNumberStretchesError && !hasDateManufactureError) {
-          setClicked(true);
+          // setClicked(true);
           // fetchOfferPrice();
           // fetchOfferFile();
         }
@@ -461,6 +462,12 @@ const TruckCoversCalculator = memo(function TruckCoversCalculator({ hideMain, is
         </Row>
         <Row className="mb-5">
           <Col md="6" className={`${!isMobile ? 'text-start' : ''}`}>
+            {t(titlePage) === `${t('card_text4')}` && <img
+              key="1"
+              alt="cover_scheme"
+              className="w-100"
+              src={PokrivaloZyrnovot}
+            />}
             {t(titlePage) === `${t('card_text7')}` && <img
               key="1"
               alt="cover_scheme"

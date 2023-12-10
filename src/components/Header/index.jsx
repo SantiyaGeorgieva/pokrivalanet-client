@@ -67,10 +67,10 @@ const Header = memo(function Header({ isMobile, selectedItem, setSelectedItem })
                 </Link>
               </div>
               <Button size="sm" color="dark" className="cursor-default me-2" outline>
-                <i className="fa fa-phone my-2 px-2" />+359 887 614 031
+                <i className="fa fa-phone my-2 px-2" />{t('phone')}
               </Button>
               <Button color="dark" size="sm" className="cursor-default me-2" outline>
-                <i className="fa fa-phone my-2 px-2" />+359 877 614 029
+                <i className="fa fa-phone my-2 px-2" />{t('phone2')}
               </Button>
               <Button onClick={() => { scrollToTop(); navigateToContact(); }} color="dark" size="sm" className="location-link me-2" outline>
                 <Link className="text-dark text-decoration-none" to="/contact">
@@ -78,7 +78,7 @@ const Header = memo(function Header({ isMobile, selectedItem, setSelectedItem })
                 </Link>
               </Button>
               <Button color="dark" size="sm" outline className="cursor-default" onClick={onEmailClick}>
-                <i className="fa-solid fa-envelope my-2 px-2" />office@pokrivala.net
+                <i className="fa-solid fa-envelope my-2 px-2" />{t('email_office')}
               </Button>
               <Navbar expand="sm" className="py-0">
                 <Nav className="ms-auto" navbar>
@@ -213,12 +213,12 @@ const Header = memo(function Header({ isMobile, selectedItem, setSelectedItem })
               <Row className={`${isMobile ? '' : 'my-3'}`}>
                 <Col md="12" className={`${!isMobile ? '' : 'mt-3 mb-2'}`}>
                   <Button size="sm" color="dark" className="cursor-default me-2" outline>
-                    <i className="fa fa-phone my-2 px-2" />+359 887 614 031
+                    <i className="fa fa-phone my-2 px-2" />{t('phone')}
                   </Button>
                 </Col>
                 <Col className={`${!isMobile ? '' : 'mb-2'}`}>
                   <Button color="dark" size="sm" className="cursor-default me-2" outline>
-                    <i className="fa fa-phone my-2 px-2" />+359 877 614 029
+                    <i className="fa fa-phone my-2 px-2" />{t('phone2')}
                   </Button>
                 </Col>
               </Row>
@@ -233,8 +233,8 @@ const Header = memo(function Header({ isMobile, selectedItem, setSelectedItem })
                   </Button>
                 </Col>
                 <Col className={`${!isMobile ? '' : 'mb-2'}`}>
-                  <Button color="dark" size="sm" outline className="cursor-default">
-                    <i className="fa-solid fa-envelope my-2 px-2" />office@pokrivala.net
+                  <Button color="dark" size="sm" outline className="cursor-default" onClick={onEmailClick}>
+                    <i className="fa-solid fa-envelope my-2 px-2" />{t('email_office')}
                   </Button>
                 </Col>
               </Row>

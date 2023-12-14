@@ -39,7 +39,7 @@ const Header = memo(function Header({ isMobile, selectedItem, setSelectedItem })
   };
 
   const onEmailClick = () => {
-    window.open("mailto:office@pokrivala.net");
+    window.open(`mailto:${t('email_office')}`);
   }
 
   useEffect(() => {
@@ -48,6 +48,8 @@ const Header = memo(function Header({ isMobile, selectedItem, setSelectedItem })
       element.classList.add("px-0");
     }
   }, [isMobile, isOpen])
+
+  // console.log('isMobile', isMobile);
 
   return (
     <>{!isMobile ? (<div className="container-fluid px-0">

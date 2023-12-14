@@ -55,14 +55,15 @@ const corsOptions = {
   optionSuccessStatus: 201,
 };
 
+// enable CORS using npm package
+app.use(cors(corsOptions));
+
 // parse application/json
 app.use(bodyParser.json());
 
 // Require body-parser (to receive post data from clients)
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// enable CORS using npm package
-app.use(cors(corsOptions));
 
 //Routes
 // app.post("/register", async (req, res, next) => {
@@ -151,7 +152,6 @@ app.post("/verify-token", async (req, res) => {
 
 app.post("/contact", async (req, res, next) => {
   const { name, email, subject, message } = req.body;
-
   let transporter = nodemailer.createTransport({
     host: process.env.HOST_EMAIL,
     port: process.env.PORT_EMAIL,
@@ -163,7 +163,7 @@ app.post("/contact", async (req, res, next) => {
 
   var content = `Name: ${name}\nEmail: ${email} \n\n Message: ${message} `;
   const mailOptions = {
-    from: name,
+    from: email,
     email: email,
     subject: subject,
     text: content,
@@ -285,7 +285,7 @@ app.post("/windproofcurtains-offer-file", async (req, res) => {
       pool.release();
       return results;
     });
-    console.log('response', response);
+    // console.log('response', response);
     return res.status(200).json({
       success: true,
       status: "success",
@@ -313,7 +313,7 @@ app.put("/windproofcurtains-offer-file-edit", async (req, res) => {
         pool.release();
         return results;
       });
-    console.log('response', response[0])
+    // console.log('response', response[0])
     return res.status(200).json({
       success: true,
       status: "success",
@@ -448,6 +448,7 @@ app.post("/truckcovers-priceoffer", async (req, res, next) => {
 });
 
 app.post("/truckcovers-offer-file", async (req, res) => {
+  // console.log('req', req);
   try {
     if (Object.keys(req.body).length === 0) {
       return res.status(400).send('Empty object provided');
@@ -457,6 +458,7 @@ app.post("/truckcovers-offer-file", async (req, res) => {
       pool.release();
       return results;
     });
+    console.log('res', res);
     return res.status(200).json({
       success: true,
       status: "success",
@@ -464,6 +466,7 @@ app.post("/truckcovers-offer-file", async (req, res) => {
       offerId: response[0].insertId
     });
   } catch (error) {
+    console.log('error', error);
     return res.status(400).json({
       success: false,
       message: error

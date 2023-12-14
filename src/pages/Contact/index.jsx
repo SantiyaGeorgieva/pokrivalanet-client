@@ -43,10 +43,13 @@ const Contact = memo(function Contact({ hideMain, isMobile }) {
   const verifyToken = async (token) => {
     try {
       let response = await fetch(`${linkUrl()}/verify-token`, {
-        method: 'POST',
-        secret: process.env.REACT_APP_googleSecretApiKey,
-        token
-      });
+        method: "POST",
+        body: JSON.stringify({ token }),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
       return response;
     }
     catch (error) {
@@ -148,15 +151,15 @@ const Contact = memo(function Contact({ hideMain, isMobile }) {
           <Col md="6">
             <div className="d-flex flex-column text-start">
               <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />{`${t('addres_ruse')}`}</p>
-              <p className="mb-1"><i className="fa fa-phone my-2 pe-2" />+359 877 614 031,</p>
-              <p className="mb-1"><i className="fa fa-phone my-2 pe-2" />+359 877 614 029,</p>
-              <p className="mb-2"><i className="fa fa-phone my-2 pe-2" />+359 877 062 082</p>
+              <p className="mb-1"><i className="fa fa-phone my-2 pe-2" />{`${t('phone')}`},</p>
+              <p className="mb-1"><i className="fa fa-phone my-2 pe-2" />{`${t('phone2')}`},</p>
+              <p className="mb-2"><i className="fa fa-phone my-2 pe-2" />{`${t('phone3')}`}</p>
             </div>
             {!isMobile &&
               <div className="d-flex flex-column text-start mt-3">
                 <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />{`${t('addres_plv')}`}</p>
-                <p className="mb-2"><i className="fa fa-phone my-2 pe-2" />+359 877 614 031</p>
-                <p className="mb-2"><i className="fa-solid fa-envelope my-2 pe-2" />office@pokrivala.net</p>
+                <p className="mb-2"><i className="fa fa-phone my-2 pe-2" />{`${t('phone')}`}</p>
+                <p className="mb-2"><i className="fa-solid fa-envelope my-2 pe-2" />{`${t('email_office')}`}</p>
               </div>
             }
           </Col>
@@ -169,15 +172,15 @@ const Contact = memo(function Contact({ hideMain, isMobile }) {
             <Col md="6">
               <div className="d-flex flex-column text-start mt-3">
                 <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />{`${t('addres_plv')}`}</p>
-                <p className="mb-2"><i className="fa fa-phone my-2 pe-2" />+359 877 614 031</p>
-                <p className="mb-2"><i className="fa-solid fa-envelope my-2 pe-2" />office@pokrivala.net</p>
+                <p className="mb-2"><i className="fa fa-phone my-2 pe-2" />{`${t('phone')}`}</p>
+                <p className="mb-2"><i className="fa-solid fa-envelope my-2 pe-2" />{`${t('email_office')}`}</p>
               </div>
             </Col>
           </Row>
         }
         <Hr text={`${t('contacts_link')}`} />
-        <Row className={`{d-flex align-items-center justify-content-center ${isMobile ? 'mb-5' : ''}`}>
-          <Col md="4">
+        <Row className={`d-flex align-items-center justify-content-center ${isMobile ? 'mb-5' : ''}`}>
+          <Col xl="4">
             <Form onSubmit={(e) => handleSubmit(e)} method="POST">
               <FormGroup className="text-start mb-2">
                 <Label for="exampleEmail">{t('names')}</Label>

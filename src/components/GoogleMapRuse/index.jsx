@@ -70,8 +70,8 @@ function GoogleMapRuse() {
             <div className="text-start">
               <h6>{t('city')}</h6>
               <p className="mb-1">{t('google_maps_address')}</p>
-              <p className="mb-1">+ 359 887 614 031</p>
-              <p className="mb-1">+ 359 877 614 029</p>
+              <p className="mb-1">{`${t('phone')}`}</p>
+              <p className="mb-1">{`${t('phone2')}`}</p>
               <a className="text-left" href="https://www.google.bg/maps/place/%22%D0%92%D0%B8+%D0%90%D0%B9+%D0%94%D0%B6%D0%B8+%D0%93%D1%80%D1%83%D0%BF%22%D0%9E%D0%9E%D0%94/@43.8323099,25.9446742,17z/data=!3m1!4b1!4m5!3m4!1s0x40ae6066a3157d69:0xf5c19cf11e9b737a!8m2!3d43.8323061!4d25.9468629">Виж в Google Maps</a>
             </div>
           </InfoWindow>

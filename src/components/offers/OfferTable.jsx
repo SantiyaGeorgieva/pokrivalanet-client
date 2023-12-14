@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const OfferTable = ({ items, parametersText, totalPrice }) => {
+const OfferTable = ({ items, parametersText, totalPrice, title }) => {
   const { t } = useTranslation();
 
   return (
@@ -119,11 +119,11 @@ const OfferTable = ({ items, parametersText, totalPrice }) => {
         <Text style={styles.descriptionTotal}>TOTAL</Text>
         <Text style={styles.total}>{totalPrice} BGN</Text>
       </View>
-      <View>
+      {t(title) === t('offer_windproof_curtain') && <View>
         <Text style={styles.footerText}>
           {t('offer_footer_text')}
         </Text>
-      </View>
+      </View>}
     </View>
   )
 };

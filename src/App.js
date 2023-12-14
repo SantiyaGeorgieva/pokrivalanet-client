@@ -8,9 +8,10 @@ import Footer from './components/Footer';
 import AboutMe from './pages/AboutMe';
 import Home from './pages/Home';
 import TruckCovers from './pages/TruckCovers';
-import TruckCoversCalculator from './pages/TruckCoversCalculator';
+import TruckGondolaCalculator from './pages/TruckGondolaCalculator';
+import TruckShuterCalculator from './pages/TruckShuterCalculator';
 import AwningsAndShades from './pages/AwningsAndShades';
-import WindproofCurtains from './pages/WindproofCurtains';
+// import WindproofCurtains from './pages/WindproofCurtains';
 import IndustrialProducts from './pages/IndustrialProducts';
 import CoversForFishpondsAndLagoons from './pages/CoversForFishpondsAndLagoons';
 import CurtainsCowFarms from './pages/CurtainsCowFarms';
@@ -25,6 +26,7 @@ import Administration from './pages/Administration';
 import NotFound from './pages/NotFound';
 // import UnderConstruction from './pages/UnderConstruction';
 
+import 'react-day-picker/dist/style.css';
 import './App.css';
 
 const App = memo(function App() {
@@ -36,6 +38,10 @@ const App = memo(function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // if (/iPhone|Android/i.test(navigator.userAgent)) {
+    //   setIsMobile(true);
+    // }
+
     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
       setIsMobile(true);
     }
@@ -59,9 +65,10 @@ const App = memo(function App() {
           <Routes>
             <Route exact path="/" element={<Home isMobile={isMobile} />} />
             <Route index exact path="/truck-covers" element={<TruckCovers handleCardTitle={handleCardTitle} isMobile={isMobile} />} preventScrollReset={true} />
-            <Route exact path="/truck-covers/calculator" element={<TruckCoversCalculator isMobile={isMobile} offerTitle={offerTitle} />} preventScrollReset={true} />
+            <Route exact path="/truck-covers/gondola-calculator" element={<TruckGondolaCalculator isMobile={isMobile} offerTitle={offerTitle} />} preventScrollReset={true} />
+            <Route exact path="/truck-covers/shutter-calculator" element={<TruckShuterCalculator isMobile={isMobile} offerTitle={offerTitle} />} preventScrollReset={true} />
             {/* <Route exact path="/truck-covers/calculator" element={<UnderConstruction isMobile={isMobile}  />} preventScrollReset={true} /> */}
-            <Route exact path="/windproof-curtains" element={<WindproofCurtains isMobile={isMobile} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />} preventScrollReset={true} />
+            {/* <Route exact path="/windproof-curtains" element={<WindproofCurtains isMobile={isMobile} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />} preventScrollReset={true} /> */}
             <Route exact path="/awnings-and-shades" element={<AwningsAndShades isMobile={isMobile} />} preventScrollReset={true} />
             <Route exact path="/covers-for-fishponds-and-lagoons" element={<CoversForFishpondsAndLagoons isMobile={isMobile} />} />
             <Route exact path="/curtains-for-cow-farms" element={<CurtainsCowFarms isMobile={isMobile} preventScrollReset={true} />} />

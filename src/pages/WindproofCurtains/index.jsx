@@ -1,21 +1,23 @@
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useReducer, useRef, useState } from "react";
 import { saveAs } from 'file-saver';
 import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
 import { Row, Col, Form, FormFeedback, FormGroup, Input, Label, Button, Spinner } from "reactstrap";
 import { useTranslation } from "react-i18next";
 import { DayPicker } from 'react-day-picker';
-import { bg, ro, enGB } from 'date-fns/locale';
 import Gallery from "../../components/Gallery";
 import Hr from "../../components/Hr";
 import PageTitle from "../../components/PageTitle";
 import Offer from "../../components/offers/Offer";
 import Message from "../../components/Message";
 import { thickCount, windproofCurtains, windproofCurtainsOptions } from "../../constants";
+import { useApiFetchOfferPrice } from "../../hooks/useApiFetchOfferPrice";
 import { linkUrl } from "../../utils";
 
-
 import 'react-day-picker/dist/style.css';
+import { initialState, windproofCurtainsCalculatorReducer } from "../../components/reducers/windproofCuratinsCalculatorReducer";
+
 import './windproofCurtains.scss';
+import { CLEAR_ALL } from "../../actionTypes";
 
 const css = `
 .my-selected:not([disabled]) { 
@@ -37,7 +39,6 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
 
   const [selectedDate, setSelectedDate] = useState(null);
   const lastMonth = new Date();
-  const today = lastMonth.setMonth(lastMonth.getMonth() - 2);
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const wrapperRef = useRef(null);
@@ -57,22 +58,15 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
   }
 
   useOutsideAlerter(wrapperRef);
+  const [items, dispatchItems] = useReducer(windproofCurtainsCalculatorReducer, []);
+  const [state, dispatch] = useReducer(windproofCurtainsCalculatorReducer, initialState);
 
-  const [width, setWidth] = useState('');
-  const [height, setHeight] = useState('');
-  const [thick, setThick] = useState('0.8');
+  const { width, height, thick, edge, description, zipsCheck, lowerApronCheck, pipePocketCheck, knobsCheck } = state;
+  // const [titlePage, setTitlePage] = useState(offerTitle || localStorage.getItem('offerTitle'));
+  // const [thick, setThick] = useState('0.8');
   const [dateManufacture, setDateManufacture] = useState(null);
-  const [description, setDescription] = useState('');
-
   const [radioCheck, setRadioCheck] = useState('without_fitting');
-  const [zipsCheck, setZipsCheck] = useState(false);
-  const [lowerApronCheck, setLoweApronCheck] = useState(false);
-  const [pipePocketCheck, setPipePocketCheck] = useState(false);
-  const [knobsCheck, setKnobsCheck] = useState(false);
 
-  const [edge, setEdge] = useState('');
-  const [values, setValues] = useState([]);
-  const [items, setItems] = useState([]);
   const [hasWidthError, setWidthError] = useState(false);
   const [hasHeightError, setHeightError] = useState(false);
   const [hasEdgeError, setEdgeError] = useState(false);
@@ -89,90 +83,55 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
   const [visible, setVisible] = useState(false);
   const onDismiss = () => setVisible(false);
 
-  const [offerNumber, setOfferNumber] = useState('');
-  const [totalPrice, setTotalPrice] = useState('');
+  const widthInputRef = useRef(null);
+  const heightInputRef = useRef(null);
+  const edgeInputRef = useRef(null);
 
-  useEffect(() => {
-    if (!hasWidthError && !hasHeightError && !hasEdgeError && !hasDateManufactureError && values.length > 0) {
-      setClicked(true);
-      fetchPriceOffer();
-      fetchOfferFile();
-    } else {
-      setClicked(false);
-    }
-  }, [hasWidthError, hasHeightError, hasEdgeError, hasDateManufactureError, values])
+  const {
+    totalPrice,
+    isPending,
+    calulatedButtonClicked,
+    setCalculatedButtonClicked,
+    fetchOfferPrice,
+    setTotalPrice,
+  } = useApiFetchOfferPrice();
 
-  useEffect(() => {
-    if (values.length > 0) {
-      values.map((value, idx) => {
-        console.log('value:', value);
-        setItems([{
-          'width_text': value.width,
-          'height_text': value.height,
-          'depth_text': value.thick,
-          'edges': value.edge,
-          'date_manufacture': selectedDate?.toLocaleDateString("ro-RO"),
-          'hardware_text': radioCheck,
-          'additional_description': value.description,
-        }
-        ], ...items);
-      })
-    }
+  // const { offerNumber, fetchOfferPriceFile, offerFileSucceed } =
+  //   useApiFetchOfferFile();
 
-    zipsCheck && setItems(prevState => [...prevState, { zips: "+" }]);
-    lowerApronCheck && setItems(prevState => [...prevState, { lower_apron: "+" }]);
-    pipePocketCheck && setItems(prevState => [...prevState, { pipe_pocket: "+" }]);
-    knobsCheck && setItems(prevState => [...prevState, { knobs: "+" }]);
-    checked && setItems(prevState => [...prevState, { curtain_have_door: "+" }]);
+  // const { errorComparedFiles, fetchOfferComparedFiles } =
+  //   useApiFetchOfferComparedFiles();
 
-  }, [values])
+  // const { errorSendEmail, fetchSendEmail } = useApiFetchSendEmail();
 
-  useEffect(() => {
-    if (totalPrice > 0 && Object.keys(items).length > 0 && offerNumber !== '') {
-      handlePdf(`${t('file_name')}`,
-        <Offer title="offer_windproof_curtain" offerNo={offerNumber} parametersText="offer_parameters_text" items={items} totalPrice={totalPrice} />, items);
-    }
-  }, [totalPrice, offerNumber, items]);
+  // useEffect(() => {
+  //   if (values.length > 0) {
+  //     values.map((value, idx) => {
+  //       console.log('value:', value);
+  //       setItems([{
+  //         'width_text': value.width,
+  //         'height_text': value.height,
+  //         'depth_text': value.thick,
+  //         'edges': value.edge,
+  //         'date_manufacture': selectedDate?.toLocaleDateString("ro-RO"),
+  //         'hardware_text': radioCheck,
+  //         'additional_description': value.description,
+  //       }
+  //       ], ...items);
+  //     })
+  //   }
 
-  useEffect(() => {
-    if (file !== null && totalPrice > 0) {
-      setTimeout(() => {
-        let reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = function () {
-          let dataUrl = reader.result;
-          fetchOffer(dataUrl);
-        }
-      })
+  //   zipsCheck && setItems(prevState => [...prevState, { zips: "+" }]);
+  //   lowerApronCheck && setItems(prevState => [...prevState, { lower_apron: "+" }]);
+  //   pipePocketCheck && setItems(prevState => [...prevState, { pipe_pocket: "+" }]);
+  //   knobsCheck && setItems(prevState => [...prevState, { knobs: "+" }]);
+  //   checked && setItems(prevState => [...prevState, { curtain_have_door: "+" }]);
 
-      console.log('file.size', file.size)
-      console.log('selectedFile.size', selectedFile.size)
+  // }, [values])
 
-      if (file.size !== selectedFile.size && file !== null) {
-        fetchOfferComapedFiles(offerNumber);
-      }
-    }
-  }, [file]);
-
-  const getLocale = (item) => {
-    if (item === 'bg') {
-      return bg;
-    } else if (item === 'ro') {
-      return ro;
-    } else {
-      return enGB;
-    }
-  };
-
-  const isToday = (day) => {
-    const today = new Date();
-    console.log('day', day);
-    return (
-      day.getFullYear() === today.getFullYear() &&
-      day.getMonth() === today.getMonth() &&
-      day.getDate() === today.getDate()
-    );
-  };
+  //   handlePdf(`${t('file_name')}`,
+  //     <Offer title="offer_windproof_curtain" offerNo={offerNumber} parametersText="offer_parameters_text" items={items} totalPrice={totalPrice} />, items);
+  // }
 
   const handleInputClick = (date) => {
     if (selectedDate === '') {
@@ -191,48 +150,48 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
     hideDatePicker();
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
 
-    if (width === '') {
-      setWidthError(true);
-    } else if (width !== '') {
-      setWidthError(false);
-    }
+  //   if (width === '') {
+  //     setWidthError(true);
+  //   } else if (width !== '') {
+  //     setWidthError(false);
+  //   }
 
-    if (height === '') {
-      setHeightError(true);
-    } else if (height !== '') {
-      setHeightError(false);
-    }
+  //   if (height === '') {
+  //     setHeightError(true);
+  //   } else if (height !== '') {
+  //     setHeightError(false);
+  //   }
 
-    if (edge === '') {
-      setEdgeError(true);
-    } else if (edge !== '') {
-      setEdgeError(false);
-    }
+  //   if (edge === '') {
+  //     setEdgeError(true);
+  //   } else if (edge !== '') {
+  //     setEdgeError(false);
+  //   }
 
-    if (selectedDate === null) {
-      setDateManufactureError(true);
-    } else if (selectedDate !== null) {
-      setDateManufactureError(false);
-    }
+  //   if (selectedDate === null) {
+  //     setDateManufactureError(true);
+  //   } else if (selectedDate !== null) {
+  //     setDateManufactureError(false);
+  //   }
 
-    setValues([{
-      width: width,
-      height: height,
-      thick: thick,
-      edge: edge,
-      date_manufacture: selectedDate?.toLocaleDateString("ro-RO"),
-      description: description,
-      hardwareText: radioCheck,
-      zips: zipsCheck,
-      lower_apron: lowerApronCheck,
-      pipe_pocket: pipePocketCheck,
-      knobs: knobsCheck,
-      curtain_have_door: checked
-    }, ...values]);
-  }
+  //   setValues([{
+  //     width: width,
+  //     height: height,
+  //     thick: thick,
+  //     edge: edge,
+  //     date_manufacture: selectedDate?.toLocaleDateString("ro-RO"),
+  //     description: description,
+  //     hardwareText: radioCheck,
+  //     zips: zipsCheck,
+  //     lower_apron: lowerApronCheck,
+  //     pipe_pocket: pipePocketCheck,
+  //     knobs: knobsCheck,
+  //     curtain_have_door: checked
+  //   }, ...values]);
+  // }
 
   const handlePdf = async (name, pdfDocumentComponent, items) => {
     setFileName(name);
@@ -259,130 +218,92 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
   };
 
   const clearForm = () => {
-    setWidth('');
-    setHeight('');
-    setEdge('');
-    setDateManufacture(null);
-    setSelectedDate(null);
-    setDescription('');
+    dispatch({ type: CLEAR_ALL });
+    setTotalPrice('');
+    setFileName('');
+    setFile(null);
+    setSingleFile(null);
+    setCalculatedButtonClicked(false);
+    setOrderButtonClicked(false);
+    setVisible(false);
+    // setDateManufacture(null);
+    // setSelectedDate(null);
     setTotalPrice('');
     setRadioCheck('without_fitting');
-    setZipsCheck(false);
-    setLoweApronCheck(false);
-    setPipePocketCheck(false);
-    setKnobsCheck(false);
+
     setChecked(false);
-    setValues([]);
     setVisible(false);
   }
 
-  function fetchPriceOffer() {
-    setLoading(true);
-
-    if (values) {
-      const response = fetch(`${linkUrl()}/windproofcurtains-priceoffer`, {
-        method: "POST",
-        body: JSON.stringify(values[0]),
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
-      }).then(
-        (response) => (response.json())
-      ).then((response) => {
-        if (response.status === 'success') {
-          setTotalPrice(response.result);
-        } else if (response.status === 'fail') {
-          console.log("Message failed to send.", response);
-        }
-      });
-      setLoading(false);
-
-      return response;
+  const handleOfferPrice = () => {
+    if (widthInputRef.current && widthInputRef.current.value === "") {
+      setWidthError(true);
     }
-  }
 
-  async function fetchOfferFile() {
-    setLoading(true);
-
-    if (selectedFile) {
-      const response = await fetch(`${linkUrl()}/windproofcurtains-offer-file`, {
-        method: "POST",
-        body: JSON.stringify({ filename: fileName, type: selectedFile.type, size: selectedFile.size }),
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        }
-      }).then(
-        (response) => (response.json())
-      ).then((response) => {
-        if (response.status === 'success') {
-          setOfferNumber(response.offerId);
-        } else if (response.status === 'fail') {
-          console.log("Message failed to send.", response);
-        }
-      });
-
-      return response;
+    if (heightInputRef.current && heightInputRef.current.value === "") {
+      setHeightError(true);
     }
-  }
 
-  function fetchOffer(dataUrl) {
-    console.log('file', file);
-    setLoading(true);
+    if (edgeInputRef.current && edgeInputRef.current.value === "") {
+      setEdgeError(true);
+    }
 
-    if (dataUrl !== '') {
-      const response = fetch(`${linkUrl()}/windproofcurtains-offer-email`, {
-        method: "POST",
-        body: JSON.stringify({ filename: fileName, file: dataUrl }),
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+    if (fallingPipeInputRef.current && fallingPipeInputRef.current.value === "") {
+      setFallingPipeError(true);
+    }
+
+    if (fallingRightInputRef.current && fallingRightInputRef.current.value === "") {
+      setFallingRightError(true);
+    }
+
+    if (numberStretchesInputRef.current && numberStretchesInputRef.current.value === "") {
+      setNumberStretchesError(true);
+    }
+
+    if (dateManufacture === null || dateManufacture === '') {
+      setDateManufactureError(true);
+      return;
+    }
+
+    if (!hasWidthError && !hasLengthError && !hasHoodError && !hasBackCoverError && !hasFallingPipeError && !hasFallingRightError && !hasNumberStretchesError && !hasDateManufactureError) {
+      const values = [
+        {
+          width: width,
+          length: length,
+          hood: hood,
+          back_cover: backCover,
+          falling_pipe: fallingPipe,
+          falling_right: fallingRight,
+          number_stretches: numberStretches,
+          tarpaulin_type: tarpaulin,
+          date_manufacture: dateManufacture,
+          fitting_right: fittingRightCheck,
+          longitudinal_pocket: longitudinalPocketCheck,
+          assembly: assemblyCheck
         },
-      }).then(
-        (response) => (response.json())
-      ).then((response) => {
-        if (response.status === 'success') {
-          setVisible(true);
-        } else if (response.status === 'fail') {
-          console.log("Message failed to send.", response);
-        }
-      });
-      setLoading(false);
+      ];
 
-      return response;
+      const newItems = values.map((value) => ({
+        width_cover_text: value.width,
+        length_cover_text: value.length,
+        hood_text: value.hood,
+        back_cover_text: value.back_cover,
+        falling_pipe: value.falling_pipe,
+        falling_to_right: value.falling_right,
+        number_stretches: value.number_stretches,
+        date_manufacture: value.date_manufacture.toLocaleDateString("ro-RO"),
+        tarpaulin_type: value.tarpaulin_type,
+      }));
+
+      dispatchItems({ type: SET_ITEMS, payload: newItems });
+
+      dispatchItems({ type: longitudinalPocketCheck ? ADD_CHECK : REMOVE_CHECK, payload: 'longitudinal_pocket' });
+      dispatchItems({ type: fittingLeftCheck ? ADD_CHECK : REMOVE_CHECK, payload: 'fitting_left' });
+      dispatchItems({ type: fittingRightCheck ? ADD_CHECK : REMOVE_CHECK, payload: 'fitting_right' });
+      dispatchItems({ type: assemblyCheck ? ADD_CHECK : REMOVE_CHECK, payload: 'assembly' });
+
+      fetchOfferPrice([...values], titlePage, endpoints.truckPriceUrl);
     }
-  }
-
-  async function fetchOfferComapedFiles(fileId) {
-    console.log('file', file);
-    setLoading(true);
-    if (fileId !== null) {
-      const response = await fetch(`${linkUrl()}/windproofcurtains-offer-file-edit`, {
-        method: "PUT",
-        body: JSON.stringify({ id: fileId, filename: fileName, type: file.type, size: file.size }),
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-      }).then(
-        (response) => (response.json())
-      ).then((response) => {
-        if (response.status === 'success') {
-        } else if (response.status === 'fail') {
-          console.log("Message failed to send.", response);
-        }
-      });
-
-      return response;
-    }
-  }
-
-  const disabledDays = {
-    after: new Date(), // Disables all days after today
-    before: new Date(), // Disables all days before today
-    daysOfWeek: [], // Optional: specify days of the week to disable
-    custom: isToday, // Disables today's date
   };
 
   return <>{!hideMain &&
@@ -578,7 +499,6 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
                           mode="single"
                           initialMonth={today}
                           weekStartsOn={1}
-                          disabledDays={disabledDays}
                           fromMonth={lastMonth}
                           fromDate={lastMonth}
                           captionLayout="dropdown"

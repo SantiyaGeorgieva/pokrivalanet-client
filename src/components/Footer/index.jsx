@@ -15,7 +15,7 @@ function Footer({ isMobile }) {
         <Col>
           <div className="container">
             <Row className="footer-menu">
-              <Col md="4" className={`d-flex flex-column text-start ${isMobile ? 'w-50' : ''}`}>
+              <Col xl="4" className={`d-flex flex-column text-start ${isMobile ? 'w-50' : ''}`}>
                 {/* <Link onClick={scrollToTop} to="/">{t('home_link')}</Link> */}
                 <Link onClick={scrollToTop} to="/truck-covers">{t('truck_cover_link')}</Link>
                 <Link onClick={scrollToTop} to="/windproof-curtains">{t('windproof_curtains_link')}</Link>
@@ -24,7 +24,7 @@ function Footer({ isMobile }) {
                 <Link onClick={scrollToTop} to="/curtains-for-cow-farms">{t('curtains_for_cow_farms_link')}</Link>
                 <Link onClick={scrollToTop} to="/industrial-products">{t('industrial_products_link')}</Link>
               </Col>
-              <Col md="4" className="d-flex flex-column text-start">
+              <Col xl="4" className="d-flex flex-column text-start">
                 <Link onClick={scrollToTop} to="/prefabricated-tents">{t('prefabricated_tents_link')}</Link>
                 <Link onClick={scrollToTop} to="/large-bedspreads">{t('large_covers_link')}</Link>
                 <Link onClick={scrollToTop} to="/linings-and-covers">{t('linings_and_covers_link')}</Link>

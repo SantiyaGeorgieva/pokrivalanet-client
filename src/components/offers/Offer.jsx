@@ -33,7 +33,7 @@ const Offer = ({ items, title, offerNo, parametersText, totalPrice }) => {
         <OfferBillTo />
         <OfferTitle offerTitle="title_оffer" title={title} />
         <OfferNo offerNoTitle="title_offer_no" offerNo={offerNo} offerDateTitle="offer_date_title" />
-        <OfferTable parametersText={parametersText} items={items} totalPrice={totalPrice} message="pdf_thankyou_msg" />
+        <OfferTable parametersText={parametersText} items={items} totalPrice={totalPrice} title={title} />
         <OfferThankYouMsg message="pdf_thankyou_msg" />
       </Page>
     </Document>

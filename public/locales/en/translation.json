@@ -90,6 +90,7 @@
   "has_falling_right_error": "Please enter data to fall to the right.",
   "has_number_stretches_error": "Please enter number of stretches.",
   "has_date_manufacture_error": "Please enter a build date.",
+  "date_placeholder_text": "Select date",
   "total_price_text": "Total: ",
   "order_button": "Order!",
   "print_button": "Print offer",

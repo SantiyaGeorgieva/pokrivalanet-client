@@ -6,10 +6,12 @@ export const initialState = {
   description: '',
   selectedDate: '',
   dateManufacture: '',
+  radioCheck: 'without_fitting',
   zipsCheck: false,
   lowerApronCheck: false,
   pipePocketCheck: false,
   knobsCheck: false,
+  curtainHaveDoorCheck: false
 };
 
 export const windproofCurtainsCalculatorReducer = (state, action) => {
@@ -28,8 +30,10 @@ export const windproofCurtainsCalculatorReducer = (state, action) => {
       return { ...state, thick: action.value };
     case 'SET_EDGE':
       return { ...state, edge: action.value };
-    case 'SET_DESCREPTION':
-      return { ...state, description: action.value };
+    case 'SET_RADIOCHECK':
+      return { ...state, radioCheck: action.value };
+    case 'SET_DESCRIPTION':
+      return { ...state, description: action.payload };
     case 'SET_SELECTEDDATE':
       return { ...state, selectedDate: action.value };
     case 'SET_DATEMANUFACTURE':
@@ -42,6 +46,8 @@ export const windproofCurtainsCalculatorReducer = (state, action) => {
       return { ...state, pipePocketCheck: action.payload };
     case 'SET_KNOBSCHECK':
       return { ...state, knobsCheck: action.payload };
+    case 'SET_CURTAINHAVEDOORCHECK':
+      return { ...state, curtainHaveDoorCheck: action.payload };
     case 'CLEAR_WIDTH':
       return { ...state, width: '' };
     case 'CLEAR_HEIGHT':
@@ -49,7 +55,7 @@ export const windproofCurtainsCalculatorReducer = (state, action) => {
     case 'CLEAR_EDGE':
       return { ...state, edge: '' };
     case 'CLEAR_DESCRIPTION':
-      return { ...state, description: '' };
+      return { ...state, description: "" };
     case 'CLEAR_SELECTEDDATE':
       return { ...state, selectedDate: '' };
     case 'CLEAR_DATEMANUFACTURE':

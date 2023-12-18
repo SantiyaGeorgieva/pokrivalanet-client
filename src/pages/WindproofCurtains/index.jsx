@@ -1,7 +1,8 @@
 import { memo, useEffect, useReducer, useRef, useState } from "react";
 import { saveAs } from 'file-saver';
-import { PDFDownloadLink, pdf } from "@react-pdf/renderer";
+import { BlobProvider, PDFDownloadLink, pdf } from "@react-pdf/renderer";
 import { Row, Col, Form, FormFeedback, FormGroup, Input, Label, Button, Spinner } from "reactstrap";
+import { useLocation } from "react-router";
 import { useTranslation } from "react-i18next";
 import { DayPicker } from 'react-day-picker';
 import Gallery from "../../components/Gallery";
@@ -11,13 +12,37 @@ import Offer from "../../components/offers/Offer";
 import Message from "../../components/Message";
 import { thickCount, windproofCurtains, windproofCurtainsOptions } from "../../constants";
 import { useApiFetchOfferPrice } from "../../hooks/useApiFetchOfferPrice";
-import { linkUrl } from "../../utils";
+import { useApiFetchOfferFile } from "../../hooks/useApiFetchOfferFile";
+import { useApiFetchSendEmail } from "../../hooks/useApiFetchSendEmail";
+import { useApiFetchOfferComparedFiles } from "../../hooks/useFetchOfferComparedFiles";
+import { initialState, windproofCurtainsCalculatorReducer } from "../../components/reducers/windproofCuratinsCalculatorReducer";
+import { getDateLocale, getLocale, endpoints } from "../../utils";
 
 import 'react-day-picker/dist/style.css';
-import { initialState, windproofCurtainsCalculatorReducer } from "../../components/reducers/windproofCuratinsCalculatorReducer";
 
 import './windproofCurtains.scss';
-import { CLEAR_ALL } from "../../actionTypes";
+import {
+  ADD_CHECK,
+  CLEAR_ALL,
+  CLEAR_DESCRIPTION,
+  CLEAR_EDGE,
+  CLEAR_HEIGHT,
+  CLEAR_WIDTH,
+  REMOVE_CHECK,
+  SET_CURTAINHAVEDOORCHECK,
+  SET_DATEMANUFACTURE,
+  SET_DESCRIPTION,
+  SET_EDGE,
+  SET_HEIGHT,
+  SET_ITEMS,
+  SET_KNOBSCHECK,
+  SET_LOWERAPRONCHECK,
+  SET_PIPEPOCKETCHECK,
+  SET_RADIOCHECK,
+  SET_THICK,
+  SET_WIDTH,
+  SET_ZIPSCHECK
+} from "../../actionTypes";
 
 const css = `
 .my-selected:not([disabled]) { 
@@ -33,8 +58,9 @@ const css = `
   color: blue;
 }`;
 
-const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }) {
+const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, selectedLanguage }) {
   const { t } = useTranslation();
+  const location = useLocation();
   PageTitle(t('windproof_curtains_page_title'));
 
   const [selectedDate, setSelectedDate] = useState(null);
@@ -61,20 +87,17 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
   const [items, dispatchItems] = useReducer(windproofCurtainsCalculatorReducer, []);
   const [state, dispatch] = useReducer(windproofCurtainsCalculatorReducer, initialState);
 
-  const { width, height, thick, edge, description, zipsCheck, lowerApronCheck, pipePocketCheck, knobsCheck } = state;
-  // const [titlePage, setTitlePage] = useState(offerTitle || localStorage.getItem('offerTitle'));
-  // const [thick, setThick] = useState('0.8');
-  const [dateManufacture, setDateManufacture] = useState(null);
-  const [radioCheck, setRadioCheck] = useState('without_fitting');
+  const { width, height, thick, edge, description, dateManufacture, radioCheck, zipsCheck, lowerApronCheck, pipePocketCheck, knobsCheck, curtainHaveDoorCheck } = state;
+  const [titlePage, setTitlePage] = useState(localStorage.getItem('offerTitle'));
+  const [error, setError] = useState(false);
 
   const [hasWidthError, setWidthError] = useState(false);
   const [hasHeightError, setHeightError] = useState(false);
   const [hasEdgeError, setEdgeError] = useState(false);
   const [hasDateManufactureError, setDateManufactureError] = useState(false);
 
-  const [clicked, setClicked] = useState(false);
   const [isLoading, setLoading] = useState(false);
-  const [checked, setChecked] = useState(false);
+  const [orderButtonClicked, setOrderButtonClicked] = useState(false);
 
   const [selectedFile, setSingleFile] = useState(null);
   const [file, setFile] = useState(null);
@@ -96,102 +119,79 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
     setTotalPrice,
   } = useApiFetchOfferPrice();
 
-  // const { offerNumber, fetchOfferPriceFile, offerFileSucceed } =
-  //   useApiFetchOfferFile();
+  const { offerNumber, fetchOfferPriceFile, offerFileSucceed } =
+    useApiFetchOfferFile();
 
-  // const { errorComparedFiles, fetchOfferComparedFiles } =
-  //   useApiFetchOfferComparedFiles();
+  const { loadingComparedFiles, errorComparedFiles, fetchOfferComparedFiles } =
+    useApiFetchOfferComparedFiles();
 
-  // const { errorSendEmail, fetchSendEmail } = useApiFetchSendEmail();
+  const { sendEmailLoading, sendEmailSucceed, errorSendEmail, fetchSendEmail } = useApiFetchSendEmail();
 
-  // useEffect(() => {
-  //   if (values.length > 0) {
-  //     values.map((value, idx) => {
-  //       console.log('value:', value);
-  //       setItems([{
-  //         'width_text': value.width,
-  //         'height_text': value.height,
-  //         'depth_text': value.thick,
-  //         'edges': value.edge,
-  //         'date_manufacture': selectedDate?.toLocaleDateString("ro-RO"),
-  //         'hardware_text': radioCheck,
-  //         'additional_description': value.description,
-  //       }
-  //       ], ...items);
-  //     })
-  //   }
-
-  //   zipsCheck && setItems(prevState => [...prevState, { zips: "+" }]);
-  //   lowerApronCheck && setItems(prevState => [...prevState, { lower_apron: "+" }]);
-  //   pipePocketCheck && setItems(prevState => [...prevState, { pipe_pocket: "+" }]);
-  //   knobsCheck && setItems(prevState => [...prevState, { knobs: "+" }]);
-  //   checked && setItems(prevState => [...prevState, { curtain_have_door: "+" }]);
-
-  // }, [values])
-
-  //   handlePdf(`${t('file_name')}`,
-  //     <Offer title="offer_windproof_curtain" offerNo={offerNumber} parametersText="offer_parameters_text" items={items} totalPrice={totalPrice} />, items);
-  // }
-
-  const handleInputClick = (date) => {
-    if (selectedDate === '') {
-      setShowDatePicker(!showDatePicker);
-    } else {
-      setShowDatePicker(!showDatePicker);
-      setDateManufacture(selectedDate);
+  useEffect(() => {
+    if (location.pathname) {
+      localStorage.setItem("offerTitle", titlePage);
     }
-  };
+
+  }, [location.pathname])
+
+  useEffect(() => {
+    dateManufacture && dateManufacture.toLocaleDateString(selectedLanguage);
+  }, [selectedLanguage, dateManufacture]);
+
+  useEffect(() => {
+    if (offerFileSucceed) {
+      if (
+        totalPrice > 0 &&
+        Object.keys(items).length > 0 &&
+        offerNumber !== ""
+      ) {
+        handlePdf(
+          `${t("file_name")}`,
+          <Offer
+            offerNo={offerNumber}
+            title="offer_windproof_curtain"
+            parametersText="offer_parameters_text"
+            items={items}
+            totalPrice={totalPrice}
+          />,
+          items
+        );
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [offerFileSucceed, offerNumber]);
+
+  useEffect(() => {
+    if (file !== null && totalPrice > 0) {
+      const fetchData = async () => {
+        await fetchOfferComparedFiles(offerNumber, fileName, file, endpoints.windproofComparedFilesUrl);
+        if (!errorComparedFiles) {
+          let reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = async () => {
+            let dataUrl = reader.result;
+            await fetchSendEmail(dataUrl, fileName, endpoints.windproofSendEmailUrl);
+            if (!errorSendEmail) {
+              setVisible(true);
+            }
+          };
+        }
+      };
+
+      fetchData();
+    }
+  }, [file]);
 
   const hideDatePicker = () => {
     setShowDatePicker(false);
   };
+
   const handleDayClick = (day) => {
+    setShowDatePicker(!showDatePicker);
     setSelectedDate(day);
-    hideDatePicker();
+    dispatch({ type: SET_DATEMANUFACTURE, value: day });
+    setDateManufactureError(false);
   };
-
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-
-  //   if (width === '') {
-  //     setWidthError(true);
-  //   } else if (width !== '') {
-  //     setWidthError(false);
-  //   }
-
-  //   if (height === '') {
-  //     setHeightError(true);
-  //   } else if (height !== '') {
-  //     setHeightError(false);
-  //   }
-
-  //   if (edge === '') {
-  //     setEdgeError(true);
-  //   } else if (edge !== '') {
-  //     setEdgeError(false);
-  //   }
-
-  //   if (selectedDate === null) {
-  //     setDateManufactureError(true);
-  //   } else if (selectedDate !== null) {
-  //     setDateManufactureError(false);
-  //   }
-
-  //   setValues([{
-  //     width: width,
-  //     height: height,
-  //     thick: thick,
-  //     edge: edge,
-  //     date_manufacture: selectedDate?.toLocaleDateString("ro-RO"),
-  //     description: description,
-  //     hardwareText: radioCheck,
-  //     zips: zipsCheck,
-  //     lower_apron: lowerApronCheck,
-  //     pipe_pocket: pipePocketCheck,
-  //     knobs: knobsCheck,
-  //     curtain_have_door: checked
-  //   }, ...values]);
-  // }
 
   const handlePdf = async (name, pdfDocumentComponent, items) => {
     setFileName(name);
@@ -208,6 +208,80 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
       setFile(fileBlob);
     }
   }
+
+  const handleWidthInput = (value) => {
+    if (value === "") {
+      setWidthError(true);
+      dispatch({ type: CLEAR_WIDTH, value: "" });
+    } else {
+      setWidthError(false);
+      dispatch({ type: SET_WIDTH, value: value });
+    }
+  };
+
+  const handleHeightInput = (value) => {
+    if (value === "") {
+      setHeightError(true);
+      dispatch({ type: CLEAR_HEIGHT, value: "" });
+    } else {
+      setHeightError(false);
+      dispatch({ type: SET_HEIGHT, value: value });
+    }
+  };
+
+  const handleThickInput = (value) => {
+    if (value === "") {
+      dispatch({ type: SET_THICK, value: "" });
+    } else {
+      dispatch({ type: SET_THICK, value: value });
+    }
+  };
+
+  const handleEdgeInput = (value) => {
+    if (value === "") {
+      setEdgeError(true);
+      dispatch({ type: CLEAR_EDGE, value: "" });
+    } else {
+      setEdgeError(false);
+      dispatch({ type: SET_EDGE, value: value });
+    }
+  };
+
+  const handleDescriptionInput = (value) => {
+    if (value === "") {
+      dispatch({ type: CLEAR_DESCRIPTION, payload: "" });
+    } else {
+      dispatch({ type: SET_DESCRIPTION, payload: value });
+    }
+  };
+
+  const handleRadioCheck = (value) => {
+    if (value === "") {
+      dispatch({ type: SET_RADIOCHECK, value: "" });
+    } else {
+      dispatch({ type: SET_RADIOCHECK, value: value });
+    }
+  };
+
+  const handleZipsCheck = (e) => {
+    dispatch({ type: SET_ZIPSCHECK, payload: !zipsCheck });
+  }
+
+  const handleLoweApronCheck = (e) => {
+    dispatch({ type: SET_LOWERAPRONCHECK, payload: !lowerApronCheck });
+  }
+
+  const handlePipePocketCheck = (e) => {
+    dispatch({ type: SET_PIPEPOCKETCHECK, payload: !pipePocketCheck });
+  }
+
+  const handleKnobsCheck = (e) => {
+    dispatch({ type: SET_KNOBSCHECK, payload: !knobsCheck });
+  }
+
+  const handleCurtainHaveDoorCheck = (e) => {
+    dispatch({ type: SET_CURTAINHAVEDOORCHECK, payload: !curtainHaveDoorCheck });
+  };
 
   const generatePdfDocument = async (fileName, pdfDocumentComponent) => {
     setLoading(true);
@@ -226,13 +300,7 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
     setCalculatedButtonClicked(false);
     setOrderButtonClicked(false);
     setVisible(false);
-    // setDateManufacture(null);
-    // setSelectedDate(null);
-    setTotalPrice('');
-    setRadioCheck('without_fitting');
-
-    setChecked(false);
-    setVisible(false);
+    setError(false);
   }
 
   const handleOfferPrice = () => {
@@ -248,63 +316,62 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
       setEdgeError(true);
     }
 
-    if (fallingPipeInputRef.current && fallingPipeInputRef.current.value === "") {
-      setFallingPipeError(true);
-    }
-
-    if (fallingRightInputRef.current && fallingRightInputRef.current.value === "") {
-      setFallingRightError(true);
-    }
-
-    if (numberStretchesInputRef.current && numberStretchesInputRef.current.value === "") {
-      setNumberStretchesError(true);
-    }
-
     if (dateManufacture === null || dateManufacture === '') {
       setDateManufactureError(true);
       return;
     }
 
-    if (!hasWidthError && !hasLengthError && !hasHoodError && !hasBackCoverError && !hasFallingPipeError && !hasFallingRightError && !hasNumberStretchesError && !hasDateManufactureError) {
+    if (!hasWidthError && !hasHeightError && !hasEdgeError && !hasDateManufactureError) {
       const values = [
         {
-          width: width,
-          length: length,
-          hood: hood,
-          back_cover: backCover,
-          falling_pipe: fallingPipe,
-          falling_right: fallingRight,
-          number_stretches: numberStretches,
-          tarpaulin_type: tarpaulin,
-          date_manufacture: dateManufacture,
-          fitting_right: fittingRightCheck,
-          longitudinal_pocket: longitudinalPocketCheck,
-          assembly: assemblyCheck
+          'width': width,
+          'height': height,
+          'thick': thick,
+          'edge': edge,
+          'date_manufacture': dateManufacture,
+          'hardware_text': radioCheck,
+          'description': description,
+          'zips': zipsCheck,
+          'lower_apron': lowerApronCheck,
+          'pipe_pocket': pipePocketCheck,
+          'knobs': knobsCheck,
+          'curtain_have_door': curtainHaveDoorCheck
         },
       ];
 
       const newItems = values.map((value) => ({
-        width_cover_text: value.width,
-        length_cover_text: value.length,
-        hood_text: value.hood,
-        back_cover_text: value.back_cover,
-        falling_pipe: value.falling_pipe,
-        falling_to_right: value.falling_right,
-        number_stretches: value.number_stretches,
+        width_text: value.width,
+        height_text: value.height,
+        depth_text: value.thick,
+        edges: value.edge,
         date_manufacture: value.date_manufacture.toLocaleDateString("ro-RO"),
-        tarpaulin_type: value.tarpaulin_type,
+        hardware_text: value.hardware_text,
+        additional_description: value.description
       }));
 
       dispatchItems({ type: SET_ITEMS, payload: newItems });
 
-      dispatchItems({ type: longitudinalPocketCheck ? ADD_CHECK : REMOVE_CHECK, payload: 'longitudinal_pocket' });
-      dispatchItems({ type: fittingLeftCheck ? ADD_CHECK : REMOVE_CHECK, payload: 'fitting_left' });
-      dispatchItems({ type: fittingRightCheck ? ADD_CHECK : REMOVE_CHECK, payload: 'fitting_right' });
-      dispatchItems({ type: assemblyCheck ? ADD_CHECK : REMOVE_CHECK, payload: 'assembly' });
+      dispatchItems({ type: zipsCheck ? ADD_CHECK : REMOVE_CHECK, payload: 'zips' });
+      dispatchItems({ type: lowerApronCheck ? ADD_CHECK : REMOVE_CHECK, payload: 'lower_apron' });
+      dispatchItems({ type: pipePocketCheck ? ADD_CHECK : REMOVE_CHECK, payload: 'pipe_pocket' });
+      dispatchItems({ type: knobsCheck ? ADD_CHECK : REMOVE_CHECK, payload: 'knobs' });
+      dispatchItems({ type: curtainHaveDoorCheck ? ADD_CHECK : REMOVE_CHECK, payload: 'curtain_have_door' });
 
-      fetchOfferPrice([...values], titlePage, endpoints.truckPriceUrl);
+      fetchOfferPrice([...values], titlePage, endpoints.windproofPriceUrl);
     }
   };
+
+  const handleOfferFile = async () => {
+    setOrderButtonClicked(true);
+    try {
+      await fetchOfferPriceFile(fileName, selectedFile, endpoints.windproofFileUrl);
+    } catch (errorOfferFile) {
+      setError(true);
+      setVisible(true);
+    }
+  };
+
+  console.log('sendEmailLoading', sendEmailLoading)
 
   return <>{!hideMain &&
     <div className={`container ${isMobile ? '' : 'my-4'}`}>
@@ -318,14 +385,14 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
       </Row>
       <Row className="mb-5">
         <Col md="6" className={`${!isMobile ? 'text-start' : ''}`}>
-          {!checked ? windproofCurtainsOptions.filter(option => (option.text === radioCheck) && !option.checked === !checked).map(option => {
+          {!curtainHaveDoorCheck ? windproofCurtainsOptions.filter(option => (option.text === radioCheck) && !option.checked === !curtainHaveDoorCheck).map(option => {
             return <img
               key={option.id}
               className={isMobile ? 'w-100' : 'w-75'}
               src={option.image}
             />
           })
-            : windproofCurtainsOptions.filter(option => (option.text === radioCheck) && !option.checked === !checked).map(option => {
+            : windproofCurtainsOptions.filter(option => (option.text === radioCheck) && !option.checked === !curtainHaveDoorCheck).map(option => {
               return <img
                 key={option.id}
                 className={isMobile ? 'w-100' : 'w-75'}
@@ -335,15 +402,15 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
           }
         </Col>
         <Col md="6">
-          <Form className={`${isMobile ? 'mt-3' : ''}`} onSubmit={handleSubmit} method="POST">
+          <Form className={`${isMobile ? 'mt-3' : ''}`} method="POST" id="form" encType="multipart/form-data">
             <h4 className={`${isMobile ? 'mb-3' : 'mb-5'}`}>{t('curtain_data_text')}</h4>
             <div className={`container ${isMobile ? 'mt-3' : 'mt-5'}`}>
               <Row>
                 <Col md="6">
                   <FormGroup className="text-start mb-2">
                     <Label for="width" className="fw-bold">{t('width_text')}</Label>
-                    <Input type="number" name="width" onChange={e => setWidth(e.target.value)} value={width}
-                      invalid={hasWidthError}
+                    <Input type="number" disabled={calulatedButtonClicked} name="width" onChange={e => handleWidthInput(e.target.value)} value={width}
+                      invalid={hasWidthError} innerRef={widthInputRef}
                     />
                     {hasWidthError && <FormFeedback>{t('has_width_error')}</FormFeedback>}
                   </FormGroup>
@@ -351,7 +418,7 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
                 <Col md="6">
                   <FormGroup className="text-start mb-2">
                     <Label for="height" className="fw-bold">{t('height_text')}</Label>
-                    <Input type="number" onChange={e => setHeight(e.target.value)} name="height" value={height} invalid={hasHeightError} />
+                    <Input type="number" disabled={calulatedButtonClicked} onChange={e => handleHeightInput(e.target.value)} name="height" value={height} invalid={hasHeightError} innerRef={heightInputRef} />
                     {hasHeightError && <FormFeedback>{t('has_height_error')}</FormFeedback>}
                   </FormGroup>
                 </Col>
@@ -365,7 +432,9 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
                       name="select"
                       type="select"
                       defaultValue={thick}
-                      onChange={e => setThick(e.target.value)}>
+                      disabled={calulatedButtonClicked}
+                      onChange={e => handleThickInput(e.target.value)}
+                      className={`${calulatedButtonClicked && 'cursor-disabled'}`}>
                       {thickCount.map(option => {
                         return <option key={option.id}>{t(`${option.text}`)}</option>
                       })}
@@ -374,8 +443,8 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
                 </Col>
                 <Col md="6">
                   <FormGroup className="text-start mb-2">
-                    <Label for="edge" className="fw-bold">{t('edges')}</Label>
-                    <Input type="number" onChange={e => setEdge(e.target.value)} name="edge" value={edge} invalid={hasEdgeError} />
+                    <Label for="edge" className="fw-bold" >{t('edges')}</Label>
+                    <Input type="number" disabled={calulatedButtonClicked} onChange={e => handleEdgeInput(e.target.value)} name="edge" value={edge} invalid={hasEdgeError} innerRef={edgeInputRef} />
                     {hasEdgeError && <FormFeedback>{t('has_edge_error')}</FormFeedback>}
                   </FormGroup>
                 </Col>
@@ -386,138 +455,214 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
                     <Col md="12" className="text-start">
                       <Label for="edge" className="fw-bold">{t('hardware_text')}</Label>
                       <div className="flex">
-                        <input type="radio" name="radio" id="without_fitting" defaultChecked />
-                        <Label check className="mb-0" onClick={e => setRadioCheck('without_fitting')} for="without_fitting">
+                        <Label className={`mb-0 ${calulatedButtonClicked && 'cursor-disabled'}`} for="without_fitting">
+                          <Input
+                            id="without_fitting"
+                            name="radio"
+                            type="radio"
+                            defaultChecked
+                            checked={radioCheck === 'without_fitting'}
+                            disabled={calulatedButtonClicked}
+                            onClick={(e) => handleRadioCheck('without_fitting')}
+                          />
                           {t('without_fitting')}
                         </Label>
                       </div>
                     </Col>
                     <Col md="12" className="text-start">
                       <div className="flex">
-                        <input type="radio" name="radio" id="plastic_knobs" />
-                        <Label className="mb-0" onClick={e => setRadioCheck('plastic_knobs')} for="plastic_knobs">
+                        <Label className={`mb-0 ${calulatedButtonClicked && 'cursor-disabled'}`} for="plastic_knobs">
+                          <Input
+                            id="plastic_knobs"
+                            name="radio"
+                            type="radio"
+                            checked={radioCheck === 'plastic_knobs'}
+                            disabled={calulatedButtonClicked}
+                            onClick={(e) => handleRadioCheck('plastic_knobs')}
+                          />
                           {t('plastic_knobs')}
                         </Label>
                       </div>
                     </Col>
                     <Col md="12" className="text-start">
                       <div className="flex">
-                        <input type="radio" name="radio" id="metal_knobs" />
-                        <Label className="mb-0" onClick={e => setRadioCheck('metal_knobs')} for="metal_knobs">
+                        <Label className={`mb-0 ${calulatedButtonClicked && 'cursor-disabled'}`} for="metal_knobs">
+                          <Input
+                            id="metal_knobs"
+                            name="radio"
+                            type="radio"
+                            checked={radioCheck === 'metal_knobs'}
+                            disabled={calulatedButtonClicked}
+                            onClick={(e) => handleRadioCheck('metal_knobs')}
+                          />
                           {t('metal_knobs')}
                         </Label>
                       </div>
                     </Col>
                     <Col md="12" className="text-start">
                       <div className="flex">
-                        <input type="radio" name="radio" id="strap_plates" />
-                        <Label className="mb-0" onClick={e => setRadioCheck('strap_plates')} for="strap_plates">
+                        <Label className={`mb-0 ${calulatedButtonClicked && 'cursor-disabled'}`} for="strap_plates">
+                          <Input
+                            id="strap_plates"
+                            name="radio"
+                            type="radio"
+                            checked={radioCheck === 'strap_plates'}
+                            disabled={calulatedButtonClicked}
+                            onClick={(e) => handleRadioCheck('strap_plates')}
+                          />
                           {t('strap_plates')}
                         </Label>
                       </div>
                     </Col>
                     <Col md="12" className="text-start">
                       <div className="flex">
-                        <input type="radio" name="radio" id="pockets" />
-                        <Label className="mb-0" onClick={e => setRadioCheck('pockets')} for="pockets">
+                        <Label className={`mb-0 ${calulatedButtonClicked && 'cursor-disabled'}`} for="pockets">
+                          <Input
+                            id="pockets"
+                            name="radio"
+                            type="radio"
+                            checked={radioCheck === 'pockets'}
+                            disabled={calulatedButtonClicked}
+                            onClick={(e) => handleRadioCheck('pockets')}
+                          />
                           {t('pockets')}
                         </Label>
                       </div>
                     </Col>
                     <Col md="12" className="text-start">
-                      <FormGroup check>
+                      <Label className={`${calulatedButtonClicked && 'cursor-disabled'}`} for="zips">
                         <Input
                           id="zips"
                           name="zips"
                           type="checkbox"
+                          className="me-2"
+                          checked={zipsCheck}
+                          disabled={calulatedButtonClicked}
+                          onClick={(e) => handleZipsCheck(e)}
                         />
-                        <Label check onClick={e => setZipsCheck(!zipsCheck)} for="zips">{t('zips')}</Label>
-                      </FormGroup>
+                        {t('zips')}
+                      </Label>
                     </Col>
                     <Col md="12" className="text-start">
-                      <FormGroup check>
+                      <Label className={`${calulatedButtonClicked && 'cursor-disabled'}`} for="lowerApron">
                         <Input
                           id="lowerApron"
                           name="lowerApron"
                           type="checkbox"
+                          className="me-2"
+                          checked={lowerApronCheck}
+                          disabled={calulatedButtonClicked}
+                          onClick={(e) => handleLoweApronCheck(e)}
                         />
-                        <Label check onClick={e => setLoweApronCheck(!lowerApronCheck)} for="lowerApron">{t('lower_apron')}</Label>
-                      </FormGroup>
+                        {t('lower_apron')}
+                      </Label>
                     </Col>
                     <Col md="12" className="text-start">
-                      <FormGroup check>
+                      <Label className={`${calulatedButtonClicked && 'cursor-disabled'}`} for="pipePocket">
                         <Input
                           id="pipePocket"
                           name="pipePocket"
                           type="checkbox"
+                          className="me-2"
+                          checked={pipePocketCheck}
+                          disabled={calulatedButtonClicked}
+                          onClick={(e) => handlePipePocketCheck(e)}
                         />
-                        <Label check onClick={e => setPipePocketCheck(!pipePocketCheck)} for="pipePocket">{t('pipe_pocket')}</Label>
-                      </FormGroup>
+                        {t('pipe_pocket')}
+                      </Label>
                     </Col>
                     <Col md="12" className="text-start">
-                      <FormGroup check>
+                      <Label className={`${calulatedButtonClicked && 'cursor-disabled'}`} for="knobs">
                         <Input
                           id="knobs"
                           name="knobs"
                           type="checkbox"
+                          className="me-2"
+                          checked={knobsCheck}
+                          disabled={calulatedButtonClicked}
+                          onClick={(e) => handleKnobsCheck(e)}
                         />
-                        <Label check onClick={e => setKnobsCheck(!knobsCheck)} for="knobs">{t('knobs')}</Label>
-                      </FormGroup>
+                        {t('knobs')}
+                      </Label>
                     </Col>
                   </Row>
                   <Col md="12" className="text-start">
-                    <FormGroup check>
+                    <Label className={`${calulatedButtonClicked && 'cursor-disabled'}`} for="curtainHaveDoor">
                       <Input
                         id="curtainHaveDoor"
                         name="curtainHaveDoor"
                         type="checkbox"
+                        className="me-2"
+                        checked={curtainHaveDoorCheck}
+                        disabled={calulatedButtonClicked}
+                        onClick={(e) => handleCurtainHaveDoorCheck(e)}
                       />
-                      <Label check onClick={e => setChecked(!checked)} for="curtainHaveDoor">{t('curtain_have_door')}</Label>
-                    </FormGroup>
+                      {t('curtain_have_door')}
+                    </Label>
                   </Col>
                 </Col>
                 <Col md="6" className={`${!isMobile ? '' : 'mt-2'}`}>
                   <FormGroup className="text-start mb-2">
                     <Label for="date" className="fw-bold">{t('date_manufacture')}</Label>
-                    <div className={`datepicker ${hasDateManufactureError ? 'error' : ''}`}>
+                    <div className={`datepicker ${hasDateManufactureError ? "error" : ""}`}>
                       <Input
                         type="text"
-                        value={selectedDate === null ? null : selectedDate.toLocaleDateString("ro-RO")}
+                        value={
+                          dateManufacture &&
+                          dateManufacture.toLocaleDateString(
+                            getDateLocale(localStorage.getItem("i18nextLng"))
+                          )}
+                        disabled={calulatedButtonClicked}
                         id="dateManufacture"
-                        placeholder="Select Date"
+                        placeholder={t("date_placeholder_text")}
                         name="dateManufacture"
-                        onFocus={handleInputClick}
-                        onChange={handleInputClick}
+                        onFocus={(e) => {
+                          setShowDatePicker(!showDatePicker);
+                        }}
+                        onChange={(e) => {
+                          setShowDatePicker(!showDatePicker);
+                        }}
                       />
                     </div>
                     {showDatePicker && (
                       <div ref={wrapperRef}>
                         <style>{css}</style>
                         <DayPicker
-                          locale={getLocale(localStorage.getItem("i18nextLng"))}
+                          locale={getLocale(selectedLanguage)}
                           max={1}
                           mode="single"
-                          initialMonth={today}
+                          initialMonth={lastMonth}
                           weekStartsOn={1}
+                          selected={selectedDate}
+                          onDayClick={handleDayClick}
                           fromMonth={lastMonth}
                           fromDate={lastMonth}
                           captionLayout="dropdown"
                           fromYear={2015}
                           toYear={2035}
-                          selected={selectedDate}
-                          onDayClick={handleDayClick}
                           onSelect={setSelectedDate}
                           modifiersClassNames={{
-                            selected: 'my-selected',
-                            today: 'my-today'
+                            selected: "my-selected",
+                            today: "my-today",
                           }}
-                          modifiersStyles={{
-                            disabled: { fontSize: '75%' }
+                          modifiers={{
+                            disabled: [
+                              {
+                                daysOfWeek: [0, 6],
+                              },
+                              {
+                                before: new Date(),
+                              },
+                            ],
                           }}
                         />
-                      </div>)
-                    }
-                    {hasDateManufactureError && <div className="date-error mt-1">{t('has_date_manufacture_error')}</div>}
+                      </div>
+                    )}
+                    {hasDateManufactureError && (
+                      <div className="date-error mt-1">
+                        {t("has_date_manufacture_error")}
+                      </div>
+                    )}
                   </FormGroup>
                 </Col>
               </Row>
@@ -526,90 +671,203 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile }
                   <FormGroup>
                     <Input
                       type="text"
-                      className="descripiton-field"
-                      placeholder={`${t('additional_description')}`}
-                      onChange={e => setDescription(e.target.value)}
                       name="description"
                       value={description}
+                      placeholder={`${t('additional_description')}`}
+                      className={`descripiton-field ${calulatedButtonClicked && 'cursor-disabled'}`}
+                      disabled={calulatedButtonClicked}
+                      onChange={e => handleDescriptionInput(e.target.value)}
                     />
                   </FormGroup>
                 </Col>
               </Row>
-              {!isLoading ?
+              {!isPending && totalPrice && (
+                <Row className={`${!isMobile ? "mt-4" : "mt-2"}`}>
+                  <Col md="12" className="text-start">
+                    {t("total_price_text")}{" "}
+                    {totalPrice && (
+                      <span className="fw-bold">{`${totalPrice} BGN`}</span>
+                    )}
+                  </Col>
+                </Row>
+              )}
+              {visible && !error && (
+                <Row>
+                  <Col>
+                    <Message
+                      isVisible={visible}
+                      onDismiss={onDismiss}
+                      text={`${t("thank_you_message_offer")}`}
+                    />
+                  </Col>
+                </Row>
+              )}
+              {visible && error && (
+                <Row>
+                  <Col>
+                    <Message
+                      isVisible={visible}
+                      onDismiss={onDismiss}
+                      text={`${t("error_message")}`}
+                    />
+                  </Col>
+                </Row>
+              )}
+              {!isLoading && !isPending ? (
                 <>
-                  <Row>
-                    <Col md="12" className="text-start">
-                      {t('total_price_text')} {totalPrice && <span className="fw-bold">{`${totalPrice} BGN`}</span>}
-                    </Col>
-                  </Row>
-                  {visible &&
-                    <Row>
-                      <Col>
-                        <Message isVisible={visible} onDismiss={onDismiss} text={`${t('thank_you_message_offer')}`} />
-                      </Col>
-                    </Row>
-                  }
                   <Row className="mt-2">
                     <Col>
-                      {!clicked ?
-                        <PDFDownloadLink document={
-                          <Offer title="offer_windproof_curtain" offerNo={offerNumber} parametersText="offer_parameters_text" items={items} totalPrice={totalPrice} />}
-                          fileName={t('file_name')} className="text-decoration-none">
-                          {({ blob, url, loading, error }) => {
-                            if (!loading && url !== '') {
-                              setSingleFile(blob);
-                              setFileName(`${t('file_name')}`);
-                            }
-                            return loading ? <Spinner color="primary" /> :
-                              <Button block type="submit" className="bc-blue d-flex mt-3">
-                                <span className={`fw-bold mx-auto text-transform ${!isMobile ? '' : 'fs-14 text-nowrap'}`}>{t('order_button')}</span>
+                      {!calulatedButtonClicked && !orderButtonClicked && (
+                        <Button
+                          block
+                          type="button"
+                          className="bc-blue d-flex mt-3"
+                          onClick={handleOfferPrice}
+                        >
+                          <span className={`fw-bold mx-auto text-transform ${!isMobile ? "" : "fs-14 text-nowrap"}`}>
+                            {t("calculate_price_button")}
+                          </span>
+                        </Button>
+                      )}
+                      {calulatedButtonClicked && !orderButtonClicked && (
+                        <>
+                          <Row>
+                            <Col>
+                              <BlobProvider
+                                document={
+                                  <Offer
+                                    title="offer_windproof_curtain"
+                                    offerNo={offerNumber}
+                                    parametersText="offer_parameters_text"
+                                    items={items}
+                                    totalPrice={totalPrice}
+                                    fileName={t("file_name")}
+                                    className="text-decoration-none"
+                                  />
+                                }
+                              >
+                                {({ blob, url, loading, error }) => {
+                                  if (!loading && url !== "") {
+                                    setSingleFile(blob);
+                                    setFileName(`${t("file_name")}`);
+                                  }
+                                }}
+                              </BlobProvider>
+                              <Button
+                                block
+                                type="button"
+                                className="bc-blue d-flex mt-3"
+                                onClick={handleOfferFile}
+                              >
+                                <span className={`fw-bold mx-auto text-transform ${!isMobile ? "" : "fs-14 text-nowrap"}`}>
+                                  {t("order_button")}
+                                </span>
                               </Button>
-                          }}
-                        </PDFDownloadLink>
-                        :
-                        <div className="d-flex align-items-center justify-content-between">
-                          <PDFDownloadLink document={
-                            <Offer title="offer_windproof_curtain" offerNo={offerNumber} parametersText="offer_parameters_text" items={items} totalPrice={totalPrice} />}
-                            fileName={t('file_name')} className={`text-decoration-none ${!isMobile ? '' : 'me-2'}`}>
-                            {({ blob, url, loading, error }) =>
-                              loading ? 'Loading document...' :
-                                <Button type="button" outline block href={url} target="_blank">
-                                  <span className={`fw-bold mx-auto text-transform w-100 ${!isMobile ? '' : 'fs-14 text-nowrap'}`}>{t('print_button')}</span>
+                            </Col>
+                          </Row>
+                          <Row className="mt-3">
+                            <Col>
+                              <div className="d-flex">
+                                <Button
+                                  type="button"
+                                  color="danger"
+                                  outline
+                                  block
+                                  onClick={clearForm}
+                                >
+                                  <span className={`fw-bold text-transform ${!isMobile ? "" : "fs-14 ws-nw"}`}>
+                                    {t("clear_button")}
+                                  </span>
                                 </Button>
-                            }
-                          </PDFDownloadLink>
-                          <Button
-                            type="button"
-                            className="bc-blue w-65"
-                            onClick={() => {
-                              generatePdfDocument(`${t('file_name')}`,
-                                <Offer title="offer_windproof_curtain" parametersText="offer_parameters_text" items={items} totalPrice={totalPrice} />);
-                            }}
-                          >
-                            <span className={`fw-bold text-transform ${!isMobile ? '' : 'fs-14 text-nowrap'}`}>{t('download_button')}</span>
-                          </Button>
-                        </div>
+                              </div>
+                            </Col>
+                          </Row>
+                        </>
+                      )}
+                      {loadingComparedFiles && !sendEmailSucceed ?
+                        <Spinner color="primary" /> :
+                        <>
+                          {calulatedButtonClicked && orderButtonClicked && (
+                            <>
+                              <div className="d-flex align-items-center justify-content-between">
+                                <PDFDownloadLink
+                                  document={
+                                    <Offer
+                                      title="offer_windproof_curtain"
+                                      offerNo={offerNumber}
+                                      parametersText="offer_parameters_text"
+                                      items={items}
+                                      totalPrice={totalPrice}
+                                      fileName={t("file_name")}
+                                      className="text-decoration-none"
+                                    />
+                                  }
+                                  fileName={t("file_name")}
+                                  className={`text-decoration-none ${!isMobile ? "" : "me-2"}`}>
+                                  {({ blob, url, loading, error }) => (
+                                    <Button
+                                      type="button"
+                                      outline
+                                      block
+                                      href={url}
+                                      target="_blank"
+                                    >
+                                      <span className={`fw-bold mx-auto text-transform w-100 ${!isMobile ? "" : "fs-14 text-nowrap"}`}>
+                                        {t("print_button")}
+                                      </span>
+                                    </Button>
+                                  )}
+                                </PDFDownloadLink>
+                                <Button
+                                  type="button"
+                                  className="bc-blue w-65"
+                                  onClick={() => {
+                                    generatePdfDocument(
+                                      `${t("file_name")}`,
+                                      <Offer
+                                        title="offer_windproof_curtain"
+                                        offerNo={offerNumber}
+                                        parametersText="offer_parameters_text"
+                                        items={items}
+                                        totalPrice={totalPrice}
+                                        fileName={t("file_name")}
+                                        className="text-decoration-none"
+                                      />
+                                    );
+                                  }}
+                                >
+                                  <span className={`fw-bold text-transform ${!isMobile ? "" : "fs-14 text-nowrap"}`}>
+                                    {t("download_button")}
+                                  </span>
+                                </Button>
+                              </div>
+                              <Row className="mt-3">
+                                <Col>
+                                  <div className="d-flex">
+                                    <Button
+                                      type="button"
+                                      color="danger"
+                                      outline
+                                      block
+                                      onClick={clearForm}
+                                    >
+                                      <span className={`fw-bold text-transform ${!isMobile ? "" : "fs-14 ws-nw"}`}>
+                                        {t("clear_button")}
+                                      </span>
+                                    </Button>
+                                  </div>
+                                </Col>
+                              </Row>
+                            </>
+                          )}
+                        </>
                       }
                     </Col>
                   </Row>
-                  {clicked &&
-                    <Row className="mt-3">
-                      <Col>
-                        <div className="d-flex">
-                          <Button
-                            type="button"
-                            color="danger"
-                            outline
-                            block
-                            onClick={clearForm}>
-                            {t('clear_button')}
-                          </Button>
-                        </div>
-                      </Col>
-                    </Row>
-                  }
-                </> : <Spinner color="primary" />
-              }
+                </>
+              ) : (
+                <Spinner color="primary" />
+              )}
             </div>
           </Form>
         </Col>

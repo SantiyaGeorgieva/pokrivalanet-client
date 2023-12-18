@@ -43,6 +43,7 @@ input[type="radio"] {
 
 /* appearance for checked radiobutton */
 input[type="radio"]:checked {
+  --bs-form-check-bg-image: none !important;
   background-color: rgb(64, 122, 199);
 }
 

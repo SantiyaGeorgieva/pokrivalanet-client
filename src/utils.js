@@ -27,8 +27,9 @@ const endpoints = {
   truckSendEmailUrl: '/truckcovers-offer-email',
   windproofPriceUrl: '/windproofcurtains-priceoffer',
   windproofFileUrl: '/windproofcurtains-offer-file',
-  windproofComparedFilesUrl: 'windproofcurtains-offer-file-edit`',
-  windproofSendEmailUrl: '/windproofcurtains-offer-email'
+  windproofComparedFilesUrl: '/windproofcurtains-offer-file-edit',
+  windproofSendEmailUrl: '/windproofcurtains-offer-email',
+  verifyTokenUrl: '/verify-token'
 };
 
 const getLocale = (localLang) => {

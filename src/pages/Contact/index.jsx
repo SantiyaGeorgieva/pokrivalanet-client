@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import ReCAPTCHA from 'react-google-recaptcha';
 import Hr from '../../components/Hr';
 import PageTitle from '../../components/PageTitle';
-import { linkUrl, removeSpaces } from '../../utils';
+import { endpoints, linkUrl, removeSpaces } from '../../utils';
 import Message from '../../components/Message';
 
 import './contact.scss';
@@ -28,7 +28,8 @@ const Contact = memo(function Contact({ hideMain, isMobile }) {
   const captchaRef = useRef(null);
 
   const [messageCaptcha, setMessageCaptcha] = useState('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const [loaded, setLoaded] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -42,7 +43,7 @@ const Contact = memo(function Contact({ hideMain, isMobile }) {
 
   const verifyToken = async (token) => {
     try {
-      let response = await fetch(`${linkUrl()}/verify-token`, {
+      let response = await fetch(`${linkUrl()}${endpoints.verifyTokenUrl}`, {
         method: "POST",
         body: JSON.stringify({ token }),
         headers: {
@@ -53,13 +54,14 @@ const Contact = memo(function Contact({ hideMain, isMobile }) {
       return response;
     }
     catch (error) {
-      console.log("error ", error);
+      setVisible(true);
+      setError(true);
     }
   }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError('');
+    setErrorMsg('');
     setMessageCaptcha('');
 
     let emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
@@ -107,10 +109,10 @@ const Contact = memo(function Contact({ hideMain, isMobile }) {
           fetchMessage();
         }
       } else {
-        setError(t('token_validation_message1'));
+        setErrorMsg(t('token_validation_message1'));
       }
     } else {
-      setError(t('token_validation_message2'));
+      setErrorMsg(t('token_validation_message2'));
     }
   }
 
@@ -137,7 +139,8 @@ const Contact = memo(function Contact({ hideMain, isMobile }) {
         setMessageCaptcha('');
         window.grecaptcha.reset();
       } else if (response.status === '400') {
-        console.log("Message failed to send.", response)
+        setError(true);
+        setErrorMsg(t('error_text_400'));
       }
     });
 
@@ -212,14 +215,14 @@ const Contact = memo(function Contact({ hideMain, isMobile }) {
               <FormGroup>
                 <ReCAPTCHA sitekey={process.env.REACT_APP_googleSiteKey} ref={captchaRef} />
               </FormGroup>
-              {error && <p className="text-start textError fs-14">{t('error_text')} {error}</p>}
+              {errorMsg && <p className="text-start textError fs-14">{t('error_text')} {errorMsg}</p>}
               {!loaded && <p className="text-start textSuccess fs-14">{messageCaptcha}</p>}
               <FormGroup>
                 <Button type="submit" outline className="d-flex text-start mt-4" id="btn-submit" disabled={loading}>
                   {loading ? t('send_button_text2') : t('send_button_text1')}
                 </Button>
               </FormGroup>
-              {loaded ? <Spinner color="primary" /> : <>{visible && <Message isVisible={visible} onDismiss={onDismiss} text={`${t('thank_you_message')}`} />}</>}
+              {loaded ? <Spinner color="primary" /> : <>{visible && <Message error={error} isVisible={visible} onDismiss={onDismiss} text={`${t('thank_you_message')}`} />}</>}
             </Form>
           </Col>
         </Row>

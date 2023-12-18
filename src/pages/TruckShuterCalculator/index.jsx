@@ -24,7 +24,7 @@ import { useApiFetchOfferComparedFiles } from "../../hooks/useFetchOfferCompared
 import { useApiFetchSendEmail } from "../../hooks/useApiFetchSendEmail";
 import StraniciShtoraSkapaciKomplektOtDve from "../../images/pokrivala_za_kamioni/248156970_4411504175607542_8164656237683932178_n.jpg";
 import ShtoraBezKapaciKomlektOtDve from "../../images/pokrivala_za_kamioni/66785853_1766036520166145_1529046337771798528_n.jpg";
-import { getDateLocale, getLocale } from "../../utils";
+import { endpoints, getDateLocale, getLocale } from "../../utils";
 
 import "./truckShuterCalculator.scss";
 
@@ -48,14 +48,9 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
   offerTitle,
   selectedLanguage,
 }) {
+
   const { t } = useTranslation();
-  const location = useLocation();
   PageTitle(t("truck_covers_calculator_page_title"));
-
-  const [selectedDate, setSelectedDate] = useState(null);
-  const lastMonth = new Date();
-  const [showDatePicker, setShowDatePicker] = useState(false);
-
   const wrapperRef = useRef(null);
 
   const useOutsideAlerter = (ref) => {
@@ -77,8 +72,11 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
   const [titlePage, setTitlePage] = useState(
     offerTitle || localStorage.getItem("offerTitle")
   );
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const lastMonth = new Date();
   const [length, setLength] = useState("");
-  const [dateManufacture, setDateManufacture] = useState(null);
+  const [dateManufacture, setDateManufacture] = useState(selectedDate);
   const [items, setItems] = useState([]);
   const [hasLengthError, setLengthError] = useState(false);
   const [hasDateManufactureError, setDateManufactureError] = useState(false);
@@ -90,6 +88,8 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
   const onDismiss = () => setVisible(false);
   const [orderButtonClicked, setOrderButtonClicked] = useState(false);
   const inputRef = useRef(null);
+  const location = useLocation();
+  const [error, setError] = useState(false);
 
   const {
     totalPrice,
@@ -103,10 +103,10 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
   const { offerNumber, fetchOfferPriceFile, offerFileSucceed } =
     useApiFetchOfferFile();
 
-  const { errorComparedFiles, fetchOfferComparedFiles } =
+  const { loadingComparedFiles, errorComparedFiles, fetchOfferComparedFiles } =
     useApiFetchOfferComparedFiles();
 
-  const { errorSendEmail, fetchSendEmail } = useApiFetchSendEmail();
+  const { sendEmailSucceed, errorSendEmail, fetchSendEmail } = useApiFetchSendEmail();
 
   useEffect(() => {
     if (location.pathname) {
@@ -115,8 +115,11 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
   }, [location.pathname]);
 
   useEffect(() => {
+    dateManufacture && dateManufacture.toLocaleDateString(selectedLanguage);
+  }, [selectedLanguage, dateManufacture]);
+
+  useEffect(() => {
     if (offerFileSucceed) {
-      console.log("offerFileSucceed", offerFileSucceed);
       if (
         totalPrice > 0 &&
         Object.keys(items).length > 0 &&
@@ -141,13 +144,13 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
   useEffect(() => {
     if (file !== null && totalPrice > 0) {
       const fetchData = async () => {
-        await fetchOfferComparedFiles(offerNumber, fileName, file);
+        await fetchOfferComparedFiles(offerNumber, fileName, file, endpoints.truckComparedFilesUrl);
         if (!errorComparedFiles) {
           let reader = new FileReader();
           reader.readAsDataURL(file);
           reader.onload = async () => {
             let dataUrl = reader.result;
-            await fetchSendEmail(dataUrl, fileName);
+            await fetchSendEmail(dataUrl, fileName, endpoints.truckSendEmailUrl);
             if (!errorSendEmail) {
               setVisible(true);
             }
@@ -159,12 +162,6 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
     }
   }, [file]);
 
-  useEffect(() => {
-    if (selectedDate !== "") {
-      setDateManufactureError(false);
-    }
-  }, [selectedDate]);
-
   const hideDatePicker = () => {
     setShowDatePicker(false);
   };
@@ -172,6 +169,7 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
   const handleDayClick = (day) => {
     setShowDatePicker(!showDatePicker);
     setSelectedDate(day);
+    setDateManufacture(day);
     setDateManufactureError(false);
   };
 
@@ -205,6 +203,7 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
   const clearForm = () => {
     setLength("");
     setDateManufacture(null);
+    setSelectedDate('');
     setFileName("");
     setTotalPrice("");
     setFile(null);
@@ -212,15 +211,15 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
     setOrderButtonClicked(false);
     setCalculatedButtonClicked(false);
     setVisible(false);
+    setError(false);
   };
 
   const handleOfferPrice = () => {
     if (inputRef.current && inputRef.current.value === "") {
       setLengthError(true);
-      return;
     }
 
-    if (dateManufacture === null || dateManufacture === '') {
+    if (dateManufacture === null) {
       setDateManufactureError(true);
       return;
     }
@@ -239,16 +238,17 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
         },
       ]);
 
-      fetchOfferPrice([...values], titlePage);
+      fetchOfferPrice([...values], titlePage, endpoints.truckPriceUrl);
     }
   };
 
   const handleOfferFile = async () => {
     setOrderButtonClicked(true);
     try {
-      await fetchOfferPriceFile(fileName, selectedFile);
+      await fetchOfferPriceFile(fileName, selectedFile, endpoints.truckFileUrl);
     } catch (errorOfferFile) {
-      console.log("something went wrong");
+      setError(true);
+      setVisible(true);
     }
   };
 
@@ -334,8 +334,8 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
                           <Input
                             type="text"
                             value={
-                              dateManufacture &&
-                              dateManufacture.toLocaleDateString(
+                              selectedDate &&
+                              selectedDate.toLocaleDateString(
                                 getDateLocale(
                                   localStorage.getItem("i18nextLng")
                                 )
@@ -406,7 +406,7 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
                       </Col>
                     </Row>
                   )}
-                  {visible && (
+                  {visible && !error && (
                     <Row>
                       <Col>
                         <Message
@@ -417,7 +417,18 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
                       </Col>
                     </Row>
                   )}
-                  {!isLoading ? (
+                  {visible && error && (
+                    <Row>
+                      <Col>
+                        <Message
+                          isVisible={visible}
+                          onDismiss={onDismiss}
+                          text={`${t("error_message")}`}
+                        />
+                      </Col>
+                    </Row>
+                  )}
+                  {!isLoading && !isPending ? (
                     <>
                       <Row className="mt-2">
                         <Col>
@@ -491,76 +502,81 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
                               </Row>
                             </>
                           )}
-                          {calulatedButtonClicked && orderButtonClicked && (
+                          {loadingComparedFiles && !sendEmailSucceed ?
+                            <Spinner color="primary" /> :
                             <>
-                              <div className="d-flex align-items-center justify-content-between">
-                                <PDFDownloadLink
-                                  document={
-                                    <Offer
-                                      title={titlePage}
-                                      offerNo={offerNumber}
-                                      parametersText="offer_parameters_text2"
-                                      items={items}
-                                      totalPrice={totalPrice}
-                                    />
-                                  }
-                                  fileName={t("file_name")}
-                                  className={`text-decoration-none ${!isMobile ? "" : "me-2"}`}
-                                >
-                                  {({ blob, url, loading, error }) => (
+                              {calulatedButtonClicked && orderButtonClicked && (
+                                <>
+                                  <div className="d-flex align-items-center justify-content-between">
+                                    <PDFDownloadLink
+                                      document={
+                                        <Offer
+                                          title={titlePage}
+                                          offerNo={offerNumber}
+                                          parametersText="offer_parameters_text2"
+                                          items={items}
+                                          totalPrice={totalPrice}
+                                        />
+                                      }
+                                      fileName={t("file_name")}
+                                      className={`text-decoration-none ${!isMobile ? "" : "me-2"}`}
+                                    >
+                                      {({ blob, url, loading, error }) => (
+                                        <Button
+                                          type="button"
+                                          outline
+                                          block
+                                          href={url}
+                                          target="_blank"
+                                        >
+                                          <span className={`fw-bold mx-auto text-transform w-100 ${!isMobile ? "" : "fs-14 text-nowrap"}`}>
+                                            {t("print_button")}
+                                          </span>
+                                        </Button>
+                                      )}
+                                    </PDFDownloadLink>
                                     <Button
                                       type="button"
-                                      outline
-                                      block
-                                      href={url}
-                                      target="_blank"
+                                      className="bc-blue w-65"
+                                      onClick={() => {
+                                        generatePdfDocument(
+                                          `${t("file_name")}`,
+                                          <Offer
+                                            title={titlePage}
+                                            offerNo={offerNumber}
+                                            parametersText="offer_parameters_text2"
+                                            items={items}
+                                            totalPrice={totalPrice}
+                                          />
+                                        );
+                                      }}
                                     >
-                                      <span className={`fw-bold mx-auto text-transform w-100 ${!isMobile ? "" : "fs-14 text-nowrap"}`}>
-                                        {t("print_button")}
-                                      </span>
-                                    </Button>
-                                  )}
-                                </PDFDownloadLink>
-                                <Button
-                                  type="button"
-                                  className="bc-blue w-65"
-                                  onClick={() => {
-                                    generatePdfDocument(
-                                      `${t("file_name")}`,
-                                      <Offer
-                                        title={titlePage}
-                                        offerNo={offerNumber}
-                                        parametersText="offer_parameters_text2"
-                                        items={items}
-                                        totalPrice={totalPrice}
-                                      />
-                                    );
-                                  }}
-                                >
-                                  <span className={`fw-bold text-transform ${!isMobile ? "" : "fs-14 text-nowrap"}`}>
-                                    {t("download_button")}
-                                  </span>
-                                </Button>
-                              </div>
-                              <Row className="mt-3">
-                                <Col>
-                                  <div className="d-flex">
-                                    <Button
-                                      type="button"
-                                      color="danger"
-                                      outline
-                                      block
-                                      onClick={clearForm}
-                                    >
-                                      <span className={`fw-bold text-transform ${!isMobile ? "" : "fs-14 ws-nw"}`}>
-                                        {t("clear_button")}
+                                      <span className={`fw-bold text-transform ${!isMobile ? "" : "fs-14 text-nowrap"}`}>
+                                        {t("download_button")}
                                       </span>
                                     </Button>
                                   </div>
-                                </Col>
-                              </Row>
+                                  <Row className="mt-3">
+                                    <Col>
+                                      <div className="d-flex">
+                                        <Button
+                                          type="button"
+                                          color="danger"
+                                          outline
+                                          block
+                                          onClick={clearForm}
+                                        >
+                                          <span className={`fw-bold text-transform ${!isMobile ? "" : "fs-14 ws-nw"}`}>
+                                            {t("clear_button")}
+                                          </span>
+                                        </Button>
+                                      </div>
+                                    </Col>
+                                  </Row>
+                                </>
+                              )}
                             </>
-                          )}
+                          }
                         </Col>
                       </Row>
                     </>

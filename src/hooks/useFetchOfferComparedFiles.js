@@ -7,8 +7,8 @@ export const useApiFetchOfferComparedFiles = () => {
   const [comparedFilesSucceed, setComparedFilesSucceed] = useState(false);
 
   const fetchOfferComparedFiles = async (offerNumber, fileName, file, url) => {
-
     setLoadingComparedFiles(true);
+
     try {
       const response = await fetch(`${linkUrl()}${url}`, {
         method: "PUT",
@@ -32,7 +32,6 @@ export const useApiFetchOfferComparedFiles = () => {
     } catch (error) {
       setErrorComparedFiles(`${error} Could not Fetch Data `);
       setLoadingComparedFiles(false);
-
     }
   };
 

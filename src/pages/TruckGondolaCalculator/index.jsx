@@ -118,6 +118,7 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
   const fallingPipeInputRef = useRef(null);
   const fallingRightInputRef = useRef(null);
   const numberStretchesInputRef = useRef(null);
+  const [error, setError] = useState(false);
 
   const {
     totalPrice,
@@ -131,10 +132,10 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
   const { offerNumber, fetchOfferPriceFile, offerFileSucceed } =
     useApiFetchOfferFile();
 
-  const { errorComparedFiles, fetchOfferComparedFiles } =
+  const { loadingComparedFiles, errorComparedFiles, fetchOfferComparedFiles } =
     useApiFetchOfferComparedFiles();
 
-  const { errorSendEmail, fetchSendEmail } = useApiFetchSendEmail();
+  const { sendEmailSucceed, errorSendEmail, fetchSendEmail } = useApiFetchSendEmail();
 
   useEffect(() => {
     if (location.pathname) {
@@ -305,6 +306,7 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
     setCalculatedButtonClicked(false);
     setOrderButtonClicked(false);
     setVisible(false);
+    setError(false);
   }
 
   const handleOfferPrice = () => {
@@ -387,7 +389,8 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
     try {
       await fetchOfferPriceFile(fileName, selectedFile, endpoints.truckFileUrl);
     } catch (errorOfferFile) {
-      console.log("something went wrong");
+      setError(true);
+      setVisible(true);
     }
   };
 
@@ -525,68 +528,60 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
                   <Col md="6">
                     <Row>
                       <Col md="12" className="text-start">
-                        <>
+                        <Input
+                          id="longitudinalPocket"
+                          name="longitudinalPocket"
+                          type="checkbox"
+                          className="me-2"
+                          checked={longitudinalPocketCheck}
+                          disabled={calulatedButtonClicked}
+                          onClick={(e) => handlelongitudinalPocketCheck(e)}
+                        />
+                        <Label className={`${calulatedButtonClicked && 'cursor-disabled'}`} for="longitudinalPocket">
+                          {t('longitudinal_pocket')}
+                        </Label>
+                      </Col>
+                      <Col md="12" className="text-start">
+                        <Label className={`${calulatedButtonClicked && 'cursor-disabled'}`} for="fittingRightCheck">
                           <Input
-                            id="longitudinalPocket"
-                            name="longitudinalPocket"
+                            id="fittingRightCheck"
+                            name="fittingRightCheck"
                             type="checkbox"
                             className="me-2"
-                            checked={longitudinalPocketCheck}
+                            checked={fittingRightCheck}
                             disabled={calulatedButtonClicked}
-                            onClick={(e) => handlelongitudinalPocketCheck(e)}
+                            onClick={(e) => handleFittingRightCheck(e)}
                           />
-                          <Label className={`${calulatedButtonClicked && 'cursor-disabled'}`} for="longitudinalPocket">
-                            {t('longitudinal_pocket')}
-                          </Label>
-                        </>
+                          {t('fitting_right')}
+                        </Label>
                       </Col>
                       <Col md="12" className="text-start">
-                        <>
-                          <Label className={`${calulatedButtonClicked && 'cursor-disabled'}`} for="fittingRightCheck">
-                            <Input
-                              id="fittingRightCheck"
-                              name="fittingRightCheck"
-                              type="checkbox"
-                              className="me-2"
-                              checked={fittingRightCheck}
-                              disabled={calulatedButtonClicked}
-                              onClick={(e) => handleFittingRightCheck(e)}
-                            />
-                            {t('fitting_right')}
-                          </Label>
-                        </>
+                        <Label className={`${calulatedButtonClicked && 'cursor-disabled'}`} for="fittingLeftCheck">
+                          <Input
+                            id="fittingLeftCheck"
+                            name="fittingLeftCheck"
+                            type="checkbox"
+                            className="me-2"
+                            checked={fittingLeftCheck}
+                            disabled={calulatedButtonClicked}
+                            onClick={(e) => handleFittingLeftCheck(e)}
+                          />
+                          {t('fitting_left')}
+                        </Label>
                       </Col>
                       <Col md="12" className="text-start">
-                        <>
-                          <Label className={`${calulatedButtonClicked && 'cursor-disabled'}`} for="fittingLeftCheck">
-                            <Input
-                              id="fittingLeftCheck"
-                              name="fittingLeftCheck"
-                              type="checkbox"
-                              className="me-2"
-                              checked={fittingLeftCheck}
-                              disabled={calulatedButtonClicked}
-                              onClick={(e) => handleFittingLeftCheck(e)}
-                            />
-                            {t('fitting_left')}
-                          </Label>
-                        </>
-                      </Col>
-                      <Col md="12" className="text-start">
-                        <>
-                          <Label className={`${calulatedButtonClicked && 'cursor-disabled'}`} for="assembly">
-                            <Input
-                              id="assembly"
-                              name="assembly"
-                              type="checkbox"
-                              className="me-2"
-                              checked={assemblyCheck}
-                              disabled={calulatedButtonClicked}
-                              onClick={(e) => handleAssemblyCheck(e)}
-                            />
-                            {t('assembly')}
-                          </Label>
-                        </>
+                        <Label className={`${calulatedButtonClicked && 'cursor-disabled'}`} for="assembly">
+                          <Input
+                            id="assembly"
+                            name="assembly"
+                            type="checkbox"
+                            className="me-2"
+                            checked={assemblyCheck}
+                            disabled={calulatedButtonClicked}
+                            onClick={(e) => handleAssemblyCheck(e)}
+                          />
+                          {t('assembly')}
+                        </Label>
                       </Col>
                     </Row>
                   </Col>
@@ -595,10 +590,7 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
                       <Label for="date" className="fw-bold">
                         {t("date_manufacture")}
                       </Label>
-                      <div
-                        className={`datepicker ${hasDateManufactureError ? "error" : ""
-                          }`}
-                      >
+                      <div className={`datepicker ${hasDateManufactureError ? "error" : ""}`}>
                         <Input
                           type="text"
                           value={
@@ -673,7 +665,7 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
                     </Col>
                   </Row>
                 )}
-                {visible && (
+                {visible && !error && (
                   <Row>
                     <Col>
                       <Message
@@ -684,7 +676,18 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
                     </Col>
                   </Row>
                 )}
-                {!isLoading ? (
+                {visible && error && (
+                  <Row>
+                    <Col>
+                      <Message
+                        isVisible={visible}
+                        onDismiss={onDismiss}
+                        text={`${t("error_message")}`}
+                      />
+                    </Col>
+                  </Row>
+                )}
+                {!isLoading && !isPending ? (
                   <>
                     <Row className="mt-2">
                       <Col>
@@ -695,10 +698,7 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
                             className="bc-blue d-flex mt-3"
                             onClick={handleOfferPrice}
                           >
-                            <span
-                              className={`fw-bold mx-auto text-transform ${!isMobile ? "" : "fs-14 text-nowrap"
-                                }`}
-                            >
+                            <span className={`fw-bold mx-auto text-transform ${!isMobile ? "" : "fs-14 text-nowrap"}`}>
                               {t("calculate_price_button")}
                             </span>
                           </Button>
@@ -727,17 +727,13 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
                                     }
                                   }}
                                 </BlobProvider>
-
                                 <Button
                                   block
                                   type="button"
                                   className="bc-blue d-flex mt-3"
                                   onClick={handleOfferFile}
                                 >
-                                  <span
-                                    className={`fw-bold mx-auto text-transform ${!isMobile ? "" : "fs-14 text-nowrap"
-                                      }`}
-                                  >
+                                  <span className={`fw-bold mx-auto text-transform ${!isMobile ? "" : "fs-14 text-nowrap"}`}>
                                     {t("order_button")}
                                   </span>
                                 </Button>
@@ -753,10 +749,7 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
                                     block
                                     onClick={clearForm}
                                   >
-                                    <span
-                                      className={`fw-bold text-transform ${!isMobile ? "" : "fs-14 ws-nw"
-                                        }`}
-                                    >
+                                    <span className={`fw-bold text-transform ${!isMobile ? "" : "fs-14 ws-nw"}`}>
                                       {t("clear_button")}
                                     </span>
                                   </Button>
@@ -765,86 +758,80 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
                             </Row>
                           </>
                         )}
-                        {calulatedButtonClicked && orderButtonClicked && (
+                        {loadingComparedFiles && !sendEmailSucceed ?
+                          <Spinner color="primary" /> :
                           <>
-                            <div className="d-flex align-items-center justify-content-between">
-                              <PDFDownloadLink
-                                document={
-                                  <Offer
-                                    title={titlePage}
-                                    offerNo={offerNumber}
-                                    parametersText="offer_parameters_text2"
-                                    items={items}
-                                    totalPrice={totalPrice}
-                                  />
-                                }
-                                fileName={t("file_name")}
-                                className={`text-decoration-none ${!isMobile ? "" : "me-2"
-                                  }`}
-                              >
-                                {({ blob, url, loading, error }) => (
+                            {calulatedButtonClicked && orderButtonClicked && (
+                              <>
+                                <div className="d-flex align-items-center justify-content-between">
+                                  <PDFDownloadLink
+                                    document={
+                                      <Offer
+                                        title={titlePage}
+                                        offerNo={offerNumber}
+                                        parametersText="offer_parameters_text2"
+                                        items={items}
+                                        totalPrice={totalPrice}
+                                      />
+                                    }
+                                    fileName={t("file_name")}
+                                    className={`text-decoration-none ${!isMobile ? "" : "me-2"}`}>
+                                    {({ blob, url, loading, error }) => (
+                                      <Button
+                                        type="button"
+                                        outline
+                                        block
+                                        href={url}
+                                        target="_blank"
+                                      >
+                                        <span className={`fw-bold mx-auto text-transform w-100 ${!isMobile ? "" : "fs-14 text-nowrap"}`}>
+                                          {t("print_button")}
+                                        </span>
+                                      </Button>
+                                    )}
+                                  </PDFDownloadLink>
                                   <Button
                                     type="button"
-                                    outline
-                                    block
-                                    href={url}
-                                    target="_blank"
+                                    className="bc-blue w-65"
+                                    onClick={() => {
+                                      generatePdfDocument(
+                                        `${t("file_name")}`,
+                                        <Offer
+                                          title={titlePage}
+                                          offerNo={offerNumber}
+                                          parametersText="offer_parameters_text2"
+                                          items={items}
+                                          totalPrice={totalPrice}
+                                        />
+                                      );
+                                    }}
                                   >
-                                    <span
-                                      className={`fw-bold mx-auto text-transform w-100 ${!isMobile ? "" : "fs-14 text-nowrap"
-                                        }`}
-                                    >
-                                      {t("print_button")}
-                                    </span>
-                                  </Button>
-                                )}
-                              </PDFDownloadLink>
-                              <Button
-                                type="button"
-                                className="bc-blue w-65"
-                                onClick={() => {
-                                  generatePdfDocument(
-                                    `${t("file_name")}`,
-                                    <Offer
-                                      title={titlePage}
-                                      offerNo={offerNumber}
-                                      parametersText="offer_parameters_text2"
-                                      items={items}
-                                      totalPrice={totalPrice}
-                                    />
-                                  );
-                                }}
-                              >
-                                <span
-                                  className={`fw-bold text-transform ${!isMobile ? "" : "fs-14 text-nowrap"
-                                    }`}
-                                >
-                                  {t("download_button")}
-                                </span>
-                              </Button>
-                            </div>
-                            <Row className="mt-3">
-                              <Col>
-                                <div className="d-flex">
-                                  <Button
-                                    type="button"
-                                    color="danger"
-                                    outline
-                                    block
-                                    onClick={clearForm}
-                                  >
-                                    <span
-                                      className={`fw-bold text-transform ${!isMobile ? "" : "fs-14 ws-nw"
-                                        }`}
-                                    >
-                                      {t("clear_button")}
+                                    <span className={`fw-bold text-transform ${!isMobile ? "" : "fs-14 text-nowrap"}`}>
+                                      {t("download_button")}
                                     </span>
                                   </Button>
                                 </div>
-                              </Col>
-                            </Row>
+                                <Row className="mt-3">
+                                  <Col>
+                                    <div className="d-flex">
+                                      <Button
+                                        type="button"
+                                        color="danger"
+                                        outline
+                                        block
+                                        onClick={clearForm}
+                                      >
+                                        <span className={`fw-bold text-transform ${!isMobile ? "" : "fs-14 ws-nw"}`}>
+                                          {t("clear_button")}
+                                        </span>
+                                      </Button>
+                                    </div>
+                                  </Col>
+                                </Row>
+                              </>
+                            )}
                           </>
-                        )}
+                        }
                       </Col>
                     </Row>
                   </>
@@ -854,8 +841,8 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
               </div>
             </Form>
           </Col>
-        </Row >
-      </div >
+        </Row>
+      </div>
     }
   </>
 });

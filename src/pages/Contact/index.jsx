@@ -151,7 +151,7 @@ const Contact = memo(function Contact({ hideMain, isMobile }) {
     {!hideMain && (<>
       <div className={`container ${!isMobile ? 'my-5' : ''}`}>
         <Row>
-          <Col md="6">
+          <Col xl="6">
             <div className="d-flex flex-column text-start">
               <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />{`${t('addres_ruse')}`}</p>
               <p className="mb-1"><i className="fa fa-phone my-2 pe-2" />{`${t('phone')}`},</p>
@@ -166,13 +166,13 @@ const Contact = memo(function Contact({ hideMain, isMobile }) {
               </div>
             }
           </Col>
-          <Col md="6" className={`container ${isLoaderLoad ? 'text-end' : ''}`}>
+          <Col xl="6" className={`container ${isLoaderLoad ? 'text-end' : ''}`}>
             <GoogleMapRuse isLoaderLoad={isLoaderLoad} setLoaderLoad={setLoaderLoad} />
           </Col>
         </Row>
         {isMobile &&
           <Row>
-            <Col md="6">
+            <Col xl="6">
               <div className="d-flex flex-column text-start mt-3">
                 <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />{`${t('addres_plv')}`}</p>
                 <p className="mb-2"><i className="fa fa-phone my-2 pe-2" />{`${t('phone')}`}</p>

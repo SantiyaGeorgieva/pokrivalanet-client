@@ -8,4 +8,9 @@
     -ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=1.5, M12=0, M21=0, M22=1.5, SizingMethod='auto expand')";
     filter: progid:DXImageTransform.Microsoft.Matrix(M11=1.2, M12=0, M21=0, M22=1.2, SizingMethod='auto expand');
   }
+
+  .card-image {
+    width: 100%;
+    height: 220px;
+  }
 }

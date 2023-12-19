@@ -270,12 +270,12 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
             <h3 className="">{t(`${titlePage}`)}</h3>
           </Row>
           <Row className="mb-5">
-            <Col md="6" className={`${!isMobile ? "text-start" : ""}`}>
+            <Col lg="4" xl="6" className={`${!isMobile ? "text-start" : ""}`}>
               {t(titlePage) === `${t("card_text7")}` && (
                 <img
                   key="1"
                   alt="cover_scheme"
-                  className="w-100"
+                  className="w-100 img-thumbnail"
                   src={StraniciShtoraSkapaciKomplektOtDve}
                 />
               )}
@@ -283,12 +283,12 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
                 <img
                   key="1"
                   alt="cover_scheme"
-                  className="w-100"
+                  className="w-100 img-thumbnail"
                   src={ShtoraBezKapaciKomlektOtDve}
                 />
               )}
             </Col>
-            <Col md="6">
+            <Col lg="8" xl="6">
               <Form
                 className={`${isMobile ? "mt-3" : ""}`}
                 method="POST"

@@ -10,10 +10,10 @@ function Gallery({ images, isMobile }) {
   const lastRow = result.slice(8, result.length);
 
   return (
-    <div className={`container ${isMobile ? 'px-0' : ''}`}>
+    <div className={`gallery-wrapper container ${isMobile ? '' : ''}`}>
       <Row>
         {firstRow.map((img, idx) => {
-          return <Col md="3" key={idx} className={`${isMobile ? 'mb-3' : 'ps-0'}`}>
+          return <Col key={idx} className="column">
             {!img ? <Spinner className="m-5" color="primary" /> : <ModalImage
               small={img}
               large={img}
@@ -22,9 +22,9 @@ function Gallery({ images, isMobile }) {
           </Col>
         })}
       </Row>
-      <Row className={`${!isMobile ? 'my-3' : ''}`}>
+      <Row>
         {secondRow.map((img, idx) => {
-          return <Col md="3" key={idx} className={`${isMobile ? 'mb-3' : 'ps-0'}`}>
+          return <Col key={idx} className="column">
             {!img ? <Spinner className="m-5" color="primary" /> : <ModalImage
               small={img}
               large={img}
@@ -33,9 +33,9 @@ function Gallery({ images, isMobile }) {
           </Col>
         })}
       </Row>
-      <Row className={`${!isMobile ? 'my-3' : ''}`}>
+      <Row>
         {lastRow.map((img, idx) => {
-          return <Col md="3" key={idx} className={`${isMobile && idx !== 4 ? 'mb-3' : 'ps-0'}`}>
+          return <Col key={idx} className="column">
             {!img ? <Spinner className="m-5" color="primary" /> : <ModalImage
               small={img}
               large={img}

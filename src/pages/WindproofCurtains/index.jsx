@@ -44,6 +44,8 @@ import {
   SET_ZIPSCHECK
 } from "../../actionTypes";
 
+import 'react-day-picker/dist/style.css';
+
 const css = `
 .my-selected:not([disabled]) { 
   font-weight: bold; 
@@ -384,7 +386,7 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
         <h3 className="">{t('offer_windproof_curtain')}</h3>
       </Row>
       <Row className="mb-5">
-        <Col md="6" className={`${!isMobile ? 'text-start' : ''}`}>
+        <Col lg="5" xl="6" className={`${!isMobile ? 'text-start' : ''}`}>
           {!curtainHaveDoorCheck ? windproofCurtainsOptions.filter(option => (option.text === radioCheck) && !option.checked === !curtainHaveDoorCheck).map(option => {
             return <img
               key={option.id}
@@ -401,7 +403,7 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
             })
           }
         </Col>
-        <Col md="6">
+        <Col lg="7" xl="6">
           <Form className={`${isMobile ? 'mt-3' : ''}`} method="POST" id="form" encType="multipart/form-data">
             <h4 className={`${isMobile ? 'mb-3' : 'mb-5'}`}>{t('curtain_data_text')}</h4>
             <div className={`container ${isMobile ? 'mt-3' : 'mt-5'}`}>

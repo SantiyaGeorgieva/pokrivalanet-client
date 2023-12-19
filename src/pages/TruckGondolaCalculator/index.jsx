@@ -417,15 +417,15 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
           <h3 className="">{t(`${titlePage}`)}</h3>
         </Row>
         <Row className="mb-5">
-          <Col md="6" className={`${!isMobile ? 'text-start' : ''}`}>
+          <Col lg="5" xl="6" className={`${!isMobile ? 'text-start' : ''}`}>
             {t(titlePage) === `${t('card_text4')}` && <img
               key="1"
               alt="cover_scheme"
-              className="w-100"
+              className="w-100 img-thumbnail"
               src={CoverScheme}
             />}
           </Col>
-          <Col md="6">
+          <Col lg="7" xl="6">
             <Form className={`${isMobile ? 'mt-3' : ''}`} method="POST" id="form" encType="multipart/form-data">
               <h4 className={`${isMobile ? 'mb-3' : 'mb-5'}`}>{t('cover_data_text')}</h4>
               <div className={`container ${isMobile ? 'mt-3' : 'mt-5'}`}>
@@ -842,7 +842,7 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
             </Form>
           </Col>
         </Row>
-      </div>
+      </div >
     }
   </>
 });

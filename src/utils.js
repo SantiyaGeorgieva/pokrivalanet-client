@@ -29,7 +29,8 @@ const endpoints = {
   windproofFileUrl: '/windproofcurtains-offer-file',
   windproofComparedFilesUrl: '/windproofcurtains-offer-file-edit',
   windproofSendEmailUrl: '/windproofcurtains-offer-email',
-  verifyTokenUrl: '/verify-token'
+  verifyTokenUrl: '/verify-token',
+  contactUrl: '/contact'
 };
 
 const getLocale = (localLang) => {

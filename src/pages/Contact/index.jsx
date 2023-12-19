@@ -118,7 +118,7 @@ const Contact = memo(function Contact({ hideMain, isMobile }) {
 
   const fetchMessage = async () => {
     setLoading(true);
-    const response = await fetch(`${linkUrl()}/contact`, {
+    const response = await fetch(`${linkUrl()}${endpoints.contactUrl}`, {
       method: "POST",
       body: JSON.stringify(values[0]),
       headers: {
@@ -127,7 +127,7 @@ const Contact = memo(function Contact({ hideMain, isMobile }) {
       },
       responseType: 'json'
     }, setLoaded(true)).then((response) => {
-      if (response.status === 200) {
+      if (response.status === 200 || response === 'OK') {
         setLoaded(false);
         setValues([]);
         setName('');
@@ -138,9 +138,8 @@ const Contact = memo(function Contact({ hideMain, isMobile }) {
         setLoading(false);
         setMessageCaptcha('');
         window.grecaptcha.reset();
-      } else if (response.status === '400') {
+      } else if (response.status >= 400) {
         setError(true);
-        setErrorMsg(t('error_text_400'));
       }
     });
 
@@ -215,14 +214,13 @@ const Contact = memo(function Contact({ hideMain, isMobile }) {
               <FormGroup>
                 <ReCAPTCHA sitekey={process.env.REACT_APP_googleSiteKey} ref={captchaRef} />
               </FormGroup>
-              {errorMsg && <p className="text-start textError fs-14">{t('error_text')} {errorMsg}</p>}
               {!loaded && <p className="text-start textSuccess fs-14">{messageCaptcha}</p>}
               <FormGroup>
                 <Button type="submit" outline className="d-flex text-start mt-4" id="btn-submit" disabled={loading}>
                   {loading ? t('send_button_text2') : t('send_button_text1')}
                 </Button>
               </FormGroup>
-              {loaded ? <Spinner color="primary" /> : <>{visible && <Message error={error} isVisible={visible} onDismiss={onDismiss} text={`${t('thank_you_message')}`} />}</>}
+              {loaded ? <Spinner color="primary" /> : <>{visible && <Message error={error} isVisible={visible} onDismiss={onDismiss} text={`${error ? t('error_text_400') : t('thank_you_message')}`} />}</>}
             </Form>
           </Col>
         </Row>

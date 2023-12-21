@@ -35,7 +35,7 @@ const endpoints = {
 
 const getLocale = (localLang) => {
   if (localLang === "bg") {
-    return bg
+    return bg;
   } else if (localLang === "ro") {
     return ro;
   } else {

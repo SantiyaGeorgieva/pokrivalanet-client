@@ -229,7 +229,7 @@ app.post("/windproofcurtains-priceoffer", async (req, res, next) => {
     }
 
     finalPrice = ((w + e) * (h + e));
-    finalPrice = (finalPrice.toFixed(2) * priceThick).toFixed(2);
+    finalPrice = Number(finalPrice.toFixed(2) * priceThick.toFixed(2));
 
     if (hardwareText === 'plastic_knobs') {
       hardwareTextPrice = (((2 * h) / 0.35) * plasticKnobsPrice).toFixed(2);

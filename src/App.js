@@ -11,7 +11,7 @@ import TruckCovers from './pages/TruckCovers';
 import TruckGondolaCalculator from './pages/TruckGondolaCalculator';
 import TruckShuterCalculator from './pages/TruckShuterCalculator';
 import AwningsAndShades from './pages/AwningsAndShades';
-// import WindproofCurtains from './pages/WindproofCurtains';
+import WindproofCurtains from './pages/WindproofCurtains';
 import IndustrialProducts from './pages/IndustrialProducts';
 import CoversForFishpondsAndLagoons from './pages/CoversForFishpondsAndLagoons';
 import CurtainsCowFarms from './pages/CurtainsCowFarms';
@@ -24,7 +24,7 @@ import Register from './pages/Administration/Register';
 import Login from './pages/Administration/Login';
 import Administration from './pages/Administration';
 import NotFound from './pages/NotFound';
-import UnderConstruction from './pages/UnderConstruction';
+// import UnderConstruction from './pages/UnderConstruction';
 
 import 'react-day-picker/dist/style.css';
 import './App.css';
@@ -68,8 +68,8 @@ const App = memo(function App() {
             <Route exact path="/truck-covers/gondola-calculator" element={<TruckGondolaCalculator isMobile={isMobile} offerTitle={offerTitle} />} preventScrollReset={true} />
             <Route exact path="/truck-covers/shutter-calculator" element={<TruckShuterCalculator isMobile={isMobile} offerTitle={offerTitle} />} preventScrollReset={true} />
             {/* <Route exact path="/truck-covers/calculator" element={<UnderConstruction isMobile={isMobile}  />} preventScrollReset={true} /> */}
-            <Route exact path="/windproof-curtains" element={<UnderConstruction isMobile={isMobile} />} preventScrollReset={true} />
-            {/* <Route exact path="/windproof-curtains" element={<WindproofCurtains isMobile={isMobile} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />} preventScrollReset={true} /> */}
+            {/* <Route exact path="/windproof-curtains" element={<UnderConstruction isMobile={isMobile} />} preventScrollReset={true} /> */}
+            <Route exact path="/windproof-curtains" element={<WindproofCurtains isMobile={isMobile} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />} preventScrollReset={true} />
             <Route exact path="/awnings-and-shades" element={<AwningsAndShades isMobile={isMobile} />} preventScrollReset={true} />
             <Route exact path="/covers-for-fishponds-and-lagoons" element={<CoversForFishpondsAndLagoons isMobile={isMobile} />} />
             <Route exact path="/curtains-for-cow-farms" element={<CurtainsCowFarms isMobile={isMobile} preventScrollReset={true} />} />

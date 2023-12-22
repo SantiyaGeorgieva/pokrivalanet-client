@@ -223,7 +223,7 @@ app.post("/windproofcurtains-priceoffer", async (req, res, next) => {
     const e = (Number(edge) * 2) / 100;
 
     if (t === 0.8) {
-      priceThick = 24;
+      priceThick = 25;
     } else {
       priceThick = 20;
     }

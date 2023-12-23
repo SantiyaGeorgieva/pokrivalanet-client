@@ -25,7 +25,6 @@ export const useApiFetchOfferFile = () => {
 
       //   if (!response.ok) throw new Error(response.statusTexty);
       const json = await response.json();
-      console.log("json obekta", json.offerId)
       setOfferFileSucceed(true);
       setLoadingOfferFile(false);
       setErrorOfferFile(null);

@@ -49,8 +49,6 @@ const Header = memo(function Header({ isMobile, selectedItem, setSelectedItem })
     }
   }, [isMobile, isOpen])
 
-  // console.log('isMobile', isMobile);
-
   return (
     <>{!isMobile ? (<div className="container-fluid px-0">
       <div className="mb-3">

@@ -22,6 +22,10 @@ import { useApiFetchOfferPrice } from "../../hooks/useApiFetchOfferPrice";
 import { useApiFetchOfferFile } from "../../hooks/useApiFetchOfferFile";
 import { useApiFetchOfferComparedFiles } from "../../hooks/useFetchOfferComparedFiles";
 import { useApiFetchSendEmail } from "../../hooks/useApiFetchSendEmail";
+import useNamesValidation from "../../hooks/validators/useNamesValidation";
+import useEmailValidation from "../../hooks/validators/useEmailValidation";
+import usePhoneValidation from "../../hooks/validators/usePhoneValidation";
+import useKeysValidation from "../../hooks/validators/useKeysValidation";
 import StraniciShtoraSkapaciKomplektOtDve from "../../images/pokrivala_za_kamioni/248156970_4411504175607542_8164656237683932178_n.jpg";
 import ShtoraBezKapaciKomlektOtDve from "../../images/pokrivala_za_kamioni/66785853_1766036520166145_1529046337771798528_n.jpg";
 import { endpoints, getDateLocale, getLocale } from "../../utils";
@@ -76,10 +80,19 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
   const [showDatePicker, setShowDatePicker] = useState(false);
   const lastMonth = new Date();
   const [length, setLength] = useState("");
+  const [names, setNames] = useState("");
+  const [email, setEmail] = useState("");
+  const [telephone, setTelephone] = useState("");
   const [dateManufacture, setDateManufacture] = useState(selectedDate);
   const [items, setItems] = useState([]);
   const [hasLengthError, setLengthError] = useState(false);
   const [hasDateManufactureError, setDateManufactureError] = useState(false);
+  const [hasEmailError, setEmailError] = useState(false);
+  const [hasNamesValidationError, setNamesValidationError] = useState(false);
+  const [hasEmailValidationError, setEmailValidationError] = useState(false);
+  const [hasTelephoneError, setTelephoneError] = useState(false);
+  const [hasTelephoneValidationError, setTelephoneValidationError] = useState(false);
+  const [hasNamesError, setNamesError] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const [selectedFile, setSingleFile] = useState(null);
   const [file, setFile] = useState(null);
@@ -87,9 +100,19 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
   const [visible, setVisible] = useState(false);
   const onDismiss = () => setVisible(false);
   const [orderButtonClicked, setOrderButtonClicked] = useState(false);
+
   const inputRef = useRef(null);
+  const namesInputRef = useRef(null);
+  const emailInputRef = useRef(null);
+  const telephoneInputRef = useRef(null);
+
   const location = useLocation();
   const [error, setError] = useState(false);
+
+  const { namesValue, isValidNames, validateNames } = useNamesValidation();
+  const { emailValue, isValidEmail, validateEmail } = useEmailValidation();
+  const { phoneNumber, isValidPhoneNumber, validatePhoneNumber } = usePhoneValidation();
+  const { handleKeysInput } = useKeysValidation();
 
   const {
     totalPrice,
@@ -150,7 +173,7 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
           reader.readAsDataURL(file);
           reader.onload = async () => {
             let dataUrl = reader.result;
-            await fetchSendEmail(dataUrl, fileName, endpoints.truckSendEmailUrl);
+            await fetchSendEmail(email, dataUrl, fileName, endpoints.truckSendEmailUrl);
             if (!errorSendEmail) {
               setVisible(true);
             }
@@ -201,6 +224,9 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
   };
 
   const clearForm = () => {
+    setNames("");
+    setEmail("");
+    setTelephone("");
     setLength("");
     setDateManufacture(null);
     setSelectedDate('');
@@ -215,6 +241,18 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
   };
 
   const handleOfferPrice = () => {
+    if (namesInputRef.current && namesInputRef.current.value === "") {
+      setNamesError(true);
+    }
+
+    if (emailInputRef.current && emailInputRef.current.value === "") {
+      setEmailError(true);
+    }
+
+    if (telephoneInputRef.current && telephoneInputRef.current.value === "") {
+      setTelephoneError(true);
+    }
+
     if (inputRef.current && inputRef.current.value === "") {
       setLengthError(true);
     }
@@ -224,15 +262,21 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
       return;
     }
 
-    if (!hasLengthError && !hasDateManufactureError) {
+    if (!hasNamesValidationError && !hasEmailValidationError && !hasTelephoneValidationError && !hasLengthError && !hasDateManufactureError) {
       const values = [
         {
+          names: names,
+          email: email,
+          telephone: telephone,
           length: length,
           date_manufacture: dateManufacture,
         },
       ];
       setItems([
         {
+          names: names,
+          email: email,
+          telephone: telephone,
           length_cover_text: length,
           date_manufacture: dateManufacture.toLocaleDateString("ro-RO"),
         },
@@ -249,6 +293,58 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
     } catch (errorOfferFile) {
       setError(true);
       setVisible(true);
+    }
+  };
+
+  const handleNamesInput = (e) => {
+    validateNames(e.target.value);
+
+    if (e.target.value === "") {
+      setNamesError(true);
+      setNamesValidationError(false);
+    } else if (isValidNames) {
+      setNamesError(false);
+      setNamesValidationError(false);
+      setNames(e.target.value);
+    } else {
+      setNamesError(false);
+      setNamesValidationError(true);
+    }
+  };
+
+  const handleEmailInput = (e) => {
+    validateEmail(e.target.value);
+
+    if (e.target.value === "") {
+      setEmail("");
+      setEmailError(true);
+      setEmailValidationError(false);
+    } else if (isValidEmail) {
+      setEmailError(false);
+      setEmailValidationError(false);
+      setEmail(e.target.value);
+    } else {
+      setEmail(e.target.value);
+      setEmailError(false);
+      setEmailValidationError(true);
+    }
+  };
+
+  const handleTelephoneInput = (e) => {
+    validatePhoneNumber(e.target.value);
+
+    if (e.target.value === "") {
+      setTelephone("");
+      setTelephoneError(true);
+      setTelephoneValidationError(false);
+    } else if (isValidPhoneNumber) {
+      setTelephoneError(false);
+      setTelephoneValidationError(false);
+      setTelephone(e.target.value);
+    } else {
+      setTelephone(e.target.value);
+      setTelephoneError(false);
+      setTelephoneValidationError(true);
     }
   };
 
@@ -302,11 +398,67 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
                   <Row>
                     <Col md="6">
                       <FormGroup className="text-start mb-2">
+                        <Label className="fw-bold" for="names">{t('names')}</Label>
+                        <Input
+                          type="text"
+                          name="names"
+                          innerRef={namesInputRef}
+                          onBlur={e => handleNamesInput(e)}
+                          onChange={e => handleNamesInput(e)}
+                          value={names}
+                          invalid={hasNamesError}
+                        />
+                        {hasNamesError && <FormFeedback>{t('name_error')}</FormFeedback>}
+                        {hasNamesValidationError && <FormFeedback>{t('names_validation_error')}</FormFeedback>}
+                      </FormGroup>
+                    </Col>
+                    <Col md="6">
+                      <FormGroup className="text-start mb-2">
+                        <Label className="fw-bold" for="email">{t('email')}</Label>
+                        <Input
+                          type="text"
+                          name="email"
+                          value={email}
+                          onBlur={e => handleEmailInput(e)}
+                          onChange={e => handleEmailInput(e)}
+                          invalid={hasEmailError || hasEmailValidationError}
+                          innerRef={emailInputRef}
+                          disabled={calulatedButtonClicked}
+                        />
+                        {hasEmailError && <FormFeedback>{t('email_error')}</FormFeedback>}
+                        {hasEmailValidationError && <FormFeedback>{t('email_validation_error')}</FormFeedback>}
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md="6">
+                      <FormGroup className="text-start mb-2">
+                        <Label className="fw-bold" for="telephone">{t('telephone')}</Label>
+                        <Input
+                          type="text"
+                          name="telephone"
+                          onBlur={e => handleTelephoneInput(e)}
+                          onChange={e => handleTelephoneInput(e)}
+                          value={telephone}
+                          invalid={hasTelephoneError || hasTelephoneValidationError}
+                          innerRef={telephoneInputRef}
+                          disabled={calulatedButtonClicked}
+                        />
+                        {hasTelephoneError && <FormFeedback>{t('telephone_error')}</FormFeedback>}
+                        {hasTelephoneValidationError && <FormFeedback>{t('telephone_validation_error')}</FormFeedback>}
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md="6">
+                      <FormGroup className="text-start mb-2">
                         <Label for="length" className="fw-bold">
                           {t("length_cover_text")}
                         </Label>
                         <Input
                           type="number"
+                          onKeyDown={(e) => handleKeysInput(e)}
+                          onKeyUp={(e) => handleKeysInput(e)}
                           onChange={(e) => handleLengthInput(e)}
                           name="length"
                           value={length}

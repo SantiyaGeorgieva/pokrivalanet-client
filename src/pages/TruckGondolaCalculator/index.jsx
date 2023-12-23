@@ -12,6 +12,10 @@ import { useApiFetchOfferPrice } from "../../hooks/useApiFetchOfferPrice";
 import { useApiFetchOfferFile } from "../../hooks/useApiFetchOfferFile";
 import { useApiFetchOfferComparedFiles } from "../../hooks/useFetchOfferComparedFiles";
 import { useApiFetchSendEmail } from "../../hooks/useApiFetchSendEmail";
+import useEmailValidation from "../../hooks/validators/useEmailValidation";
+import usePhoneValidation from "../../hooks/validators/usePhoneValidation";
+import useNamesValidation from "../../hooks/validators/useNamesValidation";
+import useKeysValidation from "../../hooks/validators/useKeysValidation";
 import CoverScheme from '../../images/cover_scheme.png';
 import { endpoints, getDateLocale, getLocale } from "../../utils";
 import { tarpaulinCount } from "../../constants";
@@ -50,10 +54,6 @@ import {
 } from "../../actionTypes";
 
 import './truckGondolaCalculator.scss';
-import useEmailValidation from "../../hooks/validators/useEmailValidation";
-import usePhoneValidation from "../../hooks/validators/usePhoneValidation";
-import useNamesValidation from "../../hooks/validators/useNamesValidation";
-import useKeysValidation from "../../hooks/validators/useKeysValidation";
 
 const css = `
 .my-selected:not([disabled]) { 
@@ -204,7 +204,7 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
           reader.readAsDataURL(file);
           reader.onload = async () => {
             let dataUrl = reader.result;
-            await fetchSendEmail(dataUrl, fileName, endpoints.truckSendEmailUrl);
+            await fetchSendEmail(email, dataUrl, fileName, endpoints.truckSendEmailUrl);
             if (!errorSendEmail) {
               setVisible(true);
             }
@@ -280,12 +280,6 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
       dispatch({ type: SET_TELEPHONE, value: e.target.value });
     }
   };
-
-  // const handleKeysInput = (e) => {
-  //   if (e.which === 107 || e.which === 109 || e.which === 187 || e.which === 189 || e.which === 69) {
-  //     e.preventDefault();
-  //   }
-  // };
 
   const handleWidthInput = (e) => {
     if (e.target.value === "") {

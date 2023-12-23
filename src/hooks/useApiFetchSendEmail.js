@@ -6,12 +6,12 @@ export const useApiFetchSendEmail = () => {
   const [errorSendEmail, setErrorSendEmail] = useState(false);
   const [sendEmailSucceed, setSendEmailSucceed] = useState(false);
 
-  const fetchSendEmail = async (urlPdf, fileName, url) => {
+  const fetchSendEmail = async (email, urlPdf, fileName, url) => {
     setSendEmailLoading(true);
     try {
       fetch(`${linkUrl()}${url}`, {
         method: "POST",
-        body: JSON.stringify({ filename: fileName, file: urlPdf }),
+        body: JSON.stringify({ email: email, filename: fileName, file: urlPdf }),
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",

@@ -185,8 +185,8 @@ const Contact = memo(function Contact({ hideMain, isMobile }) {
           <Col xl="4">
             <Form onSubmit={(e) => handleSubmit(e)} method="POST">
               <FormGroup className="text-start mb-2">
-                <Label for="exampleEmail">{t('names')}</Label>
-                <Input type="text" name="name" onChange={e => setName(e.target.value)} value={name} invalid={hasNameError} />
+                <Label for="names">{t('names')}</Label>
+                <Input type="text" name="names" onChange={e => setName(e.target.value)} value={name} invalid={hasNameError} />
                 {hasNameError && <FormFeedback>{t('name_error')}</FormFeedback>}
               </FormGroup>
               <FormGroup className="text-start mb-2">

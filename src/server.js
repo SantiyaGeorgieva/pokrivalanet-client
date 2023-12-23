@@ -175,7 +175,7 @@ app.post("/contact", async (req, res, next) => {
       console.log(err);
       res.json('Opps error occured')
     } else {
-      res.send(200).json({ 'message': result.response });
+      res.status(200).json({ 'message': result.response });
     }
   });
 
@@ -349,7 +349,7 @@ app.post("/windproofcurtains-offer-email", async (req, res, next) => {
   });
 
   const mailOptions = {
-    from: 'Клиент',
+    from: req?.body?.email,
     subject: 'Оферта за ветроупорна завеса',
     to: process.env.USER_EMAIL,
     html: `<h1>Оферта от клиент</h1>`,
@@ -457,7 +457,6 @@ app.post("/truckcovers-priceoffer", async (req, res, next) => {
 });
 
 app.post("/truckcovers-offer-file", async (req, res) => {
-  // console.log('req', req);
   try {
     if (Object.keys(req.body).length === 0) {
       return res.status(400).send('Empty object provided');
@@ -467,7 +466,6 @@ app.post("/truckcovers-offer-file", async (req, res) => {
       pool.release();
       return results;
     });
-    console.log('res', res);
     return res.status(200).json({
       success: true,
       status: "success",
@@ -525,7 +523,7 @@ app.post('/truckcovers-offer-email', async (req, res, next) => {
   });
 
   const mailOptions = {
-    from: 'Клиент',
+    from: req?.body?.email,
     subject: 'Оферта за покривало',
     to: process.env.USER_EMAIL,
     html: `<h1>Оферта от клиент</h1>`,

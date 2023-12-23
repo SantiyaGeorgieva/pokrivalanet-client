@@ -4,27 +4,36 @@ import {
   CLEAR_DATEMANUFACTURE,
   CLEAR_DESCRIPTION,
   CLEAR_EDGE,
+  CLEAR_EMAIL,
   CLEAR_HEIGHT,
+  CLEAR_NAMES,
   CLEAR_SELECTEDDATE,
+  CLEAR_TELEPHONE,
   CLEAR_WIDTH,
   REMOVE_CHECK,
   SET_CURTAINHAVEDOORCHECK,
   SET_DATEMANUFACTURE,
   SET_DESCRIPTION,
   SET_EDGE,
+  SET_EMAIL,
   SET_HEIGHT,
   SET_ITEMS,
   SET_KNOBSCHECK,
   SET_LOWERAPRONCHECK,
+  SET_NAMES,
   SET_PIPEPOCKETCHECK,
   SET_RADIOCHECK,
   SET_SELECTEDDATE,
+  SET_TELEPHONE,
   SET_THICK,
   SET_WIDTH,
   SET_ZIPSCHECK
 } from "../../actionTypes";
 
 export const initialState = {
+  names: '',
+  email: '',
+  telephone: '',
   width: '',
   height: '',
   thick: '0.8',
@@ -48,6 +57,12 @@ export const windproofCurtainsCalculatorReducer = (state, action) => {
       return [...state, { [action.payload]: "+" }];
     case REMOVE_CHECK:
       return [...state, { [action.payload]: "-" }];
+    case SET_NAMES:
+      return { ...state, names: action.value };
+    case SET_EMAIL:
+      return { ...state, email: action.value };
+    case SET_TELEPHONE:
+      return { ...state, telephone: action.value };
     case SET_WIDTH:
       return { ...state, width: action.value };
     case SET_HEIGHT:
@@ -74,6 +89,12 @@ export const windproofCurtainsCalculatorReducer = (state, action) => {
       return { ...state, knobsCheck: action.payload };
     case SET_CURTAINHAVEDOORCHECK:
       return { ...state, curtainHaveDoorCheck: action.payload };
+    case CLEAR_NAMES:
+      return { ...state, names: '' };
+    case CLEAR_EMAIL:
+      return { ...state, email: '' };
+    case CLEAR_TELEPHONE:
+      return { ...state, telephone: '' };
     case CLEAR_WIDTH:
       return { ...state, width: '' };
     case CLEAR_HEIGHT:

@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: -120,
+    marginTop: -145,
   },
   offerTitle: {
     fontFamily: 'Roboto',

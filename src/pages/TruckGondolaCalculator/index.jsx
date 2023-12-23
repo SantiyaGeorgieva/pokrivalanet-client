@@ -107,13 +107,13 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
   const { phoneNumber, isValidPhoneNumber, validatePhoneNumber } = usePhoneValidation();
   const { handleKeysInput } = useKeysValidation();
 
-  const [hasWidthError, setWidthError] = useState(false);
-  const [hasEmailError, setEmailError] = useState(false);
+  const [hasNamesError, setNamesError] = useState(false);
   const [hasNamesValidationError, setNamesValidationError] = useState(false);
+  const [hasEmailError, setEmailError] = useState(false);
   const [hasEmailValidationError, setEmailValidationError] = useState(false);
   const [hasTelephoneError, setTelephoneError] = useState(false);
   const [hasTelephoneValidationError, setTelephoneValidationError] = useState(false);
-  const [hasNamesError, setNamesError] = useState(false);
+  const [hasWidthError, setWidthError] = useState(false);
   const [hasLengthError, setLengthError] = useState(false);
   const [hasHoodError, setHoodError] = useState(false);
   const [hasBackCoverError, setBackCoverError] = useState(false);

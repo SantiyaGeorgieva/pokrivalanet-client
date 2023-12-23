@@ -15,6 +15,10 @@ import { useApiFetchOfferPrice } from "../../hooks/useApiFetchOfferPrice";
 import { useApiFetchOfferFile } from "../../hooks/useApiFetchOfferFile";
 import { useApiFetchSendEmail } from "../../hooks/useApiFetchSendEmail";
 import { useApiFetchOfferComparedFiles } from "../../hooks/useFetchOfferComparedFiles";
+import useNamesValidation from "../../hooks/validators/useNamesValidation";
+import useEmailValidation from "../../hooks/validators/useEmailValidation";
+import usePhoneValidation from "../../hooks/validators/usePhoneValidation";
+import useKeysValidation from "../../hooks/validators/useKeysValidation";
 import { initialState, windproofCurtainsCalculatorReducer } from "../../components/reducers/windproofCuratinsCalculatorReducer";
 import { getDateLocale, getLocale, endpoints } from "../../utils";
 
@@ -26,19 +30,25 @@ import {
   CLEAR_ALL,
   CLEAR_DESCRIPTION,
   CLEAR_EDGE,
+  CLEAR_EMAIL,
   CLEAR_HEIGHT,
+  CLEAR_NAMES,
+  CLEAR_TELEPHONE,
   CLEAR_WIDTH,
   REMOVE_CHECK,
   SET_CURTAINHAVEDOORCHECK,
   SET_DATEMANUFACTURE,
   SET_DESCRIPTION,
   SET_EDGE,
+  SET_EMAIL,
   SET_HEIGHT,
   SET_ITEMS,
   SET_KNOBSCHECK,
   SET_LOWERAPRONCHECK,
+  SET_NAMES,
   SET_PIPEPOCKETCHECK,
   SET_RADIOCHECK,
+  SET_TELEPHONE,
   SET_THICK,
   SET_WIDTH,
   SET_ZIPSCHECK
@@ -89,9 +99,16 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
   const [items, dispatchItems] = useReducer(windproofCurtainsCalculatorReducer, []);
   const [state, dispatch] = useReducer(windproofCurtainsCalculatorReducer, initialState);
 
-  const { width, height, thick, edge, description, dateManufacture, radioCheck, zipsCheck, lowerApronCheck, pipePocketCheck, knobsCheck, curtainHaveDoorCheck } = state;
+  const { names, email, telephone, width, height, thick, edge, description, dateManufacture, radioCheck, zipsCheck, lowerApronCheck, pipePocketCheck, knobsCheck, curtainHaveDoorCheck } = state;
   const [titlePage, setTitlePage] = useState(localStorage.getItem('offerTitle'));
   const [error, setError] = useState(false);
+
+  const [hasNamesError, setNamesError] = useState(false);
+  const [hasNamesValidationError, setNamesValidationError] = useState(false);
+  const [hasEmailError, setEmailError] = useState(false);
+  const [hasEmailValidationError, setEmailValidationError] = useState(false);
+  const [hasTelephoneError, setTelephoneError] = useState(false);
+  const [hasTelephoneValidationError, setTelephoneValidationError] = useState(false);
 
   const [hasWidthError, setWidthError] = useState(false);
   const [hasHeightError, setHeightError] = useState(false);
@@ -108,6 +125,9 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
   const [visible, setVisible] = useState(false);
   const onDismiss = () => setVisible(false);
 
+  const namesInputRef = useRef(null);
+  const emailInputRef = useRef(null);
+  const telephoneInputRef = useRef(null);
   const widthInputRef = useRef(null);
   const heightInputRef = useRef(null);
   const edgeInputRef = useRef(null);
@@ -128,6 +148,11 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
     useApiFetchOfferComparedFiles();
 
   const { sendEmailLoading, sendEmailSucceed, errorSendEmail, fetchSendEmail } = useApiFetchSendEmail();
+
+  const { namesValue, isValidNames, validateNames } = useNamesValidation();
+  const { emailValue, isValidEmail, validateEmail } = useEmailValidation();
+  const { phoneNumber, isValidPhoneNumber, validatePhoneNumber } = usePhoneValidation();
+  const { handleKeysInput } = useKeysValidation();
 
   useEffect(() => {
     if (location.pathname) {
@@ -172,7 +197,7 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
           reader.readAsDataURL(file);
           reader.onload = async () => {
             let dataUrl = reader.result;
-            await fetchSendEmail(dataUrl, fileName, endpoints.windproofSendEmailUrl);
+            await fetchSendEmail(email, dataUrl, fileName, endpoints.windproofSendEmailUrl);
             if (!errorSendEmail) {
               setVisible(true);
             }
@@ -210,6 +235,60 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
       setFile(fileBlob);
     }
   }
+
+  const handleNamesInput = (e) => {
+    validateNames(e.target.value);
+
+    if (e.target.value === "") {
+      setNamesError(true);
+      setNamesValidationError(false);
+      dispatch({ type: CLEAR_NAMES, value: "" });
+    } else if (isValidNames) {
+      setNamesError(false);
+      setNamesValidationError(false);
+      dispatch({ type: SET_NAMES, value: namesValue });
+    } else {
+      setNamesError(false);
+      setNamesValidationError(true);
+      dispatch({ type: SET_NAMES, value: e.target.value });
+    }
+  };
+
+  const handleEmailInput = (e) => {
+    validateEmail(e.target.value);
+
+    if (e.target.value === "") {
+      setEmailError(true);
+      setEmailValidationError(false);
+      dispatch({ type: CLEAR_EMAIL, value: "" });
+    } else if (isValidEmail) {
+      setEmailError(false);
+      setEmailValidationError(false);
+      dispatch({ type: SET_EMAIL, value: emailValue });
+    } else {
+      setEmailError(false);
+      setEmailValidationError(true);
+      dispatch({ type: SET_EMAIL, value: e.target.value });
+    }
+  };
+
+  const handleTelephoneInput = (e) => {
+    validatePhoneNumber(e.target.value);
+
+    if (e.target.value === "") {
+      setTelephoneError(true);
+      setTelephoneValidationError(false);
+      dispatch({ type: CLEAR_TELEPHONE, value: "" });
+    } else if (isValidPhoneNumber) {
+      setTelephoneError(false);
+      setTelephoneValidationError(false);
+      dispatch({ type: SET_TELEPHONE, value: phoneNumber });
+    } else {
+      setTelephoneError(false);
+      setTelephoneValidationError(true);
+      dispatch({ type: SET_TELEPHONE, value: e.target.value });
+    }
+  };
 
   const handleWidthInput = (value) => {
     if (value === "") {
@@ -306,6 +385,18 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
   }
 
   const handleOfferPrice = () => {
+    if (namesInputRef.current && namesInputRef.current.value === "") {
+      setNamesError(true);
+    }
+
+    if (emailInputRef.current && emailInputRef.current.value === "") {
+      setEmailError(true);
+    }
+
+    if (telephoneInputRef.current && telephoneInputRef.current.value === "") {
+      setTelephoneError(true);
+    }
+
     if (widthInputRef.current && widthInputRef.current.value === "") {
       setWidthError(true);
     }
@@ -326,6 +417,9 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
     if (!hasWidthError && !hasHeightError && !hasEdgeError && !hasDateManufactureError) {
       const values = [
         {
+          'names': names,
+          'email': email,
+          'telephone': telephone,
           'width': width,
           'height': height,
           'thick': thick,
@@ -342,6 +436,9 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
       ];
 
       const newItems = values.map((value) => ({
+        names: value.names,
+        email: value.email,
+        telephone: value.telephone,
         width_text: value.width,
         height_text: value.height,
         depth_text: value.thick,
@@ -372,8 +469,6 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
       setVisible(true);
     }
   };
-
-  console.log('sendEmailLoading', sendEmailLoading)
 
   return <>{!hideMain &&
     <div className={`container ${isMobile ? '' : 'my-4'}`}>
@@ -407,6 +502,51 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
           <Form className={`${isMobile ? 'mt-3' : ''}`} method="POST" id="form" encType="multipart/form-data">
             <h4 className={`${isMobile ? 'mb-3' : 'mb-5'}`}>{t('curtain_data_text')}</h4>
             <div className={`container ${isMobile ? 'mt-3' : 'mt-5'}`}>
+              <Row>
+                <Col md="6">
+                  <FormGroup className="text-start mb-2">
+                    <Label className="fw-bold" for="names">{t('names')}</Label>
+                    <Input
+                      type="text"
+                      name="names"
+                      innerRef={namesInputRef}
+                      onBlur={e => handleNamesInput(e)}
+                      onChange={e => handleNamesInput(e)}
+                      value={names}
+                      invalid={hasNamesError}
+                    />
+                    {hasNamesError && <FormFeedback>{t('name_error')}</FormFeedback>}
+                    {hasNamesValidationError && <FormFeedback>{t('names_validation_error')}</FormFeedback>}
+                  </FormGroup>
+                </Col>
+                <Col md="6">
+                  <FormGroup className="text-start mb-2">
+                    <Label className="fw-bold" for="email">{t('email')}</Label>
+                    <Input
+                      type="text"
+                      name="email"
+                      value={email}
+                      onBlur={e => handleEmailInput(e)}
+                      onChange={e => handleEmailInput(e)}
+                      invalid={hasEmailError || hasEmailValidationError}
+                      innerRef={emailInputRef}
+                      disabled={calulatedButtonClicked}
+                    />
+                    {hasEmailError && <FormFeedback>{t('email_error')}</FormFeedback>}
+                    {hasEmailValidationError && <FormFeedback>{t('email_validation_error')}</FormFeedback>}
+                  </FormGroup>
+                </Col>
+              </Row>
+              <Row>
+                <Col md="6">
+                  <FormGroup className="text-start mb-2">
+                    <Label className="fw-bold" for="telephone">{t('telephone')}</Label>
+                    <Input type="text" name="telephone" onBlur={e => handleTelephoneInput(e)} onChange={e => handleTelephoneInput(e)} value={telephone} invalid={hasTelephoneError || hasTelephoneValidationError} innerRef={telephoneInputRef} disabled={calulatedButtonClicked} />
+                    {hasTelephoneError && <FormFeedback>{t('telephone_error')}</FormFeedback>}
+                    {hasTelephoneValidationError && <FormFeedback>{t('telephone_validation_error')}</FormFeedback>}
+                  </FormGroup>
+                </Col>
+              </Row>
               <Row>
                 <Col md="6">
                   <FormGroup className="text-start mb-2">

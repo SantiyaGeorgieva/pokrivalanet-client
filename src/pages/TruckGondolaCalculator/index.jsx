@@ -237,7 +237,7 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
     } else if (isValidNames) {
       setNamesError(false);
       setNamesValidationError(false);
-      dispatch({ type: SET_NAMES, value: namesValue });
+      dispatch({ type: SET_NAMES, value: e.target.value });
     } else {
       setNamesError(false);
       setNamesValidationError(true);
@@ -542,7 +542,7 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
                         onBlur={e => handleNamesInput(e)}
                         onChange={e => handleNamesInput(e)}
                         value={names}
-                        invalid={hasNamesError}
+                        invalid={hasNamesError || hasNamesValidationError}
                       />
                       {hasNamesError && <FormFeedback>{t('name_error')}</FormFeedback>}
                       {hasNamesValidationError && <FormFeedback>{t('names_validation_error')}</FormFeedback>}

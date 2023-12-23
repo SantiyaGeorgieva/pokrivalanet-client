@@ -300,13 +300,15 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
     validateNames(e.target.value);
 
     if (e.target.value === "") {
+      setNames("");
       setNamesError(true);
       setNamesValidationError(false);
     } else if (isValidNames) {
+      setNames(e.target.value);
       setNamesError(false);
       setNamesValidationError(false);
-      setNames(e.target.value);
     } else {
+      setNames(e.target.value);
       setNamesError(false);
       setNamesValidationError(true);
     }
@@ -406,7 +408,7 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
                           onBlur={e => handleNamesInput(e)}
                           onChange={e => handleNamesInput(e)}
                           value={names}
-                          invalid={hasNamesError}
+                          invalid={hasNamesError || hasNamesValidationError}
                         />
                         {hasNamesError && <FormFeedback>{t('name_error')}</FormFeedback>}
                         {hasNamesValidationError && <FormFeedback>{t('names_validation_error')}</FormFeedback>}

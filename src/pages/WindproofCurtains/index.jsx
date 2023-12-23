@@ -246,7 +246,7 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
     } else if (isValidNames) {
       setNamesError(false);
       setNamesValidationError(false);
-      dispatch({ type: SET_NAMES, value: namesValue });
+      dispatch({ type: SET_NAMES, value: e.target.value });
     } else {
       setNamesError(false);
       setNamesValidationError(true);
@@ -414,7 +414,10 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
       return;
     }
 
-    if (!hasWidthError && !hasHeightError && !hasEdgeError && !hasDateManufactureError) {
+    if (!hasNamesValidationError && !hasEmailValidationError
+      && hasTelephoneValidationError && !hasWidthError
+      && !hasHeightError && !hasEdgeError
+      && !hasDateManufactureError) {
       const values = [
         {
           'names': names,
@@ -513,7 +516,7 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
                       onBlur={e => handleNamesInput(e)}
                       onChange={e => handleNamesInput(e)}
                       value={names}
-                      invalid={hasNamesError}
+                      invalid={hasNamesError || hasNamesValidationError}
                     />
                     {hasNamesError && <FormFeedback>{t('name_error')}</FormFeedback>}
                     {hasNamesValidationError && <FormFeedback>{t('names_validation_error')}</FormFeedback>}

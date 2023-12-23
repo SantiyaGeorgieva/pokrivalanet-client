@@ -5,9 +5,8 @@ const useNamesValidation = () => {
   const [isValidNames, setIsValidNames] = useState(false);
 
   const validateNames = (value) => {
-    const nameRegex = /[A-Z][a-zA-Z][^#&<>\"~;$^%{}?]{1,20}$/gi;
+    const nameRegex = /^(?!.*'[A-Za-z]+')\s*[A-Z]+(?:['-]?[a-z]+)*(?:\s*[a-z]*)*$/gi;
     const isValid = nameRegex.test(value);
-    // console.log('isValid', isValid);
 
     setIsValidNames(isValid);
     setNamesValue(value);

@@ -86,6 +86,16 @@ const styles = StyleSheet.create({
 const OfferTable = ({ items, parametersText, totalPrice, title }) => {
   const { t } = useTranslation();
 
+  function filterProperties(arr) {
+    const filteredArray = arr.map(obj => {
+      const { names, email, telephone, ...rest } = obj;
+      return rest;
+    });
+    return filteredArray;
+  }
+
+  const filteredItems = filterProperties(items);
+
   return (
     <View>
       <Text style={styles.title}>{`${t(parametersText)}`}</Text>
@@ -98,7 +108,7 @@ const OfferTable = ({ items, parametersText, totalPrice, title }) => {
             <Text style={styles.tableCell}>{t('amount')}</Text>
           </View>
         </View>
-        {items?.map(item => {
+        {filteredItems?.map(item => {
           return (Object.keys(item).map(key => (
             <View style={styles.tableRow}>
               <View style={styles.tableCol}>

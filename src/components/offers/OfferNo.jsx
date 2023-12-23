@@ -7,39 +7,40 @@ Font.register({ family: 'Roboto', fonts: [{ src: Roboto, fontWeight: 'bold' }] }
 
 const styles = StyleSheet.create({
   invoiceNoContainer: {
+    display: 'flex',
     flexDirection: 'row',
-    marginTop: 25,
-    justifyContent: 'flex-end'
-  },
-  invoiceDateContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end'
-  },
-  offerNoTitle: {
-    fontSize: 12,
-    fontStyle: 'bold',
-    textAlign: 'left',
-    justifyContent: 'flex-start'
-  },
-  label: {
-    fontFamily: 'Roboto',
-    width: 60
+    justifyContent: 'space-between',
+    marginTop: 50,
+    fontFamily: 'Roboto'
   }
 });
 
-const OfferNo = ({ offerNoTitle, offerNo, offerDateTitle }) => {
+const OfferNo = ({ offerNoTitle, offerNo, offerDateTitle, items }) => {
   const { t } = useTranslation();
 
   return (
     <Fragment>
       <View style={styles.invoiceNoContainer}>
-        <Text style={styles.label}>{`${t(offerNoTitle)}`}</Text>
-        <Text style={styles.offerNoTitle}>{offerNo}</Text>
+        <View>
+          <View>
+            <Text>{t('names')}: {items.names}</Text>
+          </View>
+          <View>
+            <Text>{t('email')}: {items.email}</Text>
+          </View>
+          <View>
+            <Text>{t('telephone')}: {items.telephone}</Text>
+          </View>
+        </View>
+        <View>
+          <View>
+            <Text>{`${t(offerNoTitle)}`} {offerNo}</Text>
+          </View>
+          <View>
+            <Text>{`${t(offerDateTitle)}`} {new Date().toLocaleDateString("ro-RO")}</Text>
+          </View>
+        </View>
       </View>
-      <View style={styles.invoiceDateContainer}>
-        <Text style={styles.label}>{`${t(offerDateTitle)}`}</Text>
-        <Text>{new Date().toLocaleDateString("ro-RO")}</Text>
-      </View >
     </Fragment>
   )
 };

@@ -1,3 +1,29 @@
+import {
+  ADD_CHECK,
+  CLEAR_ALL,
+  CLEAR_DATEMANUFACTURE,
+  CLEAR_DESCRIPTION,
+  CLEAR_EDGE,
+  CLEAR_HEIGHT,
+  CLEAR_SELECTEDDATE,
+  CLEAR_WIDTH,
+  REMOVE_CHECK,
+  SET_CURTAINHAVEDOORCHECK,
+  SET_DATEMANUFACTURE,
+  SET_DESCRIPTION,
+  SET_EDGE,
+  SET_HEIGHT,
+  SET_ITEMS,
+  SET_KNOBSCHECK,
+  SET_LOWERAPRONCHECK,
+  SET_PIPEPOCKETCHECK,
+  SET_RADIOCHECK,
+  SET_SELECTEDDATE,
+  SET_THICK,
+  SET_WIDTH,
+  SET_ZIPSCHECK
+} from "../../actionTypes";
+
 export const initialState = {
   width: '',
   height: '',
@@ -16,51 +42,51 @@ export const initialState = {
 
 export const windproofCurtainsCalculatorReducer = (state, action) => {
   switch (action.type) {
-    case 'SET_ITEMS':
+    case SET_ITEMS:
       return [...action.payload];
-    case 'ADD_CHECK':
+    case ADD_CHECK:
       return [...state, { [action.payload]: "+" }];
-    case 'REMOVE_CHECK':
+    case REMOVE_CHECK:
       return [...state, { [action.payload]: "-" }];
-    case 'SET_WIDTH':
+    case SET_WIDTH:
       return { ...state, width: action.value };
-    case 'SET_HEIGHT':
+    case SET_HEIGHT:
       return { ...state, height: action.value };
-    case 'SET_THICK':
+    case SET_THICK:
       return { ...state, thick: action.value };
-    case 'SET_EDGE':
+    case SET_EDGE:
       return { ...state, edge: action.value };
-    case 'SET_RADIOCHECK':
+    case SET_RADIOCHECK:
       return { ...state, radioCheck: action.value };
-    case 'SET_DESCRIPTION':
+    case SET_DESCRIPTION:
       return { ...state, description: action.payload };
-    case 'SET_SELECTEDDATE':
+    case SET_SELECTEDDATE:
       return { ...state, selectedDate: action.value };
-    case 'SET_DATEMANUFACTURE':
+    case SET_DATEMANUFACTURE:
       return { ...state, dateManufacture: action.value };
-    case 'SET_ZIPSCHECK':
+    case SET_ZIPSCHECK:
       return { ...state, zipsCheck: action.payload };
-    case 'SET_LOWERAPRONCHECK':
+    case SET_LOWERAPRONCHECK:
       return { ...state, lowerApronCheck: action.payload };
-    case 'SET_PIPEPOCKETCHECK':
+    case SET_PIPEPOCKETCHECK:
       return { ...state, pipePocketCheck: action.payload };
-    case 'SET_KNOBSCHECK':
+    case SET_KNOBSCHECK:
       return { ...state, knobsCheck: action.payload };
-    case 'SET_CURTAINHAVEDOORCHECK':
+    case SET_CURTAINHAVEDOORCHECK:
       return { ...state, curtainHaveDoorCheck: action.payload };
-    case 'CLEAR_WIDTH':
+    case CLEAR_WIDTH:
       return { ...state, width: '' };
-    case 'CLEAR_HEIGHT':
+    case CLEAR_HEIGHT:
       return { ...state, height: '' };
-    case 'CLEAR_EDGE':
+    case CLEAR_EDGE:
       return { ...state, edge: '' };
-    case 'CLEAR_DESCRIPTION':
+    case CLEAR_DESCRIPTION:
       return { ...state, description: "" };
-    case 'CLEAR_SELECTEDDATE':
+    case CLEAR_SELECTEDDATE:
       return { ...state, selectedDate: '' };
-    case 'CLEAR_DATEMANUFACTURE':
+    case CLEAR_DATEMANUFACTURE:
       return { ...state, dateManufacture: '' };
-    case 'CLEAR_ALL':
+    case CLEAR_ALL:
       return initialState;
 
     default:

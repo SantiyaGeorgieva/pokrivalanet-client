@@ -26,11 +26,14 @@ import {
   SET_FALLINGRIGHT,
   SET_FITTINGLEFTCHECK,
   SET_FITTINGRIGHTCHECK,
-  SET_HOOD, SET_ITEMS,
+  SET_HOOD,
+  SET_ITEMS,
   SET_LENGTH,
   SET_LONGITUDIALPOCKETCHECK,
   SET_NUMBERSTRETCHES,
   SET_WIDTH,
+  SET_NAMES,
+  SET_EMAIL,
   CLEAR_ALL,
   CLEAR_BACKCOVER,
   CLEAR_FALLINGPIPE,
@@ -39,10 +42,18 @@ import {
   CLEAR_LENGHT,
   CLEAR_NUMBERSTRETCHES,
   REMOVE_CHECK,
-  CLEAR_WIDTH
+  CLEAR_WIDTH,
+  CLEAR_NAMES,
+  CLEAR_EMAIL,
+  SET_TELEPHONE,
+  CLEAR_TELEPHONE
 } from "../../actionTypes";
 
 import './truckGondolaCalculator.scss';
+import useEmailValidation from "../../hooks/validators/useEmailValidation";
+import usePhoneValidation from "../../hooks/validators/usePhoneValidation";
+import useNamesValidation from "../../hooks/validators/useNamesValidation";
+import useKeysValidation from "../../hooks/validators/useKeysValidation";
 
 const css = `
 .my-selected:not([disabled]) { 
@@ -88,11 +99,21 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
   const [items, dispatchItems] = useReducer(truckCalculatorReducer, []);
   const [state, dispatch] = useReducer(truckCalculatorReducer, initialState);
 
-  const { width, length, hood, backCover, fallingPipe, fallingRight, numberStretches, dateManufacture, longitudinalPocketCheck, fittingLeftCheck, fittingRightCheck, assemblyCheck } = state;
+  const { names, email, telephone, width, length, hood, backCover, fallingPipe, fallingRight, numberStretches, dateManufacture, longitudinalPocketCheck, fittingLeftCheck, fittingRightCheck, assemblyCheck } = state;
   const [titlePage, setTitlePage] = useState(offerTitle || localStorage.getItem('offerTitle'));
   const [tarpaulin, setTarpaulin] = useState('680гр/кв.м');
+  const { namesValue, isValidNames, validateNames } = useNamesValidation();
+  const { emailValue, isValidEmail, validateEmail } = useEmailValidation();
+  const { phoneNumber, isValidPhoneNumber, validatePhoneNumber } = usePhoneValidation();
+  const { handleKeysInput } = useKeysValidation();
 
   const [hasWidthError, setWidthError] = useState(false);
+  const [hasEmailError, setEmailError] = useState(false);
+  const [hasNamesValidationError, setNamesValidationError] = useState(false);
+  const [hasEmailValidationError, setEmailValidationError] = useState(false);
+  const [hasTelephoneError, setTelephoneError] = useState(false);
+  const [hasTelephoneValidationError, setTelephoneValidationError] = useState(false);
+  const [hasNamesError, setNamesError] = useState(false);
   const [hasLengthError, setLengthError] = useState(false);
   const [hasHoodError, setHoodError] = useState(false);
   const [hasBackCoverError, setBackCoverError] = useState(false);
@@ -111,6 +132,9 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
   const [visible, setVisible] = useState(false);
   const onDismiss = () => setVisible(false);
 
+  const namesInputRef = useRef(null);
+  const emailInputRef = useRef(null);
+  const telephoneInputRef = useRef(null);
   const widthInputRef = useRef(null);
   const lengthInputRef = useRef(null);
   const hoodInputRef = useRef(null);
@@ -203,11 +227,72 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
     setDateManufactureError(false);
   };
 
+  const handleNamesInput = (e) => {
+    validateNames(e.target.value);
+
+    if (e.target.value === "") {
+      setNamesError(true);
+      setNamesValidationError(false);
+      dispatch({ type: CLEAR_NAMES, value: "" });
+    } else if (isValidNames) {
+      setNamesError(false);
+      setNamesValidationError(false);
+      dispatch({ type: SET_NAMES, value: namesValue });
+    } else {
+      setNamesError(false);
+      setNamesValidationError(true);
+      dispatch({ type: SET_NAMES, value: e.target.value });
+    }
+  };
+
+  const handleEmailInput = (e) => {
+    validateEmail(e.target.value);
+
+    if (e.target.value === "") {
+      setEmailError(true);
+      setEmailValidationError(false);
+      dispatch({ type: CLEAR_EMAIL, value: "" });
+    } else if (isValidEmail) {
+      setEmailError(false);
+      setEmailValidationError(false);
+      dispatch({ type: SET_EMAIL, value: emailValue });
+    } else {
+      setEmailError(false);
+      setEmailValidationError(true);
+      dispatch({ type: SET_EMAIL, value: e.target.value });
+    }
+  };
+
+  const handleTelephoneInput = (e) => {
+    validatePhoneNumber(e.target.value);
+
+    if (e.target.value === "") {
+      setTelephoneError(true);
+      setTelephoneValidationError(false);
+      dispatch({ type: CLEAR_TELEPHONE, value: "" });
+    } else if (isValidPhoneNumber) {
+      setTelephoneError(false);
+      setTelephoneValidationError(false);
+      dispatch({ type: SET_TELEPHONE, value: phoneNumber });
+    } else {
+      setTelephoneError(false);
+      setTelephoneValidationError(true);
+      dispatch({ type: SET_TELEPHONE, value: e.target.value });
+    }
+  };
+
+  // const handleKeysInput = (e) => {
+  //   if (e.which === 107 || e.which === 109 || e.which === 187 || e.which === 189 || e.which === 69) {
+  //     e.preventDefault();
+  //   }
+  // };
+
   const handleWidthInput = (e) => {
     if (e.target.value === "") {
       setWidthError(true);
       dispatch({ type: CLEAR_WIDTH, value: "" });
-    } else {
+    }
+    else {
       setWidthError(false);
       dispatch({ type: SET_WIDTH, value: e.target.value });
     }
@@ -310,6 +395,18 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
   }
 
   const handleOfferPrice = () => {
+    if (namesInputRef.current && namesInputRef.current.value === "") {
+      setNamesError(true);
+    }
+
+    if (emailInputRef.current && emailInputRef.current.value === "") {
+      setEmailError(true);
+    }
+
+    if (telephoneInputRef.current && telephoneInputRef.current.value === "") {
+      setTelephoneError(true);
+    }
+
     if (widthInputRef.current && widthInputRef.current.value === "") {
       setWidthError(true);
     }
@@ -343,11 +440,19 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
       return;
     }
 
-    if (!hasWidthError && !hasLengthError && !hasHoodError && !hasBackCoverError && !hasFallingPipeError && !hasFallingRightError && !hasNumberStretchesError && !hasDateManufactureError) {
+    if (!hasWidthError && !hasLengthError
+      && !hasHoodError && !hasBackCoverError
+      && !hasFallingPipeError && !hasFallingRightError
+      && !hasNumberStretchesError && !hasDateManufactureError
+      && !hasNamesValidationError && !hasEmailValidationError
+      && !hasTelephoneValidationError) {
       const values = [
         {
           width: width,
           length: length,
+          names: names,
+          email: email,
+          telephone: telephone,
           hood: hood,
           back_cover: backCover,
           falling_pipe: fallingPipe,
@@ -364,6 +469,9 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
       const newItems = values.map((value) => ({
         width_cover_text: value.width,
         length_cover_text: value.length,
+        names: value.names,
+        email: value.email,
+        telephone: value.telephone,
         hood_text: value.hood,
         back_cover_text: value.back_cover,
         falling_pipe: value.falling_pipe,
@@ -432,10 +540,58 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
                 <Row>
                   <Col md="6">
                     <FormGroup className="text-start mb-2">
+                      <Label className="fw-bold" for="names">{t('names')}</Label>
+                      <Input
+                        type="text"
+                        name="names"
+                        innerRef={namesInputRef}
+                        onBlur={e => handleNamesInput(e)}
+                        onChange={e => handleNamesInput(e)}
+                        value={names}
+                        invalid={hasNamesError}
+                      />
+                      {hasNamesError && <FormFeedback>{t('name_error')}</FormFeedback>}
+                      {hasNamesValidationError && <FormFeedback>{t('names_validation_error')}</FormFeedback>}
+                    </FormGroup>
+                  </Col>
+                  <Col md="6">
+                    <FormGroup className="text-start mb-2">
+                      <Label className="fw-bold" for="email">{t('email')}</Label>
+                      <Input
+                        type="text"
+                        name="email"
+                        value={email}
+                        onBlur={e => handleEmailInput(e)}
+                        onChange={e => handleEmailInput(e)}
+                        invalid={hasEmailError || hasEmailValidationError}
+                        innerRef={emailInputRef}
+                        disabled={calulatedButtonClicked}
+                      />
+                      {hasEmailError && <FormFeedback>{t('email_error')}</FormFeedback>}
+                      {hasEmailValidationError && <FormFeedback>{t('email_validation_error')}</FormFeedback>}
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md="6">
+                    <FormGroup className="text-start mb-2">
+                      <Label className="fw-bold" for="telephone">{t('telephone')}</Label>
+                      <Input type="text" name="telephone" onBlur={e => handleTelephoneInput(e)} onChange={e => handleTelephoneInput(e)} value={telephone} invalid={hasTelephoneError || hasTelephoneValidationError} innerRef={telephoneInputRef} disabled={calulatedButtonClicked} />
+                      {hasTelephoneError && <FormFeedback>{t('telephone_error')}</FormFeedback>}
+                      {hasTelephoneValidationError && <FormFeedback>{t('telephone_validation_error')}</FormFeedback>}
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md="6">
+                    <FormGroup className="text-start mb-2">
                       <Label for="width" className="fw-bold">{t('width_cover_text')}</Label>
                       <Input
                         type="number"
                         name="width"
+                        min="0"
+                        onKeyDown={(e) => handleKeysInput(e)}
+                        onKeyUp={(e) => handleKeysInput(e)}
                         onChange={(e) => handleWidthInput(e)}
                         value={width}
                         innerRef={widthInputRef}
@@ -452,6 +608,9 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
                       </Label>
                       <Input
                         type="number"
+                        min="0"
+                        onKeyDown={(e) => handleKeysInput(e)}
+                        onKeyUp={(e) => handleKeysInput(e)}
                         onChange={(e) => handleLengthInput(e)}
                         name="length"
                         value={length}
@@ -471,14 +630,36 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
                   <Col md="6">
                     <FormGroup className="text-start mb-2">
                       <Label for="hood" className="fw-bold">{t('hood_text')}</Label>
-                      <Input type="number" onChange={e => handleHoodInput(e)} name="hood" value={hood} invalid={hasHoodError} disabled={calulatedButtonClicked} innerRef={hoodInputRef} />
+                      <Input
+                        name="hood"
+                        type="number"
+                        value={hood}
+                        min="0"
+                        onKeyDown={(e) => handleKeysInput(e)}
+                        onKeyUp={(e) => handleKeysInput(e)}
+                        onChange={e => handleHoodInput(e)}
+                        invalid={hasHoodError}
+                        disabled={calulatedButtonClicked}
+                        innerRef={hoodInputRef}
+                      />
                       {hasHoodError && <FormFeedback>{t('has_hood_error')}</FormFeedback>}
                     </FormGroup>
                   </Col>
                   <Col md="6">
                     <FormGroup className="text-start mb-2">
                       <Label for="backCover" className="fw-bold">{t('back_cover_text')}</Label>
-                      <Input type="number" onChange={e => handleBackCoverInput(e)} name="backCover" value={backCover} invalid={hasBackCoverError} disabled={calulatedButtonClicked} innerRef={backCoverInputRef} />
+                      <Input
+                        type="number"
+                        min="0"
+                        onKeyDown={(e) => handleKeysInput(e)}
+                        onKeyUp={(e) => handleKeysInput(e)}
+                        onChange={e => handleBackCoverInput(e)}
+                        name="backCover"
+                        value={backCover}
+                        invalid={hasBackCoverError}
+                        disabled={calulatedButtonClicked}
+                        innerRef={backCoverInputRef}
+                      />
                       {hasBackCoverError && <FormFeedback>{t('has_back_cover_error')}</FormFeedback>}
                     </FormGroup>
                   </Col>
@@ -487,14 +668,36 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
                   <Col md="6">
                     <FormGroup className="text-start mb-2">
                       <Label for="fallingPipe" className="fw-bold">{t('falling_pipe')}</Label>
-                      <Input type="number" onChange={e => handleFallingPipeInput(e)} name="fallingPipe" value={fallingPipe} invalid={hasFallingPipeError} disabled={calulatedButtonClicked} innerRef={fallingPipeInputRef} />
+                      <Input
+                        type="number"
+                        min="0"
+                        onKeyDown={(e) => handleKeysInput(e)}
+                        onKeyUp={(e) => handleKeysInput(e)}
+                        onChange={e => handleFallingPipeInput(e)}
+                        name="fallingPipe"
+                        value={fallingPipe}
+                        invalid={hasFallingPipeError}
+                        disabled={calulatedButtonClicked}
+                        innerRef={fallingPipeInputRef}
+                      />
                       {hasFallingPipeError && <FormFeedback>{t('has_falling_pipe_error')}</FormFeedback>}
                     </FormGroup>
                   </Col>
                   <Col md="6">
                     <FormGroup className="text-start mb-2">
                       <Label for="fallingRight" className="fw-bold">{t('falling_to_right')}</Label>
-                      <Input type="number" onChange={e => handleFallingRightInput(e)} name="fallingRight" value={fallingRight} invalid={hasFallingRightError} disabled={calulatedButtonClicked} innerRef={fallingRightInputRef} />
+                      <Input
+                        type="number"
+                        min="0"
+                        onKeyDown={(e) => handleKeysInput(e)}
+                        onKeyUp={(e) => handleKeysInput(e)}
+                        onChange={e => handleFallingRightInput(e)}
+                        name="fallingRight"
+                        value={fallingRight}
+                        invalid={hasFallingRightError}
+                        disabled={calulatedButtonClicked}
+                        innerRef={fallingRightInputRef}
+                      />
                       {hasFallingRightError && <FormFeedback>{t('has_falling_right_error')}</FormFeedback>}
                     </FormGroup>
                   </Col>
@@ -503,7 +706,18 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
                   <Col md="6">
                     <FormGroup className="text-start mb-2">
                       <Label for="numberStretches" className="fw-bold">{t('number_stretches')}</Label>
-                      <Input type="number" onChange={e => handleNumberStretchesInput(e)} name="numberStretches" value={numberStretches} invalid={hasNumberStretchesError} disabled={calulatedButtonClicked} innerRef={numberStretchesInputRef} />
+                      <Input
+                        type="number"
+                        min="0"
+                        onKeyDown={(e) => handleKeysInput(e)}
+                        onKeyUp={(e) => handleKeysInput(e)}
+                        onChange={e => handleNumberStretchesInput(e)}
+                        name="numberStretches"
+                        value={numberStretches}
+                        invalid={hasNumberStretchesError}
+                        disabled={calulatedButtonClicked}
+                        innerRef={numberStretchesInputRef}
+                      />
                       {hasNumberStretchesError && <FormFeedback>{t('has_number_stretches_error')}</FormFeedback>}
                     </FormGroup>
                   </Col>

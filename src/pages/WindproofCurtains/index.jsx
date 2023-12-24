@@ -415,7 +415,7 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
     }
 
     if (!hasNamesValidationError && !hasEmailValidationError
-      && hasTelephoneValidationError && !hasWidthError
+      && !hasTelephoneValidationError && !hasWidthError
       && !hasHeightError && !hasEdgeError
       && !hasDateManufactureError) {
       const values = [
@@ -544,7 +544,16 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
                 <Col md="6">
                   <FormGroup className="text-start mb-2">
                     <Label className="fw-bold" for="telephone">{t('telephone')}</Label>
-                    <Input type="text" name="telephone" onBlur={e => handleTelephoneInput(e)} onChange={e => handleTelephoneInput(e)} value={telephone} invalid={hasTelephoneError || hasTelephoneValidationError} innerRef={telephoneInputRef} disabled={calulatedButtonClicked} />
+                    <Input
+                      type="text"
+                      name="telephone"
+                      onBlur={e => handleTelephoneInput(e)}
+                      onChange={e => handleTelephoneInput(e)}
+                      value={telephone}
+                      invalid={hasTelephoneError || hasTelephoneValidationError}
+                      innerRef={telephoneInputRef}
+                      disabled={calulatedButtonClicked}
+                    />
                     {hasTelephoneError && <FormFeedback>{t('telephone_error')}</FormFeedback>}
                     {hasTelephoneValidationError && <FormFeedback>{t('telephone_validation_error')}</FormFeedback>}
                   </FormGroup>
@@ -554,8 +563,16 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
                 <Col md="6">
                   <FormGroup className="text-start mb-2">
                     <Label for="width" className="fw-bold">{t('width_text')}</Label>
-                    <Input type="number" disabled={calulatedButtonClicked} name="width" onChange={e => handleWidthInput(e.target.value)} value={width}
-                      invalid={hasWidthError} innerRef={widthInputRef}
+                    <Input
+                      type="number"
+                      disabled={calulatedButtonClicked}
+                      name="width"
+                      value={width}
+                      onKeyDown={(e) => handleKeysInput(e)}
+                      onKeyUp={(e) => handleKeysInput(e)}
+                      onChange={e => handleWidthInput(e.target.value)}
+                      invalid={hasWidthError}
+                      innerRef={widthInputRef}
                     />
                     {hasWidthError && <FormFeedback>{t('has_width_error')}</FormFeedback>}
                   </FormGroup>
@@ -578,6 +595,8 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
                       type="select"
                       defaultValue={thick}
                       disabled={calulatedButtonClicked}
+                      onKeyDown={(e) => handleKeysInput(e)}
+                      onKeyUp={(e) => handleKeysInput(e)}
                       onChange={e => handleThickInput(e.target.value)}
                       className={`${calulatedButtonClicked && 'cursor-disabled'}`}>
                       {thickCount.map(option => {
@@ -589,7 +608,17 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
                 <Col md="6">
                   <FormGroup className="text-start mb-2">
                     <Label for="edge" className="fw-bold" >{t('edges')}</Label>
-                    <Input type="number" disabled={calulatedButtonClicked} onChange={e => handleEdgeInput(e.target.value)} name="edge" value={edge} invalid={hasEdgeError} innerRef={edgeInputRef} />
+                    <Input
+                      type="number"
+                      name="edge"
+                      value={edge}
+                      onKeyDown={(e) => handleKeysInput(e)}
+                      onKeyUp={(e) => handleKeysInput(e)}
+                      onChange={e => handleEdgeInput(e.target.value)}
+                      invalid={hasEdgeError}
+                      innerRef={edgeInputRef}
+                      disabled={calulatedButtonClicked}
+                    />
                     {hasEdgeError && <FormFeedback>{t('has_edge_error')}</FormFeedback>}
                   </FormGroup>
                 </Col>

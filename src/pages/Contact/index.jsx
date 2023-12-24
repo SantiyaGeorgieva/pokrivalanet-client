@@ -65,16 +65,16 @@ const Contact = memo(function Contact({ hideMain, isMobile }) {
     setMessageCaptcha('');
 
     let emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-    let nameValue = removeSpaces(name);
+    // let nameValue = removeSpaces(name);
     let subjectValue = removeSpaces(message);
     let emailaddressVal = email;
     let token = captchaRef.current.getValue();
 
-    if (nameValue === '') {
+    if (name === '') {
       setNameError(true);
-    } else if (nameValue !== '') {
+    } else if (name !== '') {
       setNameError(false);
-      setName(nameValue);
+      setName(name);
     }
 
     if (subjectValue === '') {

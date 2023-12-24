@@ -512,10 +512,10 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
                     <Input
                       type="text"
                       name="names"
+                      value={names}
                       innerRef={namesInputRef}
                       onBlur={e => handleNamesInput(e)}
                       onChange={e => handleNamesInput(e)}
-                      value={names}
                       invalid={hasNamesError || hasNamesValidationError}
                     />
                     {hasNamesError && <FormFeedback>{t('name_error')}</FormFeedback>}
@@ -547,9 +547,9 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
                     <Input
                       type="text"
                       name="telephone"
+                      value={telephone}
                       onBlur={e => handleTelephoneInput(e)}
                       onChange={e => handleTelephoneInput(e)}
-                      value={telephone}
                       invalid={hasTelephoneError || hasTelephoneValidationError}
                       innerRef={telephoneInputRef}
                       disabled={calulatedButtonClicked}

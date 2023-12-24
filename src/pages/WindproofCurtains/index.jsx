@@ -197,7 +197,7 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
           reader.readAsDataURL(file);
           reader.onload = async () => {
             let dataUrl = reader.result;
-            await fetchSendEmail(email, dataUrl, fileName, endpoints.windproofSendEmailUrl);
+            await fetchSendEmail(names, email, dataUrl, fileName, endpoints.windproofSendEmailUrl);
             if (!errorSendEmail) {
               setVisible(true);
             }

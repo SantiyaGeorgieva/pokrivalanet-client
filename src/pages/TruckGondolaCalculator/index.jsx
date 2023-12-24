@@ -204,7 +204,7 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
           reader.readAsDataURL(file);
           reader.onload = async () => {
             let dataUrl = reader.result;
-            await fetchSendEmail(email, dataUrl, fileName, endpoints.truckSendEmailUrl);
+            await fetchSendEmail(names, email, dataUrl, fileName, endpoints.truckSendEmailUrl);
             if (!errorSendEmail) {
               setVisible(true);
             }

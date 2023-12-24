@@ -352,7 +352,7 @@ app.post("/windproofcurtains-offer-email", async (req, res, next) => {
     from: req?.body?.email,
     subject: 'Оферта за ветроупорна завеса',
     to: process.env.USER_EMAIL,
-    html: `<h1>Оферта от клиент</h1>`,
+    html: `<h1>Оферта от ${req?.body?.names}</h1>`,
     attachments: [
       {
         filename: req.body.filename,
@@ -526,7 +526,7 @@ app.post('/truckcovers-offer-email', async (req, res, next) => {
     from: req?.body?.email,
     subject: 'Оферта за покривало',
     to: process.env.USER_EMAIL,
-    html: `<h1>Оферта от клиент</h1>`,
+    html: `<h1>Оферта от ${req?.body?.names}</h1>`,
     attachments: [
       {
         filename: req.body.filename,

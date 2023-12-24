@@ -173,7 +173,7 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
           reader.readAsDataURL(file);
           reader.onload = async () => {
             let dataUrl = reader.result;
-            await fetchSendEmail(email, dataUrl, fileName, endpoints.truckSendEmailUrl);
+            await fetchSendEmail(names, email, dataUrl, fileName, endpoints.truckSendEmailUrl);
             if (!errorSendEmail) {
               setVisible(true);
             }

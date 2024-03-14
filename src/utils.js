@@ -21,16 +21,16 @@ const linkUrl = () => {
 };
 
 const endpoints = {
-  truckPriceUrl: '/truckcovers-priceoffer',
-  truckFileUrl: '/truckcovers-offer-file',
-  truckComparedFilesUrl: '/truckcovers-offer-file-edit',
-  truckSendEmailUrl: '/truckcovers-offer-email',
-  windproofPriceUrl: '/windproofcurtains-priceoffer',
-  windproofFileUrl: '/windproofcurtains-offer-file',
-  windproofComparedFilesUrl: '/windproofcurtains-offer-file-edit',
-  windproofSendEmailUrl: '/windproofcurtains-offer-email',
-  verifyTokenUrl: '/verify-token',
-  contactUrl: '/contact'
+  truckPriceUrl: '/api/trucks/truckcovers-priceoffer',
+  truckFileUrl: '/api/trucks/truckcovers-offer-file',
+  truckComparedFilesUrl: '/api/trucks/truckcovers-offer-file-edit',
+  truckSendEmailUrl: '/api/trucks/truckcovers-offer-email',
+  windproofPriceUrl: '/api/windproofcurtains/windproofcurtains-priceoffer',
+  windproofFileUrl: '/api/windproofcurtains/windproofcurtains-offer-file',
+  windproofComparedFilesUrl: '/api/windproofcurtains/windproofcurtains-offer-file-edit',
+  windproofSendEmailUrl: '/api/windproofcurtains/windproofcurtains-offer-email',
+  verifyTokenUrl: '/api/verify-token',
+  contactUrl: '/api/contact'
 };
 
 const getLocale = (localLang) => {

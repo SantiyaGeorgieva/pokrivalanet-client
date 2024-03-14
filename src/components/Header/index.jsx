@@ -158,7 +158,7 @@ const Header = memo(function Header({ isMobile, selectedItem, setSelectedItem })
       <Navbar expand="md" className={`small ${isOpen ? 'bc-blue' : ''}`}>
         {!isOpen &&
           <>
-            <NavLink onClick={scrollToTop} to="/truck-covers" className="navbar-brand text-start">
+            <NavLink onClick={scrollToTop} to="/truck-covers" className="navbar-brand text-start me-0">
               <img src={Logo} alt="Pokrivala.net logo" className="w-50" />
             </NavLink>
             <Navbar expand="sm" className="py-0 px-0 mt-5 me-2 text-end">
@@ -209,8 +209,33 @@ const Header = memo(function Header({ isMobile, selectedItem, setSelectedItem })
                 </UncontrolledDropdown>
               </Nav>
             </Navbar>
-            <div className="d-flex flex-column align-items-center text-start">
-              <Row className={`${isMobile ? '' : 'my-3'}`}>
+            {/* <div className="d-flex justify-content-center align-items-center text-start"> */}
+            {/* <Row className={`${isMobile ? 'header-buttons flex-nowrap' : 'my-3'}`}>
+                <Col sm="5" md={`${!isMobile ? '' : '5'}`} className={`${!isMobile ? '' : 'px-0'}`}>
+                  <Button size="sm" color="dark" className="cursor-default me-2" outline>
+                    <i className="fa fa-phone my-2 px-2" />{t('phone')}
+                  </Button>
+                </Col>
+                <Col sm="5" md={`${!isMobile ? '' : '5'}`} className={`${!isMobile ? '' : 'px-0'}`}>
+                  <Button color="dark" size="sm" className="cursor-default me-2" outline>
+                    <i className="fa fa-phone my-2 px-2" />{t('phone2')}
+                  </Button>
+                </Col>
+                <Col sm="3" md={`${!isMobile ? '' : '3'}`} className={`${!isMobile ? '' : 'px-0'}`}>
+                  <Button color="dark" size="sm" className="location-link me-2" outline>
+                    <Link className="text-dark text-decoration-none" to="/contact">
+                      <i className="fa-solid fa-location-dot my-2 px-2" />{t('city')}
+                    </Link>
+                  </Button>
+                </Col>
+                <Col sm="4" md={`${!isMobile ? '' : '5'}`} className={`${!isMobile ? '' : 'px-0'}`}>
+                  <Button color="dark" size="sm" outline className="cursor-default" onClick={onEmailClick}>
+                    <i className="fa-solid fa-envelope my-2 px-2" />{t('email_office')}
+                  </Button>
+                </Col>
+              </Row> */}
+
+            {/* <Row className={`${isMobile ? '' : 'my-3'}`}>
                 <Col md="12" className={`${!isMobile ? '' : 'mt-3 mb-2'}`}>
                   <Button size="sm" color="dark" className="cursor-default me-2" outline>
                     <i className="fa fa-phone my-2 px-2" />{t('phone')}
@@ -237,8 +262,8 @@ const Header = memo(function Header({ isMobile, selectedItem, setSelectedItem })
                     <i className="fa-solid fa-envelope my-2 px-2" />{t('email_office')}
                   </Button>
                 </Col>
-              </Row>
-            </div>
+              </Row> */}
+            {/* </div> */}
             <div className="d-flex flex-column align-items-center text-start social-icons">
               <Link to="https://www.facebook.com/brezentiruse" aria-label="https://www.facebook.com/brezentiruse" target="_blank">
                 <i className="fa-brands fa-facebook fs-4 mx-1 my-2 text-dark"></i>

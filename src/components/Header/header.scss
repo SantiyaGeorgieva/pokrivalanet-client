@@ -10,6 +10,12 @@
   }
 }
 
+.small {
+  .navbar-brand {
+    margin-left: 25px;
+  }
+}
+
 .bc-blue {
   background-color: #2E5994;
 
@@ -21,16 +27,19 @@
 
     .container-fluid {
       .navbar-expand-sm {
+        position: absolute;
+        top: 65%;
+        right: 4%;
+
         .container-fluid:nth-child(2) {
           padding-left: 0;
           padding-right: 0;
         }
       }
-    }
 
-    .navbar-brand {
-      position: absolute;
-      top: 3%;
+      .navbar-brand {
+        margin-left: 25px;
+      }
     }
 
     li {
@@ -210,6 +219,18 @@
     transition: transform .5s cubic-bezier(.77, .2, .05, 1), background .5s cubic-bezier(.77, .2, .05, 1), opacity .55s ease;
     width: 27px;
     z-index: 1;
+  }
+}
+
+.header-buttons {
+  .col-sm-3,
+  .col-sm-5 {
+    margin-left: -10px;
+  }
+
+  .col-md-4,
+  .col-md-3 {
+    margin-left: -10px;
   }
 }
 

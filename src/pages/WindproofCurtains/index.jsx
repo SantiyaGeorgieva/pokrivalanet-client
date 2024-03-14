@@ -19,12 +19,9 @@ import useNamesValidation from "../../hooks/validators/useNamesValidation";
 import useEmailValidation from "../../hooks/validators/useEmailValidation";
 import usePhoneValidation from "../../hooks/validators/usePhoneValidation";
 import useKeysValidation from "../../hooks/validators/useKeysValidation";
-import { initialState, windproofCurtainsCalculatorReducer } from "../../components/reducers/windproofCuratinsCalculatorReducer";
+import { initialState, windproofCurtainsCalculatorReducer } from "../../reducers/windproofCuratinsCalculatorReducer";
 import { getDateLocale, getLocale, endpoints } from "../../utils";
 
-import 'react-day-picker/dist/style.css';
-
-import './windproofCurtains.scss';
 import {
   ADD_CHECK,
   CLEAR_ALL,
@@ -53,6 +50,8 @@ import {
   SET_WIDTH,
   SET_ZIPSCHECK
 } from "../../actionTypes";
+
+import './windproofCurtains.scss';
 
 import 'react-day-picker/dist/style.css';
 
@@ -517,6 +516,7 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
                       onBlur={e => handleNamesInput(e)}
                       onChange={e => handleNamesInput(e)}
                       invalid={hasNamesError || hasNamesValidationError}
+                      disabled={calulatedButtonClicked}
                     />
                     {hasNamesError && <FormFeedback>{t('name_error')}</FormFeedback>}
                     {hasNamesValidationError && <FormFeedback>{t('names_validation_error')}</FormFeedback>}

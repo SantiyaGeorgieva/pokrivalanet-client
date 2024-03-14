@@ -409,6 +409,7 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
                           onChange={e => handleNamesInput(e)}
                           value={names}
                           invalid={hasNamesError || hasNamesValidationError}
+                          disabled={calulatedButtonClicked}
                         />
                         {hasNamesError && <FormFeedback>{t('name_error')}</FormFeedback>}
                         {hasNamesValidationError && <FormFeedback>{t('names_validation_error')}</FormFeedback>}

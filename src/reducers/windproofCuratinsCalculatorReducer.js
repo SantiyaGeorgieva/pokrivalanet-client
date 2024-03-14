@@ -28,7 +28,7 @@ import {
   SET_THICK,
   SET_WIDTH,
   SET_ZIPSCHECK
-} from "../../actionTypes";
+} from "../actionTypes";
 
 export const initialState = {
   names: '',

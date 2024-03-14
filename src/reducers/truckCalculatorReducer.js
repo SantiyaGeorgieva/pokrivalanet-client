@@ -30,7 +30,7 @@ import {
   CLEAR_WIDTH,
   CLEAR_NUMBERSTRETCHES,
   CLEAR_SELECTEDDATE
-} from "../../actionTypes";
+} from "../actionTypes";
 
 export const initialState = {
   names: '',

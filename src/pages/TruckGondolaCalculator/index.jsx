@@ -19,8 +19,7 @@ import useKeysValidation from "../../hooks/validators/useKeysValidation";
 import CoverScheme from '../../images/cover_scheme.png';
 import { endpoints, getDateLocale, getLocale } from "../../utils";
 import { tarpaulinCount } from "../../constants";
-
-import { truckCalculatorReducer, initialState } from "../../components/reducers/truckCalculatorReducer";
+import { truckCalculatorReducer, initialState } from "../../reducers/truckCalculatorReducer";
 import {
   ADD_CHECK,
   SET_ASSEMBLYCHECK,
@@ -543,6 +542,7 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
                         onChange={e => handleNamesInput(e)}
                         value={names}
                         invalid={hasNamesError || hasNamesValidationError}
+                        disabled={calulatedButtonClicked}
                       />
                       {hasNamesError && <FormFeedback>{t('name_error')}</FormFeedback>}
                       {hasNamesValidationError && <FormFeedback>{t('names_validation_error')}</FormFeedback>}

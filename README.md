@@ -1,4 +1,4 @@
-# Pokrivalanet
+# PokrivalaNet – client part
 
 ## Introduction
 This repository contains a client part of Pokrivala.net application. It is intended to demonstrate as wide an array of features, libraries, etc. as possible while still keeping the app simple and easy to understand.

@@ -3,7 +3,7 @@
 ## Introduction
 This repository contains a client part of Pokrivala.net application. It is intended to demonstrate as wide an array of features, libraries, etc. as possible while still keeping the app simple and easy to understand.
  
- This application consists of Front End pages (components - located in the `src` directory) that is built with Redux and [Create React App](https://github.com/facebook/create-react-app).
+ This application consists of Front End pages (components - located in the `src` directory) that is built with [Redux](https://redux.js.org/) and [Create React App](https://github.com/facebook/create-react-app).
 
 ## Installation
 First, install the programs required to run the application:

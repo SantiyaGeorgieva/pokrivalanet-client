@@ -1,0 +1,35 @@
+.bg-slate-100:last-child {
+  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  margin: 0 50px;
+}
+
+.button-exit {
+  position: absolute;
+  top: 5%;
+  right: 0;
+}
+
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: #2E5994 !important;
+}
+
+.bg-slate-300 {
+  border: 2px solid #ccc;
+}
+
+.list-group {
+  text-align: left;
+  
+  .active {
+    background-color: #2E5994 !important;
+  }
+}
+
+a {
+  text-decoration: none !important;
+}

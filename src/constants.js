@@ -91,6 +91,11 @@ import StraniciShtoraSkapaciKomplektOtDve from './images/pokrivala_za_kamioni/24
 import ReklamniNadpisi from './images/pokrivala_za_kamioni/338003367_5578260945613455_2833902347299641586_n.jpg';
 import RemontPokrivala from './images/pokrivala_za_kamioni/26132737.png';
 import KonstrukciyaBrezent from './images/pokrivala_za_kamioni/1684150263340333218_common--23051514021554027700.jpg';
+import WindproofCurtainsPanelForm from './components/WindproofCurtainsPanelForm';
+import TruckCoversPanelForm from './components/TruckCoversPanelForm';
+import TruckGondolaPanelForm from './components/TruckGondolaPanelForm';
+import TruckWithShutterPanelForm from './components/TruckWithShutterPanelForm';
+import TruckWithoutShutterPanelForm from './components/TruckWithoutShutterPanelForm';
 
 export const links = [
   // {
@@ -492,4 +497,32 @@ export const tarpaulinCount = [
     id: 2,
     text: '900гр/кв.м',
   }
+];
+
+export const adminLinks = [
+  {
+    id: 1,
+    text: 'Покривала за камиони',
+    component: (props) => <TruckCoversPanelForm {...props} />
+  },
+  {
+    id: 2,
+    text: 'Ветроупорни завеси',
+    component: (props) => <WindproofCurtainsPanelForm {...props} />
+  },
+  {
+    id: 3,
+    text: 'Покривало за зърновоз или гондола',
+    component: (props) => <TruckGondolaPanelForm {...props} />
+  },
+  {
+    id: 4,
+    text: 'Страници на щора с капаци комплект от две',
+    component: (props) => <TruckWithShutterPanelForm {...props} />
+  },
+  {
+    id: 5,
+    text: 'Страници на щора без капаци комплект от две',
+    component: (props) => <TruckWithoutShutterPanelForm {...props} />
+  },
 ];

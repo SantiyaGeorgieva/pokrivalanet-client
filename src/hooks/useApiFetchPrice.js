@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { linkUrl } from "../utils";
 
-export const useApiFetchOfferPrice = () => {
-  const [totalPrice, setTotalPrice] = useState("");
+export const useApiFetchPrice = () => {
+  const [pricedFetch, setPricedFetch] = useState("");
   const [isPending, setIsPending] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [error, setError] = useState(null);
-  const [calulatedButtonClicked, setCalculatedButtonClicked] = useState(false);
 
-  const fetchOfferPrice = async (values, titlePage, url) => {
+  const fetchPrice = async (url) => {
     setIsPending(true);
-    setCalculatedButtonClicked(true)
+    setIsError(false);
+
     try {
       const response = await fetch(`${linkUrl()}${url}`, {
-        method: "POST",
-        body: JSON.stringify({ values: values[0], title: titlePage }),
+        method: "GET",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -23,14 +23,15 @@ export const useApiFetchOfferPrice = () => {
       if (!response.ok) throw new Error(response.statusText);
       const json = await response.json();
       setIsPending(false);
-      setTotalPrice(json.result);
+      setIsError(false);
+      setPricedFetch(json.result);
       setError(null);
-
     } catch (error) {
       setError(`${error} Could not Fetch Data `);
+      setIsError(true);
       setIsPending(false);
     }
   };
 
-  return { totalPrice, isPending, error, calulatedButtonClicked, fetchOfferPrice, setCalculatedButtonClicked, setTotalPrice };
+  return { pricedFetch, isPending, isError, error, fetchPrice, setPricedFetch };
 };

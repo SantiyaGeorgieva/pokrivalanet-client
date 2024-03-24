@@ -282,7 +282,7 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
         },
       ]);
 
-      fetchOfferPrice([...values], titlePage, endpoints.truckPriceUrl);
+      fetchOfferPrice([...values], titlePage, endpoints.truckShutterPriceUrl);
     }
   };
 

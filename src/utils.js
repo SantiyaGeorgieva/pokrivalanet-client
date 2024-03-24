@@ -12,6 +12,19 @@ const removeSpaces = (string) => {
   return string.split(' ').join('');
 }
 
+const validateNumbersInput = (e) => {
+  const keyCodeArray = [46, 8, 9, 27, 13, 110, 188, 190];
+  if (keyCodeArray.indexOf(e.keyCode) !== -1) {
+    return;
+  }
+  if (
+    (e.shiftKey || e.keyCode < 48 || e.keyCode > 57) &&
+    (e.keyCode < 96 || e.keyCode > 105)
+  ) {
+    e.preventDefault();
+  }
+};
+
 const linkUrl = () => {
   if (process.env.NODE_ENV === 'development') {
     return process.env.REACT_APP_DEVELOPMENT_API_URL;
@@ -21,16 +34,29 @@ const linkUrl = () => {
 };
 
 const endpoints = {
-  truckPriceUrl: '/api/trucks/truckcovers-priceoffer',
+  truckCoversPricesUrl: '/api/price/truckcovers-prices',
+  truckCoversEditPricesUrl: '/api/price/truckcovers-prices/edit',
+  truckGondolaPricesUrl: '/api/price/truck-gondola-prices',
+  truckGondolaEditPricesUrl: '/api/price/truck-gondola-prices/edit',
+  truckWithShutterPriceUrl: '/api/price/truck-with-shutter-price',
+  truckWithShutterEditPriceUrl: '/api/price/truck-with-shutter-price/edit',
+  truckWithoutShutterPriceUrl: '/api/price/truck-without-shutter-price',
+  truckWithoutShutterEditPriceUrl: '/api/price/truck-without-shutter-price/edit',
+  truckGondolaPriceUrl: '/api/trucks/truckcovers-gondola-priceoffer',
+  truckShutterPriceUrl: '/api/trucks/truckcovers-shutter-priceoffer',
   truckFileUrl: '/api/trucks/truckcovers-offer-file',
   truckComparedFilesUrl: '/api/trucks/truckcovers-offer-file-edit',
   truckSendEmailUrl: '/api/trucks/truckcovers-offer-email',
+  windproofPricesUrl: '/api/price/windproofcurtains-prices',
+  windProofEditPricesUrl: '/api/price/windproofcurtains-prices/edit',
   windproofPriceUrl: '/api/windproofcurtains/windproofcurtains-priceoffer',
   windproofFileUrl: '/api/windproofcurtains/windproofcurtains-offer-file',
   windproofComparedFilesUrl: '/api/windproofcurtains/windproofcurtains-offer-file-edit',
   windproofSendEmailUrl: '/api/windproofcurtains/windproofcurtains-offer-email',
   verifyTokenUrl: '/api/verify-token',
-  contactUrl: '/api/contact'
+  contactUrl: '/api/contact',
+  login: '/api/login',
+  logout: '/api/logout'
 };
 
 const getLocale = (localLang) => {
@@ -53,4 +79,12 @@ const getDateLocale = (item) => {
   }
 };
 
-module.exports = { scrollToTop, removeSpaces, linkUrl, endpoints, getLocale, getDateLocale }
+module.exports = {
+  scrollToTop,
+  removeSpaces,
+  linkUrl,
+  endpoints,
+  getLocale,
+  getDateLocale,
+  validateNumbersInput
+};

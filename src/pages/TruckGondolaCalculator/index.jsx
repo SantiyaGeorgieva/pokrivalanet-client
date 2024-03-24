@@ -481,7 +481,7 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
       dispatchItems({ type: fittingRightCheck ? ADD_CHECK : REMOVE_CHECK, payload: 'fitting_right' });
       dispatchItems({ type: assemblyCheck ? ADD_CHECK : REMOVE_CHECK, payload: 'assembly' });
 
-      fetchOfferPrice([...values], titlePage, endpoints.truckPriceUrl);
+      fetchOfferPrice([...values], titlePage, endpoints.truckGondolaPriceUrl);
     }
   };
 
@@ -570,7 +570,16 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
                   <Col md="6">
                     <FormGroup className="text-start mb-2">
                       <Label className="fw-bold" for="telephone">{t('telephone')}</Label>
-                      <Input type="text" name="telephone" onBlur={e => handleTelephoneInput(e)} onChange={e => handleTelephoneInput(e)} value={telephone} invalid={hasTelephoneError || hasTelephoneValidationError} innerRef={telephoneInputRef} disabled={calulatedButtonClicked} />
+                      <Input 
+                        type="text" 
+                        name="telephone" 
+                        value={telephone} 
+                        onBlur={e => handleTelephoneInput(e)} 
+                        onChange={e => handleTelephoneInput(e)} 
+                        invalid={hasTelephoneError || hasTelephoneValidationError} 
+                        innerRef={telephoneInputRef} 
+                        disabled={calulatedButtonClicked}
+                      />
                       {hasTelephoneError && <FormFeedback>{t('telephone_error')}</FormFeedback>}
                       {hasTelephoneValidationError && <FormFeedback>{t('telephone_validation_error')}</FormFeedback>}
                     </FormGroup>

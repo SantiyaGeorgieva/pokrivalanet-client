@@ -50,10 +50,9 @@ const Contact = memo(function Contact({ hideMain, isMobile }) {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         }
-      })
+      });
       return response;
-    }
-    catch (error) {
+    } catch (error) {
       setVisible(true);
       setError(true);
     }
@@ -117,7 +116,7 @@ const Contact = memo(function Contact({ hideMain, isMobile }) {
 
   const fetchMessage = async () => {
     setLoading(true);
-    const response = await fetch(`${linkUrl()}${endpoints.contactUrl}`, {
+    await fetch(`${linkUrl()}${endpoints.contactUrl}`, {
       method: "POST",
       body: JSON.stringify(values[0]),
       headers: {
@@ -126,7 +125,7 @@ const Contact = memo(function Contact({ hideMain, isMobile }) {
       },
       responseType: 'json'
     }, setLoaded(true)).then((response) => {
-      if (response.status === 200 || response === 'OK') {
+      if (response.status === 200 || response.ok) {
         setLoaded(false);
         setValues([]);
         setName('');
@@ -135,98 +134,194 @@ const Contact = memo(function Contact({ hideMain, isMobile }) {
         setMessage('');
         setVisible(true);
         setLoading(false);
+        setError(false);
         setMessageCaptcha('');
         window.grecaptcha.reset();
       } else if (response.status >= 400) {
         setError(true);
       }
     });
-
-    return response;
   }
 
-  return <>
-    {!hideMain && (<>
-      <div className={`container ${!isMobile ? 'my-5' : ''}`}>
-        <Row>
-          <Col xl="6">
-            <div className="d-flex flex-column text-start">
-              <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />{`${t('addres_ruse')}`}</p>
-              <p className="mb-1"><i className="fa fa-phone my-2 pe-2" />{`${t('phone')}`},</p>
-              <p className="mb-1"><i className="fa fa-phone my-2 pe-2" />{`${t('phone2')}`},</p>
-              <p className="mb-2"><i className="fa fa-phone my-2 pe-2" />{`${t('phone3')}`}</p>
-            </div>
-            {!isMobile &&
-              <div className="d-flex flex-column text-start mt-3">
-                <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />{`${t('addres_plv')}`}</p>
-                <p className="mb-2"><i className="fa fa-phone my-2 pe-2" />{`${t('phone')}`}</p>
-                <p className="mb-2"><i className="fa-solid fa-envelope my-2 pe-2" />{`${t('email_office')}`}</p>
-              </div>
-            }
-          </Col>
-          <Col xl="6" className={`container ${isLoaderLoad ? 'text-end' : ''}`}>
-            <GoogleMapRuse isLoaderLoad={isLoaderLoad} setLoaderLoad={setLoaderLoad} />
-          </Col>
-        </Row>
-        {isMobile &&
-          <Row>
-            <Col xl="6">
-              <div className="d-flex flex-column text-start mt-3">
-                <p className="mb-1"><i className="fa-solid fa-location-dot my-2 pe-2" />{`${t('addres_plv')}`}</p>
-                <p className="mb-2"><i className="fa fa-phone my-2 pe-2" />{`${t('phone')}`}</p>
-                <p className="mb-2"><i className="fa-solid fa-envelope my-2 pe-2" />{`${t('email_office')}`}</p>
-              </div>
-            </Col>
-          </Row>
-        }
-        <Hr text={`${t('contacts_link')}`} />
-        <Row className={`d-flex align-items-center justify-content-center ${isMobile ? 'mb-5' : ''}`}>
-          <Col xl="4">
-            <Form onSubmit={(e) => handleSubmit(e)} method="POST">
-              <FormGroup className="text-start mb-2">
-                <Label for="names">{t('names')}</Label>
-                <Input type="text" name="names" onChange={e => setName(e.target.value)} value={name} invalid={hasNameError} />
-                {hasNameError && <FormFeedback>{t('name_error')}</FormFeedback>}
-              </FormGroup>
-              <FormGroup className="text-start mb-2">
-                <Label for="email">{t('email')}</Label>
-                <Input type="text" onChange={e => setEmail(e.target.value)} name="email" value={email} invalid={hasEmailError} />
-                {hasEmailError && <FormFeedback>{t('email_error')}</FormFeedback>}
-              </FormGroup>
-              <FormGroup className="text-start mb-2">
-                <Label for="subject">{t('subject')}</Label>
-                <Input type="text" onChange={e => setSubject(e.target.value)} name="subject" value={subject} invalid={hasSubjectError} />
-                {hasSubjectError && <FormFeedback>{t('subject_error')}</FormFeedback>}
-              </FormGroup>
-              <FormGroup className="text-start mb-2">
-                <Label for="exampleText">{t('message')}</Label>
-                <Input
-                  id="exampleText"
-                  name="message"
-                  type="textarea"
-                  value={message}
-                  invalid={hasMessageError}
-                  onChange={e => setMessage(e.target.value)}
+  return (
+    <>
+      {!hideMain && (
+        <>
+          <div className={`container ${!isMobile ? "my-5" : ""}`}>
+            <Row>
+              <Col xl="6">
+                <div className="d-flex flex-column text-start">
+                  <p className="mb-1">
+                    <i className="fa-solid fa-location-dot my-2 pe-2" />
+                    {`${t("addres_ruse")}`}
+                  </p>
+                  <p className="mb-1">
+                    <i className="fa fa-phone my-2 pe-2" />
+                    {`${t("phone")}`},
+                  </p>
+                  <p className="mb-1">
+                    <i className="fa fa-phone my-2 pe-2" />
+                    {`${t("phone2")}`},
+                  </p>
+                  <p className="mb-2">
+                    <i className="fa fa-phone my-2 pe-2" />
+                    {`${t("phone3")}`}
+                  </p>
+                </div>
+                {!isMobile && (
+                  <div className="d-flex flex-column text-start mt-3">
+                    <p className="mb-1">
+                      <i className="fa-solid fa-location-dot my-2 pe-2" />
+                      {`${t("addres_plv")}`}
+                    </p>
+                    <p className="mb-2">
+                      <i className="fa fa-phone my-2 pe-2" />
+                      {`${t("phone")}`}
+                    </p>
+                    <p className="mb-2">
+                      <i className="fa-solid fa-envelope my-2 pe-2" />
+                      {`${t("email_office")}`}
+                    </p>
+                  </div>
+                )}
+              </Col>
+              <Col
+                xl="6"
+                className={`container ${isLoaderLoad ? "text-end" : ""}`}
+              >
+                <GoogleMapRuse
+                  isLoaderLoad={isLoaderLoad}
+                  setLoaderLoad={setLoaderLoad}
                 />
-                {hasMessageError && <FormFeedback>{t('message_error')}</FormFeedback>}
-              </FormGroup>
-              <FormGroup>
-                <ReCAPTCHA sitekey={process.env.REACT_APP_googleSiteKey} ref={captchaRef} />
-              </FormGroup>
-              {!loaded && <p className="text-start textSuccess fs-14">{messageCaptcha}</p>}
-              <FormGroup>
-                <Button type="submit" outline className="d-flex text-start mt-4" id="btn-submit" disabled={loading}>
-                  {loading ? t('send_button_text2') : t('send_button_text1')}
-                </Button>
-              </FormGroup>
-              {loaded ? <Spinner color="primary" /> : <>{visible && <Message error={error} isVisible={visible} onDismiss={onDismiss} text={`${error ? t('error_text_400') : t('thank_you_message')}`} />}</>}
-            </Form>
-          </Col>
-        </Row>
-      </div>
-    </>)
-    }
-  </>
+              </Col>
+            </Row>
+            {isMobile && (
+              <Row>
+                <Col xl="6">
+                  <div className="d-flex flex-column text-start mt-3">
+                    <p className="mb-1">
+                      <i className="fa-solid fa-location-dot my-2 pe-2" />
+                      {`${t("addres_plv")}`}
+                    </p>
+                    <p className="mb-2">
+                      <i className="fa fa-phone my-2 pe-2" />
+                      {`${t("phone")}`}
+                    </p>
+                    <p className="mb-2">
+                      <i className="fa-solid fa-envelope my-2 pe-2" />
+                      {`${t("email_office")}`}
+                    </p>
+                  </div>
+                </Col>
+              </Row>
+            )}
+            <Hr text={`${t("contacts_link")}`} />
+            <Row
+              className={`d-flex align-items-center justify-content-center ${
+                isMobile ? "mb-5" : ""
+              }`}
+            >
+              <Col xl="4">
+                <Form onSubmit={(e) => handleSubmit(e)} method="POST">
+                  <FormGroup className="text-start mb-2">
+                    <Label for="names">{t("names")}</Label>
+                    <Input
+                      type="text"
+                      name="names"
+                      onChange={(e) => setName(e.target.value)}
+                      value={name}
+                      invalid={hasNameError}
+                    />
+                    {hasNameError && (
+                      <FormFeedback>{t("name_error")}</FormFeedback>
+                    )}
+                  </FormGroup>
+                  <FormGroup className="text-start mb-2">
+                    <Label for="email">{t("email")}</Label>
+                    <Input
+                      type="text"
+                      onChange={(e) => setEmail(e.target.value)}
+                      name="email"
+                      value={email}
+                      invalid={hasEmailError}
+                    />
+                    {hasEmailError && (
+                      <FormFeedback>{t("email_error")}</FormFeedback>
+                    )}
+                  </FormGroup>
+                  <FormGroup className="text-start mb-2">
+                    <Label for="subject">{t("subject")}</Label>
+                    <Input
+                      type="text"
+                      onChange={(e) => setSubject(e.target.value)}
+                      name="subject"
+                      value={subject}
+                      invalid={hasSubjectError}
+                    />
+                    {hasSubjectError && (
+                      <FormFeedback>{t("subject_error")}</FormFeedback>
+                    )}
+                  </FormGroup>
+                  <FormGroup className="text-start mb-2">
+                    <Label for="exampleText">{t("message")}</Label>
+                    <Input
+                      id="exampleText"
+                      name="message"
+                      type="textarea"
+                      value={message}
+                      invalid={hasMessageError}
+                      onChange={(e) => setMessage(e.target.value)}
+                    />
+                    {hasMessageError && (
+                      <FormFeedback>{t("message_error")}</FormFeedback>
+                    )}
+                  </FormGroup>
+                  <FormGroup>
+                    <ReCAPTCHA
+                      sitekey={process.env.REACT_APP_googleSiteKey}
+                      ref={captchaRef}
+                    />
+                  </FormGroup>
+                  {!loaded && (
+                    <p className="text-start textSuccess fs-14">
+                      {messageCaptcha}
+                    </p>
+                  )}
+                  <FormGroup>
+                    <Button
+                      type="submit"
+                      outline
+                      className="d-flex text-start mt-4"
+                      id="btn-submit"
+                      disabled={loading}
+                    >
+                      {loading
+                        ? t("send_button_text2")
+                        : t("send_button_text1")}
+                    </Button>
+                  </FormGroup>
+                  {loaded ? (
+                    <Spinner color="primary" />
+                  ) : (
+                    <>
+                      {visible && (
+                        <Message
+                          error={error}
+                          isVisible={visible}
+                          onDismiss={onDismiss}
+                          text={`${ error ? t("error_text_400") : t("thank_you_message")}`}
+                        />
+                      )}
+                    </>
+                  )}
+                </Form>
+              </Col>
+            </Row>
+          </div>
+        </>
+      )}
+    </>
+  );
 });
 
 export default Contact;

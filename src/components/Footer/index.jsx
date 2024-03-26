@@ -76,8 +76,17 @@ function Footer({ isMobile }) {
           </p>
         </Col>
         <Col md="6" className={`${isMobile ? 'text-center' : 'text-end'}`}>
-          <Link onClick={scrollToTop} to="/about-me" className={`c-blue-text text-decoration-none mb-0 ${isMobile ? 'text-center' : 'text-end me-5'}`}>
-            {t('footer_text')}
+          <Link
+            to="https://santiyageorgieva.com/"
+            target="_blank"
+            replace={false}
+            reloadDocument={false}
+            preventScrollReset={true}
+            className={`c-blue-text text-decoration-none mb-0 ${
+              isMobile ? "text-center" : "text-end me-5"
+            }`}
+          >
+            {t("footer_text")}
           </Link>
         </Col>
       </Row>

@@ -2,10 +2,9 @@ import React, { Suspense, memo, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router';
 import CookieConsent from 'react-cookie-consent';
 import { useTranslation } from 'react-i18next';
-import './i18n'
+import './i18n';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import AboutMe from './pages/AboutMe';
 import Home from './pages/Home';
 import TruckCovers from './pages/TruckCovers';
 import TruckGondolaCalculator from './pages/TruckGondolaCalculator';
@@ -20,10 +19,9 @@ import LargeCovers from './pages/LargeCovers';
 import LiningsAndCovers from './pages/LiningsAndCovers';
 import WagonCovers from './pages/WagonCovers';
 import Contact from './pages/Contact';
-import Register from './pages/Administration/Register';
-import Login from './pages/Administration/Login';
 import Administration from './pages/Administration';
 import NotFound from './pages/NotFound';
+// import Register from './pages/Administration/Register';
 // import UnderConstruction from './pages/UnderConstruction';
 
 import 'react-day-picker/dist/style.css';
@@ -38,10 +36,6 @@ const App = memo(function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // if (/iPhone|Android/i.test(navigator.userAgent)) {
-    //   setIsMobile(true);
-    // }
-
     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
       setIsMobile(true);
     }
@@ -67,8 +61,6 @@ const App = memo(function App() {
             <Route index exact path="/truck-covers" element={<TruckCovers handleCardTitle={handleCardTitle} isMobile={isMobile} />} preventScrollReset={true} />
             <Route exact path="/truck-covers/gondola-calculator" element={<TruckGondolaCalculator isMobile={isMobile} offerTitle={offerTitle} />} preventScrollReset={true} />
             <Route exact path="/truck-covers/shutter-calculator" element={<TruckShuterCalculator isMobile={isMobile} offerTitle={offerTitle} />} preventScrollReset={true} />
-            {/* <Route exact path="/truck-covers/calculator" element={<UnderConstruction isMobile={isMobile}  />} preventScrollReset={true} /> */}
-            {/* <Route exact path="/windproof-curtains" element={<UnderConstruction isMobile={isMobile} />} preventScrollReset={true} /> */}
             <Route exact path="/windproof-curtains" element={<WindproofCurtains isMobile={isMobile} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />} preventScrollReset={true} />
             <Route exact path="/awnings-and-shades" element={<AwningsAndShades isMobile={isMobile} />} preventScrollReset={true} />
             <Route exact path="/covers-for-fishponds-and-lagoons" element={<CoversForFishpondsAndLagoons isMobile={isMobile} />} />
@@ -79,11 +71,11 @@ const App = memo(function App() {
             <Route exact path="/linings-and-covers" element={<LiningsAndCovers isMobile={isMobile} preventScrollReset={true} />} />
             <Route exact path="/cover-for-wagons" element={<WagonCovers isMobile={isMobile} preventScrollReset={true} />} />
             <Route exact path="/contact" element={<Contact isMobile={isMobile} preventScrollReset={true} />} />
-            <Route exact path="/about-me" element={<AboutMe isMobile={isMobile} preventScrollReset={true} />} />
-            <Route exact path="/register" element={<Register isMobile={isMobile} preventScrollReset={true} />} />
-            <Route exact path="/login" element={<Login isMobile={isMobile} preventScrollReset={true} />} />
-            <Route exact path="/admin-panel" element={<Administration isMobile={isMobile} preventScrollReset={true} />} />
+            {/* {!isAuthenticated && <Route exact path="/login" element={<Login isMobile={isMobile} preventScrollReset={true} />} />} */}
+            <Route exact path="/admin-panel/:id" element={<Administration isMobile={isMobile} preventScrollReset={true} />} />
             <Route path="/not-found" element={<NotFound isMobile={isMobile} preventScrollReset={true} />} />
+            {/* <Route exact path="/register" element={<Register isMobile={isMobile} preventScrollReset={true} />} /> */}
+            {/* <Route exact path="/some-route" element={<UnderConstruction isMobile={isMobile} />} preventScrollReset={true} /> */}
             <Route path="*" element={<Navigate to="/not-found" />} />
           </Routes>
         </main>

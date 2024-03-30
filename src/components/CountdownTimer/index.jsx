@@ -6,7 +6,7 @@ const CountdownTimer = ({ targetDate, handleLogout }) => {
   const [minutes, seconds] = useCountdown(targetDate)
 
   if (minutes + seconds <= 0) {
-    // handleLogout();
+    handleLogout();
   } else {
     return (
       <ShowCounter

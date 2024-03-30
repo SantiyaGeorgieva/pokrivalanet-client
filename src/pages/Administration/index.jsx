@@ -1,52 +1,33 @@
-import { Button, Alert } from "reactstrap";
-import { useNavigate } from "react-router";
+import { Button } from "reactstrap";
+import { useSelector } from "react-redux";
 import PageTitle from "../../components/PageTitle";
-import { endpoints, linkUrl } from "../../utils";
 import Hr from "../../components/Hr";
 import AdminPanelImage from "../../images/admin-panel.png";
-
-import CountdownTimer from "../../components/CountdownTimer";
 import ResizableLayout from "../../components/ResizableLayout";
+import CountdownTimer from "../../components/CountdownTimer";
+import Message from "../../components/Message";
 
 import "./administration.scss";
+import { authService } from "../../services/authService";
 
-const Administration = ({ hideMain, isMobile, username, targetDate, message }) => {
+const Administration = ({ hideMain, isMobile, message }) => {
   PageTitle("Админ панел | Покривала НЕТ");
+  
+  const { user } = useSelector((state) => state.auth);
 
-  console.log("message", message);
-
-  const navigate = useNavigate();
+  console.log('user', user);
 
   const handleLogout = async () => {
-    const response = await fetch(`${linkUrl()}${endpoints.logout}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      responseType: "json",
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-        console.log("responseData", responseData);
-        // browser.cookies.remove('access_token');
-        localStorage.clear();
-        navigate("/login");
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
-
-    return response;
+    authService.logout();
   };
 
   return (
     <>
       {!hideMain && (
         <>
-          {message && <Alert fade>{message}</Alert>}
+          {message?.length > 0 && <Message text={message} />}
           <div className="jumbotron mt-4 me-4">
-            <h1 className="display-6">Здравей, {username}</h1>
+            <h1 className="display-6">Здравей, {user.username}</h1>
             <p className="fs-6 mb-0">
               Добре дошъл в администраторския панел на pokrivala.net.
             </p>
@@ -58,7 +39,7 @@ const Administration = ({ hideMain, isMobile, username, targetDate, message }) =
               <hr className="w-96 my-4" />
             </div>
             <CountdownTimer
-              targetDate={targetDate}
+              targetDate={user.expirationTime}
               handleLogout={handleLogout}
             />
             <p className="fs-12 mb-0">

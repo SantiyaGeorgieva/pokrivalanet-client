@@ -4,7 +4,7 @@ import { Button, Col, FormFeedback, FormGroup, Input, Label, Row, Form } from "r
 import Hr from "../../../components/Hr";
 import PageTitle from "../../../components/PageTitle";
 import AdminPanelImage from '../../../images/admin-panel.png';
-import { linkUrl } from "../../../utils";
+import { endpoints, linkUrl } from "../../../utils";
 
 import './register.scss';
 
@@ -15,9 +15,9 @@ function Register({ hideMain, isMobile }) {
   const [hasPasswordError, setPasswordError] = useState(false);
   let navigate = useNavigate();
 
-  PageTitle('Регистрация в администраторски панел | Покривала НЕТ');
+  PageTitle('Регистрация в админ панел | Покривала НЕТ');
 
-  const handleSubmit = async (e) => {
+  const register = async (e) => {
     e.preventDefault();
 
     if (username === '') {
@@ -32,9 +32,7 @@ function Register({ hideMain, isMobile }) {
       setPasswordError(false);
     }
 
-    console.log('username, password', username, password);
-
-    const response = await fetch(`${linkUrl()}/register`, {
+    const response = await fetch(`${linkUrl()}${endpoints.register}`, {
       method: "POST",
       body: JSON.stringify({ username: username, password: password }),
       headers: {
@@ -44,18 +42,14 @@ function Register({ hideMain, isMobile }) {
       // responseType: 'json'
     }).then((response) => response.json())
       .then((responseData) => {
-        console.log('responseData', responseData);
-        if (responseData.statusCode === '200') {
+        if (responseData.success === true) {
           setUsername('');
           setPassword('');
-          navigate.push("/login");
-        } else if (responseData.statusCode !== '200') {
+          navigate("/login");
+        } else {
           console.log("Message failed to send.", response.json())
         }
       });
-
-    console.log('response', response.json());
-    return response.json();
   }
 
   return <>{!hideMain &&
@@ -63,12 +57,14 @@ function Register({ hideMain, isMobile }) {
       <>
         <Row>
           <Col>
-            <h6 className={`${isMobile ? 'mb-3' : 'mb-5'}`}>Моля, въведете вашите данни за регистрация в администраторския панел</h6>
+            <h6 className={`${isMobile ? 'mb-3' : 'mb-5'}`}>
+              Моля, въведете вашите данни за регистрация в админ панела
+            </h6>
           </Col>
         </Row>
         <Row className={`d-flex align-items-center justify-content-center ${isMobile ? 'mb-5' : ''}`}>
           <Col md="4">
-            <Form onSubmit={(e) => handleSubmit(e)} method="POST">
+            <Form onSubmit={register} method="POST">
               <FormGroup className="text-start mb-2">
                 <Label for="username">Потребителско име</Label>
                 <Input type="text" name="username" onChange={e => setUsername(e.target.value)} value={username} invalid={hasUsernameError} />
@@ -83,7 +79,7 @@ function Register({ hideMain, isMobile }) {
                 <Button
                   type="submit"
                   className={`bc-dark-blue ${isMobile ? 'btn-sm me-3' : ''}`}
-                  onClick={() => handleSubmit}>Регистрация
+                  onClick={register}>Регистрация
                 </Button>
               </div>
             </Form>

@@ -182,12 +182,12 @@ const TruckCoversPanelForm = ({ isMobile }) => {
       && !hasRatchetCoverError && !hasSimpleTrailerCoverError) {
       const values = [
         {
-          shade_ceiling: shade_ceiling,
-          semi_trailer: semi_trailer,
-          semi_trailer_with_covers: semi_trailer_with_covers,
-          semi_trailer_three_way: semi_trailer_three_way,
-          ratchet_cover: ratchet_cover,
-          simple_trailer_cover: simple_trailer_cover
+          shade_ceiling: shade_ceiling.replaceAll(/,/g, ""),
+          semi_trailer: semi_trailer.replaceAll(/,/g, ""),
+          semi_trailer_with_covers: semi_trailer_with_covers.replaceAll(/,/g, ""),
+          semi_trailer_three_way: semi_trailer_three_way.replaceAll(/,/g, ""),
+          ratchet_cover: ratchet_cover.replaceAll(/,/g, ""),
+          simple_trailer_cover: simple_trailer_cover.replaceAll(/,/g, "")
         }
       ];
 

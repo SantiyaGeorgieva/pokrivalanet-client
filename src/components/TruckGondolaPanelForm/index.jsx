@@ -154,11 +154,11 @@ const TruckGondolaPanelForm = ({ isMobile }) => {
       && !hasTarpaulinPriceSecondError) {
       const values = [
         {
-          longitudinal_pocket_price: longitudinal_pocket_price,
-          fitting_price: fitting_price,
-          assembly_price: assembly_price,
-          tarpaulin_price_1: tarpaulin_price_1,
-          tarpaulin_price_2: tarpaulin_price_2
+          longitudinal_pocket_price: longitudinal_pocket_price.replaceAll(/,/g, ""),
+          fitting_price: fitting_price.replaceAll(/,/g, ""),
+          assembly_price: assembly_price.replaceAll(/,/g, ""),
+          tarpaulin_price_1: tarpaulin_price_1.replaceAll(/,/g, ""),
+          tarpaulin_price_2: tarpaulin_price_2.replaceAll(/,/g, "")
         }
       ];
 

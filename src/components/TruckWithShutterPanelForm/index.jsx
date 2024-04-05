@@ -44,7 +44,7 @@ const TruckWithShutterPanelForm = ({ isMobile }) => {
       setPriceError(true);
     } else {
       setPriceError(false);
-      fetchEditPrice(`${endpoints.truckWithShutterEditPriceUrl}`, 1,'with', price);
+      fetchEditPrice(`${endpoints.truckWithShutterEditPriceUrl}`, 1,'with', price.replaceAll(/,/g, ""));
       setPricedFetch({id: 1, with_shutter_price: price});
       setPrice({id: 1, with_shutter_price: price});
       handleMode();

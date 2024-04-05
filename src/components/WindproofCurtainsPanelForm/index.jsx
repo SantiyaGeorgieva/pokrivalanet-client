@@ -247,15 +247,15 @@ const WindproofCurtainsPanelForm = ({ isMobile }) => {
       && !hasZipPriceError && !hasKnobsPriceError && !hasCurtainPriceError) {
       const values = [
         {
-          price_thick_1: price_thick_1,
-          price_thick_2: price_thick_2,
-          price_plastic_knobs: price_plastic_knobs,
-          price_metal_knobs: price_metal_knobs,
-          price_strap_plates: price_strap_plates,
-          price_pockets: price_pockets,
-          price_zip: price_zip,
-          price_knobs: price_knobs,
-          price_curtain: price_curtain
+          price_thick_1: price_thick_1.replaceAll(/,/g, ""),
+          price_thick_2: price_thick_2.replaceAll(/,/g, ""),
+          price_plastic_knobs: price_plastic_knobs.replaceAll(/,/g, ""),
+          price_metal_knobs: price_metal_knobs.replaceAll(/,/g, ""),
+          price_strap_plates: price_strap_plates.replaceAll(/,/g, ""),
+          price_pockets: price_pockets.replaceAll(/,/g, ""),
+          price_zip: price_zip.replaceAll(/,/g, ""),
+          price_knobs: price_knobs.replaceAll(/,/g, ""),
+          price_curtain: price_curtain.replaceAll(/,/g, "")
         }
       ];
 

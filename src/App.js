@@ -1,11 +1,12 @@
 import React, { Suspense, memo, useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router';
+import { Navigate, Route, Routes, useNavigate } from 'react-router';
+import { useSelector } from 'react-redux';
 import CookieConsent from 'react-cookie-consent';
 import { useTranslation } from 'react-i18next';
 import './i18n';
+import { endpoints, linkUrl } from './utils';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Home from './pages/Home';
 import TruckCovers from './pages/TruckCovers';
 import TruckGondolaCalculator from './pages/TruckGondolaCalculator';
 import TruckShuterCalculator from './pages/TruckShuterCalculator';
@@ -20,30 +21,64 @@ import LiningsAndCovers from './pages/LiningsAndCovers';
 import WagonCovers from './pages/WagonCovers';
 import Contact from './pages/Contact';
 import Administration from './pages/Administration';
+import Login from './pages/Administration/Login';
 import NotFound from './pages/NotFound';
+// import Home from './pages/Home';
 // import Register from './pages/Administration/Register';
 // import UnderConstruction from './pages/UnderConstruction';
 
 import 'react-day-picker/dist/style.css';
 import './App.css';
+import { store } from './store';
+import { refresh } from './reducers/authSlice';
 
 const App = memo(function App() {
   const [isMobile, setIsMobile] = useState(false);
   const [offerTitle, setOfferTitle] = useState('');
   const [selectedItem, setSelectedItem] = useState(localStorage.getItem("i18nextLng"));
   const { t } = useTranslation();
-  const { pathname } = useLocation();
   const navigate = useNavigate();
+  const [message, setMessage] = useState("");
+  const [visible, setVisible] = useState(false);
+  const [error, setError] = useState(false);
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  let { user } = useSelector((state) => state.auth);
+  user = user ?? ({ username: localStorage.getItem("username"), expirationTime: localStorage.getItem("expirationTime")});
 
   useEffect(() => {
     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
       setIsMobile(true);
     }
-
-    if (pathname === '/') {
-      navigate("/truck-covers", { replace: true });
-    }
   }, []);
+
+  useEffect(() => {
+    if (isAuthenticated) { 
+      navigate("/admin-panel/1");
+      setVisible(true);
+    } else if (!isAuthenticated && new Date().toISOString() < user?.expirationTime) {
+      store.dispatch(refresh());
+      fetch(`${linkUrl()}${endpoints.refresh}`, {
+        method: "GET",
+        cache: "no-cache",
+        pragma: "no-cache",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
+          "Access-Control-Allow-Credentials": true
+        },
+        responseType: "json",
+      });
+    } else {  
+      navigate("/login");
+      setVisible(true);
+    }
+
+    setTimeout(() => {
+      setVisible(false);
+    }, 2500);
+  }, [isAuthenticated]);
 
   const handleCardTitle = (e, title) => {
     setOfferTitle(title);
@@ -57,8 +92,8 @@ const App = memo(function App() {
         </header>
         <main role="main">
           <Routes>
-            <Route exact path="/" element={<Home isMobile={isMobile} />} />
-            <Route index exact path="/truck-covers" element={<TruckCovers handleCardTitle={handleCardTitle} isMobile={isMobile} />} preventScrollReset={true} />
+            {/* <Route exact path="/" element={<Home isMobile={isMobile} />} /> */}
+            <Route index exact path="/" element={<TruckCovers handleCardTitle={handleCardTitle} isMobile={isMobile} />} preventScrollReset={true} />
             <Route exact path="/truck-covers/gondola-calculator" element={<TruckGondolaCalculator isMobile={isMobile} offerTitle={offerTitle} />} preventScrollReset={true} />
             <Route exact path="/truck-covers/shutter-calculator" element={<TruckShuterCalculator isMobile={isMobile} offerTitle={offerTitle} />} preventScrollReset={true} />
             <Route exact path="/windproof-curtains" element={<WindproofCurtains isMobile={isMobile} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />} preventScrollReset={true} />
@@ -71,8 +106,8 @@ const App = memo(function App() {
             <Route exact path="/linings-and-covers" element={<LiningsAndCovers isMobile={isMobile} preventScrollReset={true} />} />
             <Route exact path="/cover-for-wagons" element={<WagonCovers isMobile={isMobile} preventScrollReset={true} />} />
             <Route exact path="/contact" element={<Contact isMobile={isMobile} preventScrollReset={true} />} />
-            {/* {!isAuthenticated && <Route exact path="/login" element={<Login isMobile={isMobile} preventScrollReset={true} />} />} */}
-            <Route exact path="/admin-panel/:id" element={<Administration isMobile={isMobile} preventScrollReset={true} />} />
+            {!isAuthenticated && <Route exact path="/login" element={<Login setError={setError} error={error} message={message} setVisible={setVisible} visible={visible} setMessage={setMessage} isMobile={isMobile} preventScrollReset={true} />} />}
+            {isAuthenticated && <Route exact path="/admin-panel/:id" element={<Administration message={message} setMessage={setMessage} setError={setError} visible={visible} isMobile={isMobile} preventScrollReset={true} />} />}
             <Route path="/not-found" element={<NotFound isMobile={isMobile} preventScrollReset={true} />} />
             {/* <Route exact path="/register" element={<Register isMobile={isMobile} preventScrollReset={true} />} /> */}
             {/* <Route exact path="/some-route" element={<UnderConstruction isMobile={isMobile} />} preventScrollReset={true} /> */}

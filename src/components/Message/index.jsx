@@ -9,7 +9,7 @@ function Message({ text, isVisible, onDismiss, error }) {
       toggle={onDismiss}
       className="mt-3"
       fade
-      transition={{ timeout: 1000 }}
+      transition={{ timeout: 500 }}
     >
       {text}
     </Alert>

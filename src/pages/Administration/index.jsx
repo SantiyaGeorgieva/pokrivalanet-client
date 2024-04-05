@@ -1,5 +1,6 @@
 import { Button } from "reactstrap";
 import { useSelector } from "react-redux";
+import { authService } from "../../services/authService";
 import PageTitle from "../../components/PageTitle";
 import Hr from "../../components/Hr";
 import AdminPanelImage from "../../images/admin-panel.png";
@@ -8,26 +9,25 @@ import CountdownTimer from "../../components/CountdownTimer";
 import Message from "../../components/Message";
 
 import "./administration.scss";
-import { authService } from "../../services/authService";
 
-const Administration = ({ hideMain, isMobile, message }) => {
+const Administration = ({ hideMain, isMobile, message, setMessage, setError, visible }) => {
   PageTitle("Админ панел | Покривала НЕТ");
   
-  const { user } = useSelector((state) => state.auth);
-
-  console.log('user', user);
+  let { user } = useSelector((state) => state.auth);
+  user = user ?? ({ username: localStorage.getItem("username"), expirationTime: localStorage.getItem("expirationTime")});
 
   const handleLogout = async () => {
-    authService.logout();
+    authService.logout(setMessage);
+    setError(false);
   };
 
   return (
     <>
       {!hideMain && (
         <>
-          {message?.length > 0 && <Message text={message} />}
+          {visible ? <Message text={message} isVisible={visible} /> : null}
           <div className="jumbotron mt-4 me-4">
-            <h1 className="display-6">Здравей, {user.username}</h1>
+            <h1 className="display-6">Здравей, {user?.username}</h1>
             <p className="fs-6 mb-0">
               Добре дошъл в администраторския панел на pokrivala.net.
             </p>
@@ -39,7 +39,7 @@ const Administration = ({ hideMain, isMobile, message }) => {
               <hr className="w-96 my-4" />
             </div>
             <CountdownTimer
-              targetDate={user.expirationTime}
+              targetDate={user?.expirationTime}
               handleLogout={handleLogout}
             />
             <p className="fs-12 mb-0">

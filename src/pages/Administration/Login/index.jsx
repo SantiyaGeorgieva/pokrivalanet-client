@@ -2,12 +2,13 @@ import { useState } from "react";
 import { Button, Col, FormFeedback, FormGroup, Input, Label, Row, Form } from "reactstrap";
 import { authService } from "../../../services/authService";
 import Hr from "../../../components/Hr";
+import Message from "../../../components/Message";
 import PageTitle from "../../../components/PageTitle";
 import AdminPanelImage from '../../../images/admin-panel.png';
 
 import './login.scss';
 
-const Login = ({ hideMain, message, isMobile }) => {
+const Login = ({ hideMain, setError, setVisible, setMessage, error, message, visible, isMobile }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [hasUsernameError, setUsernameError] = useState(false);
@@ -31,14 +32,20 @@ const Login = ({ hideMain, message, isMobile }) => {
     }
 
     try {
-      let loginData = { username, password }
-      authService.login(loginData);
+      let loginData = { username, password };
+      await authService.login(loginData, setMessage);
     } catch (error) {
-      console.log('error', error);
+      setError(true);
+      setVisible(true);
+      setTimeout(() => {
+        setVisible(false);
+      }, 2500); 
     }
   };
 
-  return <>{!hideMain &&
+  return <>
+    {visible && message.length > 0 ? <Message error={error} text={message} isVisible={visible} /> : null}
+    {!hideMain &&
     <div className={`container ${isMobile ? '' : 'my-4'}`}>
       <Row>
         {isMobile ? <Col>

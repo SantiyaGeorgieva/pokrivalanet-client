@@ -1,5 +1,4 @@
 const dates = require("date-fns/locale");
-// const axios = require("axios");
 const { bg, ro, enGB } = dates;
 
 const scrollToTop = () => {
@@ -14,7 +13,7 @@ const removeSpaces = (string) => {
 };
 
 const validateNumbersInput = (e) => {
-  const keyCodeArray = [46, 8, 9, 27, 13, 110, 188, 190];
+  const keyCodeArray = [46, 8, 9, 27, 13, 110, 190, 37, 39];
   if (keyCodeArray.indexOf(e.keyCode) !== -1) {
     return;
   }
@@ -59,6 +58,7 @@ const endpoints = {
   verifyTokenUrl: "/api/verify-token",
   contactUrl: "/api/contact",
   login: "/api/auth/login",
+  refresh: "/api/auth/refresh",
   logout: "/api/auth/logout",
 };
 
@@ -103,6 +103,6 @@ module.exports = {
   endpoints,
   getLocale,
   getDateLocale,
-  validateNumbersInput
+  validateNumbersInput,
   // privateAxios
 };

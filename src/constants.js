@@ -99,11 +99,11 @@ import TruckWithoutShutterPanelForm from "./components/TruckWithoutShutterPanelF
 
 export const links = [
   // {
-  //   to: '/',
+  //   to: '/truck-covers',
   //   name: 'home_link'
   // },
   {
-    to: "/truck-covers",
+    to: "/",
     name: "truck_cover_link",
   },
   {

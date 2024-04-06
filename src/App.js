@@ -1,36 +1,40 @@
-import React, { Suspense, memo, useEffect, useState } from 'react';
+import React, { Suspense, lazy, memo, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useNavigate } from 'react-router';
 import { useSelector } from 'react-redux';
 import CookieConsent from 'react-cookie-consent';
 import { useTranslation } from 'react-i18next';
+import { Spinner } from "reactstrap";
 import './i18n';
 import { endpoints, linkUrl } from './utils';
+import { store } from './store';
+import { refresh } from './reducers/authSlice';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import TruckCovers from './pages/TruckCovers';
-import TruckGondolaCalculator from './pages/TruckGondolaCalculator';
-import TruckShuterCalculator from './pages/TruckShuterCalculator';
-import AwningsAndShades from './pages/AwningsAndShades';
-import WindproofCurtains from './pages/WindproofCurtains';
-import IndustrialProducts from './pages/IndustrialProducts';
-import CoversForFishpondsAndLagoons from './pages/CoversForFishpondsAndLagoons';
-import CurtainsCowFarms from './pages/CurtainsCowFarms';
-import PrefabricatedТents from './pages/PrefabricatedТents';
-import LargeCovers from './pages/LargeCovers';
-import LiningsAndCovers from './pages/LiningsAndCovers';
-import WagonCovers from './pages/WagonCovers';
-import Contact from './pages/Contact';
-import Administration from './pages/Administration';
-import Login from './pages/Administration/Login';
-import NotFound from './pages/NotFound';
+// import TruckCovers from './pages/TruckCovers';
+
 // import Home from './pages/Home';
 // import Register from './pages/Administration/Register';
 // import UnderConstruction from './pages/UnderConstruction';
 
 import 'react-day-picker/dist/style.css';
 import './App.css';
-import { store } from './store';
-import { refresh } from './reducers/authSlice';
+
+const TruckCovers = lazy(() => import('./pages/TruckCovers'));
+const TruckGondolaCalculator = lazy(() => import('./pages/TruckGondolaCalculator'));
+const TruckShuterCalculator = lazy(() => import('./pages/TruckShuterCalculator'));
+const AwningsAndShades = lazy(() => import('./pages/AwningsAndShades'));
+const WindproofCurtains = lazy(() => import('./pages/WindproofCurtains'));
+const IndustrialProducts = lazy(() => import('./pages/IndustrialProducts'));
+const CoversForFishpondsAndLagoons = lazy(() => import('./pages/CoversForFishpondsAndLagoons'));
+const CurtainsCowFarms = lazy(() => import('./pages/CurtainsCowFarms'));
+const PrefabricatedТents = lazy(() => import('./pages/PrefabricatedТents'));
+const LargeCovers = lazy(() => import('./pages/LargeCovers'));
+const LiningsAndCovers = lazy(() => import('./pages/LiningsAndCovers'));
+const WagonCovers = lazy(() => import('./pages/WagonCovers'));
+const Contact = lazy(() => import('./pages/Contact'));
+const Administration = lazy(() => import('./pages/Administration'));
+const Login = lazy(() => import('./pages/Administration/Login'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 const App = memo(function App() {
   const [isMobile, setIsMobile] = useState(false);
@@ -86,7 +90,7 @@ const App = memo(function App() {
 
   return (
     <div className="app">
-      <Suspense fallback={null}>
+      <Suspense fallback={<Spinner style={{ height: '4rem', width: '4rem',  position: 'fixed', top: '50%', left: '50%', transform: 'translateY(-50%, -50%)', overflow: 'none' }} />}>
         <header className="top-navbar">
           <Header isMobile={isMobile} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
         </header>

@@ -3,6 +3,7 @@ body {
 }
 
 .app {
+  position: relative;
   text-align: center;
   font-family: 'Roboto', sans-serif;
   overflow-x: hidden !important;

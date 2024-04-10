@@ -14,6 +14,7 @@ import {
 } from "reactstrap";
 import { PDFDownloadLink, pdf, BlobProvider } from "@react-pdf/renderer";
 import { useTranslation } from "react-i18next";
+import { PhoneInput } from 'react-international-phone';
 import { DayPicker } from "react-day-picker";
 import PageTitle from "../../components/PageTitle";
 import Offer from "../../components/offers/Offer";
@@ -29,6 +30,9 @@ import useKeysValidation from "../../hooks/validators/useKeysValidation";
 import StraniciShtoraSkapaciKomplektOtDve from "../../images/pokrivala_za_kamioni/248156970_4411504175607542_8164656237683932178_n.jpg";
 import ShtoraBezKapaciKomlektOtDve from "../../images/pokrivala_za_kamioni/66785853_1766036520166145_1529046337771798528_n.jpg";
 import { endpoints, getDateLocale, getLocale } from "../../utils";
+
+import 'react-international-phone/style.css';
+import 'react-day-picker/dist/style.css';
 
 import "./truckShuterCalculator.scss";
 
@@ -109,9 +113,9 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
   const location = useLocation();
   const [error, setError] = useState(false);
 
-  const { namesValue, isValidNames, validateNames } = useNamesValidation();
-  const { emailValue, isValidEmail, validateEmail } = useEmailValidation();
-  const { phoneNumber, isValidPhoneNumber, validatePhoneNumber } = usePhoneValidation();
+  const { isValidNames, validateNames } = useNamesValidation();
+  const { isValidEmail, validateEmail } = useEmailValidation();
+  const { isValidPhoneNumber, validatePhoneNumber } = usePhoneValidation();
   const { handleKeysInput } = useKeysValidation();
 
   const {
@@ -189,6 +193,45 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
     setShowDatePicker(false);
   };
 
+  useEffect(() => {
+    if (names === "" && !isValidNames) {
+      setNamesError(true);
+      setNamesValidationError(false);
+    } else if (names !== '' && isValidNames) {
+      setNamesError(false);
+      setNamesValidationError(false);
+    } else if (names !== '' && !isValidNames) {
+      setNamesError(false);
+      setNamesValidationError(true);
+    }
+  }, [names]);
+
+  useEffect(() => {
+    if (email === "" && !isValidEmail) {
+      setEmailError(true);
+      setEmailValidationError(false);
+    } else if (email !== '' && isValidEmail) {
+      setEmailError(false);
+      setEmailValidationError(false);
+    } else if (email !== '' && !isValidEmail) {
+      setEmailError(false);
+      setEmailValidationError(true);
+    }
+  }, [email]);
+
+  useEffect(() => {
+    if (telephone === "" && !isValidPhoneNumber) {
+      setTelephoneError(true);
+      setTelephoneValidationError(false);
+    } else if (telephone !== '' && isValidPhoneNumber) {
+      setTelephoneError(false);
+      setTelephoneValidationError(false);
+    } else if (telephone !== '' && !isValidPhoneNumber) {
+      setTelephoneError(false);
+      setTelephoneValidationError(true);
+    }
+  }, [telephone]);
+
   const handleDayClick = (day) => {
     setShowDatePicker(!showDatePicker);
     setSelectedDate(day);
@@ -249,7 +292,7 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
       setEmailError(true);
     }
 
-    if (telephoneInputRef.current && telephoneInputRef.current.value === "") {
+    if (telephoneInputRef?.current && telephoneInputRef?.current?.value.length < 14) {
       setTelephoneError(true);
     }
 
@@ -262,7 +305,12 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
       return;
     }
 
-    if (!hasNamesValidationError && !hasEmailValidationError && !hasTelephoneValidationError && !hasLengthError && !hasDateManufactureError) {
+    if (
+      !hasNamesError && !hasNamesValidationError
+      && !hasEmailError && !hasEmailValidationError 
+      && !hasTelephoneError && !hasTelephoneValidationError 
+      && !hasLengthError && !hasDateManufactureError
+    ) {
       const values = [
         {
           names: names,
@@ -297,56 +345,41 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
   };
 
   const handleNamesInput = (e) => {
-    validateNames(e.target.value);
+    e?.target?.value && validateNames(e.target.value);
 
     if (e.target.value === "") {
-      setNames("");
       setNamesError(true);
-      setNamesValidationError(false);
+      setNames("");
     } else if (isValidNames) {
       setNames(e.target.value);
-      setNamesError(false);
-      setNamesValidationError(false);
     } else {
       setNames(e.target.value);
-      setNamesError(false);
-      setNamesValidationError(true);
     }
   };
 
   const handleEmailInput = (e) => {
-    validateEmail(e.target.value);
+    e?.target?.value && validateEmail(e?.target?.value);
 
-    if (e.target.value === "") {
-      setEmail("");
+    if (e?.target?.value === "") {
       setEmailError(true);
-      setEmailValidationError(false);
-    } else if (isValidEmail) {
-      setEmailError(false);
-      setEmailValidationError(false);
+      setEmail("");
+    } else if (e?.target?.value && isValidEmail) {
       setEmail(e.target.value);
-    } else {
+    } else if (e?.target?.value && !isValidEmail) {
       setEmail(e.target.value);
-      setEmailError(false);
-      setEmailValidationError(true);
     }
   };
 
   const handleTelephoneInput = (e) => {
-    validatePhoneNumber(e.target.value);
+    e?.target?.value && validatePhoneNumber(e?.target?.value);
 
-    if (e.target.value === "") {
-      setTelephone("");
+    if (e?.target?.value === "") {
       setTelephoneError(true);
-      setTelephoneValidationError(false);
-    } else if (isValidPhoneNumber) {
-      setTelephoneError(false);
-      setTelephoneValidationError(false);
+      setTelephone("");
+    } else if (e?.target?.value && isValidPhoneNumber) {
       setTelephone(e.target.value);
-    } else {
+    } else if (e?.target?.value && !isValidPhoneNumber) {
       setTelephone(e.target.value);
-      setTelephoneError(false);
-      setTelephoneValidationError(true);
     }
   };
 
@@ -436,15 +469,19 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
                   <Row>
                     <Col md="6">
                       <FormGroup className="text-start mb-2">
-                        <Label className="fw-bold" for="telephone">{t('telephone')}</Label>
-                        <Input
-                          type="text"
+                        <Label for="telephone" className={`fw-bold ${hasTelephoneError || hasTelephoneValidationError ? 'is-invalid' : ''}`}>
+                          {t('telephone')}
+                        </Label>
+                        <PhoneInput
+                          defaultCountry="bg"
                           name="telephone"
-                          onBlur={e => handleTelephoneInput(e)}
-                          onChange={e => handleTelephoneInput(e)}
                           value={telephone}
-                          invalid={hasTelephoneError || hasTelephoneValidationError}
-                          innerRef={telephoneInputRef}
+                          buttonClassName="is-invalid"
+                          onChange= {(e) => handleTelephoneInput(e)}
+                          onBlur={(e) => handleTelephoneInput(e)}
+                          className={`${hasTelephoneError || hasTelephoneValidationError ? 'is-invalid' : ''}`}
+                          inputClassName={`form-control ${hasTelephoneError || hasTelephoneValidationError ? 'is-invalid' : ''}`}
+                          ref={telephoneInputRef}
                           disabled={calulatedButtonClicked}
                         />
                         {hasTelephoneError && <FormFeedback>{t('telephone_error')}</FormFeedback>}
@@ -488,6 +525,9 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
                         >
                           <Input
                             type="text"
+                            placeholder={t("date_placeholder_text")}
+                            name="dateManufacture"
+                            id="dateManufacture"
                             value={
                               selectedDate &&
                               selectedDate.toLocaleDateString(
@@ -496,10 +536,8 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
                                 )
                               )
                             }
+                            className={`form-control ${hasDateManufactureError ? 'is-invalid' : ''}`}
                             disabled={calulatedButtonClicked}
-                            id="dateManufacture"
-                            placeholder={t("date_placeholder_text")}
-                            name="dateManufacture"
                             onFocus={(e) => {
                               setShowDatePicker(!showDatePicker);
                             }}

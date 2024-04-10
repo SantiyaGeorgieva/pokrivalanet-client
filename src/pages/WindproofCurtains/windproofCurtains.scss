@@ -65,16 +65,3 @@ input[type="radio"]:checked {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-
-.datepicker {
-  &.error {
-    input[type="text"] {
-      border-color: rgb(220, 53, 69) !important;
-    }
-  }
-
-  .date-error {
-    font-size: 14px;
-    color: rgb(220, 53, 69);
-  }
-}

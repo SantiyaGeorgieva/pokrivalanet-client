@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 const useNamesValidation = () => {
   const [namesValue, setNamesValue] = useState('');
-  const [isValidNames, setIsValidNames] = useState(false);
+  const [isValidNames, setIsValidNames] = useState(true);
 
   const validateNames = (value) => {
     const nameRegex = /^(?!.*'[A-Za-z]+')\s*[A-Z]+(?:['-]?[a-z]+)*(?:\s*[a-z]*)*$/gi;

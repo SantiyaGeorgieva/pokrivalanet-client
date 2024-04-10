@@ -4,6 +4,7 @@ import { saveAs } from 'file-saver';
 import { Row, Col, Spinner, Button, Label, Form, FormGroup, FormFeedback, Input } from "reactstrap";
 import { BlobProvider, PDFDownloadLink, pdf } from "@react-pdf/renderer";
 import { useTranslation } from "react-i18next";
+import { PhoneInput } from 'react-international-phone';
 import { DayPicker } from 'react-day-picker';
 import PageTitle from "../../components/PageTitle";
 import Offer from "../../components/offers/Offer";
@@ -51,6 +52,9 @@ import {
   SET_TELEPHONE,
   CLEAR_TELEPHONE
 } from "../../actionTypes";
+
+import 'react-international-phone/style.css';
+import 'react-day-picker/dist/style.css';
 
 import './truckGondolaCalculator.scss';
 
@@ -215,6 +219,45 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
     }
   }, [file]);
 
+  useEffect(() => {
+    if (names === "" && !isValidNames) {
+      setNamesError(true);
+      setNamesValidationError(false);
+    } else if (names !== '' && isValidNames) {
+      setNamesError(false);
+      setNamesValidationError(false);
+    } else if (names !== '' && !isValidNames) {
+      setNamesError(false);
+      setNamesValidationError(true);
+    }
+  }, [names]);
+
+  useEffect(() => {
+    if (email === "" && !isValidEmail) {
+      setEmailError(true);
+      setEmailValidationError(false);
+    } else if (email !== '' && isValidEmail) {
+      setEmailError(false);
+      setEmailValidationError(false);
+    } else if (email !== '' && !isValidEmail) {
+      setEmailError(false);
+      setEmailValidationError(true);
+    }
+  }, [email]);
+
+  useEffect(() => {
+    if (telephone === "" && !isValidPhoneNumber) {
+      setTelephoneError(true);
+      setTelephoneValidationError(false);
+    } else if (telephone !== '' && isValidPhoneNumber) {
+      setTelephoneError(false);
+      setTelephoneValidationError(false);
+    } else if (telephone !== '' && !isValidPhoneNumber) {
+      setTelephoneError(false);
+      setTelephoneValidationError(true);
+    }
+  }, [telephone]);
+
   const hideDatePicker = () => {
     setShowDatePicker(false);
   };
@@ -227,56 +270,41 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
   };
 
   const handleNamesInput = (e) => {
-    validateNames(e.target.value);
+    e?.target?.value && validateNames(e.target.value);
 
     if (e.target.value === "") {
       setNamesError(true);
-      setNamesValidationError(false);
       dispatch({ type: CLEAR_NAMES, value: "" });
     } else if (isValidNames) {
-      setNamesError(false);
-      setNamesValidationError(false);
       dispatch({ type: SET_NAMES, value: e.target.value });
     } else {
-      setNamesError(false);
-      setNamesValidationError(true);
       dispatch({ type: SET_NAMES, value: e.target.value });
     }
   };
 
   const handleEmailInput = (e) => {
-    validateEmail(e.target.value);
+    e?.target?.value && validateEmail(e?.target?.value);
 
-    if (e.target.value === "") {
+    if (e?.target?.value === "") {
       setEmailError(true);
-      setEmailValidationError(false);
       dispatch({ type: CLEAR_EMAIL, value: "" });
-    } else if (isValidEmail) {
-      setEmailError(false);
-      setEmailValidationError(false);
+    } else if (e?.target?.value && isValidEmail) {
       dispatch({ type: SET_EMAIL, value: emailValue });
-    } else {
-      setEmailError(false);
-      setEmailValidationError(true);
+    } else if (e?.target?.value && !isValidEmail) {
       dispatch({ type: SET_EMAIL, value: e.target.value });
     }
   };
 
   const handleTelephoneInput = (e) => {
-    validatePhoneNumber(e.target.value);
+    e?.target?.value && validatePhoneNumber(e?.target?.value);
 
-    if (e.target.value === "") {
+    if (e?.target?.value === "") {
       setTelephoneError(true);
-      setTelephoneValidationError(false);
       dispatch({ type: CLEAR_TELEPHONE, value: "" });
-    } else if (isValidPhoneNumber) {
-      setTelephoneError(false);
-      setTelephoneValidationError(false);
-      dispatch({ type: SET_TELEPHONE, value: phoneNumber });
-    } else {
-      setTelephoneError(false);
-      setTelephoneValidationError(true);
-      dispatch({ type: SET_TELEPHONE, value: e.target.value });
+    } else if (e?.target?.value && isValidPhoneNumber) {
+      dispatch({ type: SET_TELEPHONE, value: e?.target?.value });
+    } else if (e?.target?.value && !isValidPhoneNumber) {
+      dispatch({ type: SET_TELEPHONE, value: e?.target?.value });
     }
   };
 
@@ -396,7 +424,7 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
       setEmailError(true);
     }
 
-    if (telephoneInputRef.current && telephoneInputRef.current.value === "") {
+    if (telephoneInputRef?.current && telephoneInputRef?.current?.value.length < 14) {
       setTelephoneError(true);
     }
 
@@ -569,15 +597,18 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
                 <Row>
                   <Col md="6">
                     <FormGroup className="text-start mb-2">
-                      <Label className="fw-bold" for="telephone">{t('telephone')}</Label>
-                      <Input 
-                        type="text" 
-                        name="telephone" 
-                        value={telephone} 
-                        onBlur={e => handleTelephoneInput(e)} 
-                        onChange={e => handleTelephoneInput(e)} 
-                        invalid={hasTelephoneError || hasTelephoneValidationError} 
-                        innerRef={telephoneInputRef} 
+                      <Label for="telephone" className={`fw-bold ${hasTelephoneError || hasTelephoneValidationError ? 'is-invalid' : ''}`}>
+                        {t('telephone')}
+                      </Label>
+                      <PhoneInput
+                        defaultCountry="bg"
+                        name="telephone"
+                        value={telephone}
+                        onChange= {(e) => handleTelephoneInput(e)}
+                        onBlur={(e) => handleTelephoneInput(e)}
+                        className={`${hasTelephoneError || hasTelephoneValidationError ? 'is-invalid' : ''}`}
+                        inputClassName={`form-control ${hasTelephoneError || hasTelephoneValidationError ? 'is-invalid' : ''}`}
+                        ref={telephoneInputRef}
                         disabled={calulatedButtonClicked}
                       />
                       {hasTelephoneError && <FormFeedback>{t('telephone_error')}</FormFeedback>}
@@ -810,6 +841,9 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
                       <div className={`datepicker ${hasDateManufactureError ? "error" : ""}`}>
                         <Input
                           type="text"
+                          id="dateManufacture"
+                          name="dateManufacture"
+                          placeholder={t("date_placeholder_text")}
                           value={
                             dateManufacture &&
                             dateManufacture.toLocaleDateString(
@@ -818,10 +852,8 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
                               )
                             )
                           }
+                          className={`form-control ${hasDateManufactureError ? 'is-invalid' : ''}`}
                           disabled={calulatedButtonClicked}
-                          id="dateManufacture"
-                          placeholder={t("date_placeholder_text")}
-                          name="dateManufacture"
                           onFocus={(e) => {
                             setShowDatePicker(!showDatePicker);
                           }}

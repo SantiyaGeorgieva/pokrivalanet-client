@@ -4,6 +4,7 @@ import { BlobProvider, PDFDownloadLink, pdf } from "@react-pdf/renderer";
 import { Row, Col, Form, FormFeedback, FormGroup, Input, Label, Button, Spinner } from "reactstrap";
 import { useLocation } from "react-router";
 import { useTranslation } from "react-i18next";
+import { PhoneInput } from 'react-international-phone';
 import { DayPicker } from 'react-day-picker';
 import Gallery from "../../components/Gallery";
 import Hr from "../../components/Hr";
@@ -51,9 +52,10 @@ import {
   SET_ZIPSCHECK
 } from "../../actionTypes";
 
-import './windproofCurtains.scss';
-
+import 'react-international-phone/style.css';
 import 'react-day-picker/dist/style.css';
+
+import './windproofCurtains.scss';
 
 const css = `
 .my-selected:not([disabled]) { 
@@ -77,7 +79,6 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
   const [selectedDate, setSelectedDate] = useState(null);
   const lastMonth = new Date();
   const [showDatePicker, setShowDatePicker] = useState(false);
-
   const wrapperRef = useRef(null);
 
   const useOutsideAlerter = (ref) => {
@@ -97,8 +98,24 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
   useOutsideAlerter(wrapperRef);
   const [items, dispatchItems] = useReducer(windproofCurtainsCalculatorReducer, []);
   const [state, dispatch] = useReducer(windproofCurtainsCalculatorReducer, initialState);
+  const {
+    names,
+    email,
+    telephone,
+    width,
+    height,
+    thick,
+    edge,
+    description,
+    dateManufacture,
+    radioCheck,
+    zipsCheck,
+    lowerApronCheck,
+    pipePocketCheck,
+    knobsCheck,
+    curtainHaveDoorCheck
+  } = state;
 
-  const { names, email, telephone, width, height, thick, edge, description, dateManufacture, radioCheck, zipsCheck, lowerApronCheck, pipePocketCheck, knobsCheck, curtainHaveDoorCheck } = state;
   const [titlePage, setTitlePage] = useState(localStorage.getItem('offerTitle'));
   const [error, setError] = useState(false);
 
@@ -150,7 +167,7 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
 
   const { namesValue, isValidNames, validateNames } = useNamesValidation();
   const { emailValue, isValidEmail, validateEmail } = useEmailValidation();
-  const { phoneNumber, isValidPhoneNumber, validatePhoneNumber } = usePhoneValidation();
+  const { isValidPhoneNumber, validatePhoneNumber } = usePhoneValidation();
   const { handleKeysInput } = useKeysValidation();
 
   useEffect(() => {
@@ -208,6 +225,45 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
     }
   }, [file]);
 
+  useEffect(() => {
+    if (names === "" && !isValidNames) {
+      setNamesError(true);
+      setNamesValidationError(false);
+    } else if (names !== '' && isValidNames) {
+      setNamesError(false);
+      setNamesValidationError(false);
+    } else if (names !== '' && !isValidNames) {
+      setNamesError(false);
+      setNamesValidationError(true);
+    }
+  }, [names]);
+
+  useEffect(() => {
+    if (email === "" && !isValidEmail) {
+      setEmailError(true);
+      setEmailValidationError(false);
+    } else if (email !== '' && isValidEmail) {
+      setEmailError(false);
+      setEmailValidationError(false);
+    } else if (email !== '' && !isValidEmail) {
+      setEmailError(false);
+      setEmailValidationError(true);
+    }
+  }, [email]);
+
+  useEffect(() => {
+    if (telephone === "" && !isValidPhoneNumber) {
+      setTelephoneError(true);
+      setTelephoneValidationError(false);
+    } else if (telephone !== '' && isValidPhoneNumber) {
+      setTelephoneError(false);
+      setTelephoneValidationError(false);
+    } else if (telephone !== '' && !isValidPhoneNumber) {
+      setTelephoneError(false);
+      setTelephoneValidationError(true);
+    }
+  }, [telephone]);
+
   const hideDatePicker = () => {
     setShowDatePicker(false);
   };
@@ -236,56 +292,41 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
   }
 
   const handleNamesInput = (e) => {
-    validateNames(e.target.value);
+    e?.target?.value && validateNames(e.target.value);
 
     if (e.target.value === "") {
       setNamesError(true);
-      setNamesValidationError(false);
       dispatch({ type: CLEAR_NAMES, value: "" });
     } else if (isValidNames) {
-      setNamesError(false);
-      setNamesValidationError(false);
       dispatch({ type: SET_NAMES, value: e.target.value });
     } else {
-      setNamesError(false);
-      setNamesValidationError(true);
       dispatch({ type: SET_NAMES, value: e.target.value });
     }
   };
 
   const handleEmailInput = (e) => {
-    validateEmail(e.target.value);
+    e?.target?.value && validateEmail(e?.target?.value);
 
-    if (e.target.value === "") {
+    if (e?.target?.value === "") {
       setEmailError(true);
-      setEmailValidationError(false);
       dispatch({ type: CLEAR_EMAIL, value: "" });
-    } else if (isValidEmail) {
-      setEmailError(false);
-      setEmailValidationError(false);
+    } else if (e?.target?.value && isValidEmail) {
       dispatch({ type: SET_EMAIL, value: emailValue });
-    } else {
-      setEmailError(false);
-      setEmailValidationError(true);
+    } else if (e?.target?.value && !isValidEmail) {
       dispatch({ type: SET_EMAIL, value: e.target.value });
     }
   };
 
   const handleTelephoneInput = (e) => {
-    validatePhoneNumber(e.target.value);
+    e?.target?.value && validatePhoneNumber(e?.target?.value);
 
-    if (e.target.value === "") {
+    if (e?.target?.value === "") {
       setTelephoneError(true);
-      setTelephoneValidationError(false);
       dispatch({ type: CLEAR_TELEPHONE, value: "" });
-    } else if (isValidPhoneNumber) {
-      setTelephoneError(false);
-      setTelephoneValidationError(false);
-      dispatch({ type: SET_TELEPHONE, value: phoneNumber });
-    } else {
-      setTelephoneError(false);
-      setTelephoneValidationError(true);
-      dispatch({ type: SET_TELEPHONE, value: e.target.value });
+    } else if (e?.target?.value && isValidPhoneNumber) {
+      dispatch({ type: SET_TELEPHONE, value: e?.target?.value });
+    } else if (e?.target?.value && !isValidPhoneNumber) {
+      dispatch({ type: SET_TELEPHONE, value: e?.target?.value });
     }
   };
 
@@ -392,7 +433,7 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
       setEmailError(true);
     }
 
-    if (telephoneInputRef.current && telephoneInputRef.current.value === "") {
+    if (telephoneInputRef?.current && telephoneInputRef?.current?.value.length < 14) {
       setTelephoneError(true);
     }
 
@@ -413,10 +454,11 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
       return;
     }
 
-    if (!hasNamesValidationError && !hasEmailValidationError
-      && !hasTelephoneValidationError && !hasWidthError
-      && !hasHeightError && !hasEdgeError
-      && !hasDateManufactureError) {
+    if (!hasNamesValidationError && !hasNamesValidationError
+      && hasEmailError && !hasEmailValidationError 
+      && !hasTelephoneError && !hasTelephoneValidationError 
+      && !hasWidthError && !hasHeightError 
+      && !hasEdgeError && !hasDateManufactureError) {
       const values = [
         {
           'names': names,
@@ -543,15 +585,18 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
               <Row>
                 <Col md="6">
                   <FormGroup className="text-start mb-2">
-                    <Label className="fw-bold" for="telephone">{t('telephone')}</Label>
-                    <Input
-                      type="text"
+                    <Label for="telephone" className={`fw-bold ${hasTelephoneError || hasTelephoneValidationError ? 'is-invalid' : ''}`}>
+                      {t('telephone')}
+                    </Label>
+                    <PhoneInput
+                      defaultCountry="bg"
                       name="telephone"
                       value={telephone}
-                      onBlur={e => handleTelephoneInput(e)}
-                      onChange={e => handleTelephoneInput(e)}
-                      invalid={hasTelephoneError || hasTelephoneValidationError}
-                      innerRef={telephoneInputRef}
+                      onChange= {(e) => handleTelephoneInput(e)}
+                      onBlur={(e) => handleTelephoneInput(e)}
+                      className={`${hasTelephoneError || hasTelephoneValidationError ? 'is-invalid' : ''}`}
+                      inputClassName={`form-control ${hasTelephoneError || hasTelephoneValidationError ? 'is-invalid' : ''}`}
+                      ref={telephoneInputRef}
                       disabled={calulatedButtonClicked}
                     />
                     {hasTelephoneError && <FormFeedback>{t('telephone_error')}</FormFeedback>}
@@ -781,15 +826,16 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
                     <div className={`datepicker ${hasDateManufactureError ? "error" : ""}`}>
                       <Input
                         type="text"
+                        id="dateManufacture"
+                        name="dateManufacture"
+                        placeholder={t("date_placeholder_text")}
                         value={
                           dateManufacture &&
                           dateManufacture.toLocaleDateString(
                             getDateLocale(localStorage.getItem("i18nextLng"))
-                          )}
+                        )}
+                        className={`form-control ${hasDateManufactureError ? 'is-invalid' : ''}`}
                         disabled={calulatedButtonClicked}
-                        id="dateManufacture"
-                        placeholder={t("date_placeholder_text")}
-                        name="dateManufacture"
                         onFocus={(e) => {
                           setShowDatePicker(!showDatePicker);
                         }}

@@ -1,39 +1,36 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import { linkUrl } from "../utils";
 
-export const useApiFetchPrice = (url) => {
+export const useApiFetchPrice = () => {
   const [pricedFetch, setPricedFetch] = useState("");
   const [isPending, setIsPending] = useState(false);
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState(null);
-  const { user } = useSelector((state) => state.auth);
 
   const fetchPrice = async (url) => {
-    console.log("url", url);
     setIsPending(true);
     setIsError(false);
 
     try {
-        const response = await fetch(`${linkUrl()}${url}`, {
-          method: "GET",
-          cache: "no-cache",
-          withCredentials: true,
-          credentials: "include",
-          redirect: "follow",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-          },
-          responseType: "json",
-        });
+      const response = await fetch(`${linkUrl()}${url}`, {
+        method: "GET",
+        cache: "no-cache",
+        withCredentials: true,
+        credentials: "include",
+        redirect: "follow",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        responseType: "json",
+      });
 
-        if (!response.ok) throw new Error(response.statusText);
-        const json = await response.json();
-        setIsPending(false);
-        setIsError(false);
-        setPricedFetch(json.result);
-        setError(null);
+      if (!response.ok) throw new Error(response.statusText);
+      const json = await response.json();
+      setIsPending(false);
+      setIsError(false);
+      setPricedFetch(json.result);
+      setError(null);
     } catch (error) {
       setError(`${error} Could not Fetch Data `);
       setIsError(true);

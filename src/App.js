@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, memo, useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useNavigate } from 'react-router';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router';
 import { useSelector } from 'react-redux';
 import CookieConsent from 'react-cookie-consent';
 import { useTranslation } from 'react-i18next';
@@ -17,7 +17,7 @@ import Footer from './components/Footer';
 // import UnderConstruction from './pages/UnderConstruction';
 
 import 'react-day-picker/dist/style.css';
-import './App.css';
+import './App.scss';
 
 const TruckCovers = lazy(() => import('./pages/TruckCovers'));
 const TruckGondolaCalculator = lazy(() => import('./pages/TruckGondolaCalculator'));
@@ -42,6 +42,7 @@ const App = memo(function App() {
   const [selectedItem, setSelectedItem] = useState(localStorage.getItem("i18nextLng"));
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const pathname = useLocation().pathname;
   const [message, setMessage] = useState("");
   const [visible, setVisible] = useState(false);
   const [error, setError] = useState(false);
@@ -56,27 +57,29 @@ const App = memo(function App() {
   }, []);
 
   useEffect(() => {
-    if (isAuthenticated) { 
-      navigate("/admin-panel/1");
-      setVisible(true);
-    } else if (!isAuthenticated && new Date().toISOString() < user?.expirationTime) {
-      store.dispatch(refresh());
-      fetch(`${linkUrl()}${endpoints.refresh}`, {
-        method: "GET",
-        cache: "no-cache",
-        pragma: "no-cache",
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-          "Access-Control-Allow-Credentials": true
-        },
-        responseType: "json",
-      });
-    } else {  
-      navigate("/login");
-      setVisible(true);
+    if (pathname === '/login') {
+      if (isAuthenticated) { 
+        navigate("/admin-panel/1");
+        setVisible(true);
+      } else if (!isAuthenticated && new Date().toISOString() < user?.expirationTime) {
+        store.dispatch(refresh());
+        fetch(`${linkUrl()}${endpoints.refresh}`, {
+          method: "GET",
+          cache: "no-cache",
+          pragma: "no-cache",
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
+            "Access-Control-Allow-Credentials": true
+          },
+          responseType: "json",
+        });
+      } else {  
+        navigate("/login");
+        setVisible(true);
+      }
     }
 
     setTimeout(() => {

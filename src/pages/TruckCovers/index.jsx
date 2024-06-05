@@ -28,11 +28,12 @@ const TruckCovers = memo(function TruckCovers({
     <>
       {!hideMain && (
         <div className={`container ${isMobile ? "" : "my-4"}`}>
+          <h1 className="pb-3">{t('truck_cover_link')}</h1>
           {isMobile ? (
             <p className="text-wrapper mb-1">{t("main_text1")}</p>
           ) : (
             <div className="mx-4">
-              <p className="text-start mb-3">{t("main_text1")}</p>
+              <p className="text-justify mb-3">{t("main_text1")}</p>
             </div>
           )}
           <Suspense fallback={<Spinner className="spinner" />}>

@@ -15,6 +15,7 @@ const CurtainsCowFarms = memo(function CurtainsCowFarms({ hideMain, isMobile }) 
   return <>
     {!hideMain &&
       <div className={`container ${isMobile ? '' : 'my-4'}`}>
+        <h1 className="pb-3">{t('curtains_for_cow_farms_link')}</h1>
         {isMobile ? <p className="text-wrapper mb-1">
           {t('main_text6')}
         </p>

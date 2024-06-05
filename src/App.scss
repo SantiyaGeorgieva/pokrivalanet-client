@@ -11,6 +11,15 @@ body {
   margin: 0;
 }
 
+.text-justify {
+  text-align: justify;
+}
+
+.h-100vh {
+  height: 100vh;
+  width: auto;
+}
+
 main {
   min-height: calc(100vh - 446px);
 }
@@ -106,6 +115,10 @@ input:disabled {
 
 .bc-blue {
   background-color: #2E5994 !important;
+}
+
+.text-wrapper {
+  font-size: 13px;
 }
 
 .datepicker {

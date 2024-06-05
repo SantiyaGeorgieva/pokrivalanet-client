@@ -14,6 +14,7 @@ const AwningsAndShades = memo(function AwningsAndShades({ hideMain, isMobile }) 
   return <>
     {!hideMain &&
       <div className={`container ${isMobile ? '' : 'my-4'}`}>
+        <h1 className="pb-3">{t('awnings_and_shades_link')}</h1>
         {isMobile ? <p className="text-wrapper mb-1">{t('main_text3')}</p>
           : <>
             <p className="text-start mb-0">{t('main_text3')}</p>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import {ListGroup, ListGroupItem } from "reactstrap";
+import { ListGroup, ListGroupItem } from "reactstrap";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { adminLinks } from "../../constants";
 
@@ -13,14 +13,13 @@ const ResizableLayout = ({ isMobile }) => {
     if (`/admin-panel/${adminLink.id}` === pathname) {
       return <adminLink.component isMobile={isMobile} key={idx} />;
     }
-  }
+  };
 
-  return (
-    <PanelGroup direction="horizontal" className="p-5">
+  return <PanelGroup direction={`${isMobile ? 'vertical' : 'horizontal'}`} className={`${isMobile ? '' : 'p-5'}`}>
       <Panel
-        className="bg-slate-100 rounded-lg p-2"
-        defaultSize={45}
-        minSize={20}
+        className={`${isMobile ? 'bg-slate-100 rounded-sm p-1' : 'bg-slate-100 rounded-lg p-2'}`}
+        defaultSize={50}
+        minSize={30}
       >
         <ListGroup className="w-100">
           {adminLinks.map((adminLink, idx) => {
@@ -38,22 +37,21 @@ const ResizableLayout = ({ isMobile }) => {
                   {adminLink.text}
                 </ListGroupItem>
               </Link>
-            );}
-          )}
+            );
+          })}
         </ListGroup>
       </Panel>
-      <PanelResizeHandle className="mx-1 w-2 bg-slate-300" />
+      <PanelResizeHandle className="mx-2 w-2 bg-slate-300 mb-5" />
       <Panel
-        className="bg-slate-100 rounded-lg flex items-center justify-center text-center p-2"
+        className={`bg-slate-100 rounded-lg flex items-center justify-center text-center ${isMobile ? "mx-0" : "p-2"}`}
         defaultSize={80}
-        minSize={20}
+        minSize={40}
       >
         {adminLinks.map((adminLink, idx) => {
           return renderComponent(adminLink, idx);
         })}
       </Panel>
     </PanelGroup>
-  );
 };
 
 export default ResizableLayout;

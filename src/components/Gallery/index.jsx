@@ -13,33 +13,33 @@ function Gallery({ images, isMobile }) {
     <div className={`gallery-wrapper container ${isMobile ? '' : ''}`}>
       <Row>
         {firstRow.map((img, idx) => {
-          return <Col key={idx} className="column">
+          return <Col key={idx} className={`column ${isMobile ? 'p-0' : ''}`}>
             {!img ? <Spinner className="m-5" color="primary" /> : <ModalImage
               small={img}
               large={img}
-              className="gallery-image"
+              className={`gallery-image ${isMobile ? 'mb-3' : ''}`}
             />}
           </Col>
         })}
       </Row>
       <Row>
         {secondRow.map((img, idx) => {
-          return <Col key={idx} className="column">
+          return <Col key={idx} className={`column ${isMobile ? 'p-0' : ''}`}>
             {!img ? <Spinner className="m-5" color="primary" /> : <ModalImage
               small={img}
               large={img}
-              className="gallery-image"
+              className={`gallery-image ${isMobile ? 'mb-3' : ''}`}
             />}
           </Col>
         })}
       </Row>
       <Row>
         {lastRow.map((img, idx) => {
-          return <Col key={idx} className="column">
+          return <Col key={idx} className={`column ${isMobile ? 'p-0' : ''}`}>
             {!img ? <Spinner className="m-5" color="primary" /> : <ModalImage
               small={img}
               large={img}
-              className="gallery-image"
+              className={`gallery-image ${isMobile ? 'mb-3' : ''}`}
             />}
           </Col>
         })}

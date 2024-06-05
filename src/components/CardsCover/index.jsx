@@ -246,7 +246,7 @@ const CardsCover = ({ cards, prices, handleCardTitle, isMobile }) => {
           </Row>
           <Row>
             {thirdRow.map((row, idx) => {
-              return <Col md="4" key={idx} className="h-100">
+              return <Col md="4" key={idx} className={`h-100 ${idx != 2 ? 'mb-3' : ''}`}>
                 {!row?.src ? <Spinner className="m-5" color="primary" /> :
                   <>
                     {t(`${row?.subtitle}`) === t('card_text_subtitle7') ?

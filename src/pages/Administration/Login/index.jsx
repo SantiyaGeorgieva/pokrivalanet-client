@@ -57,11 +57,11 @@ const Login = ({ hideMain, setError, setVisible, setMessage, error, message, vis
           <h4 className="mt-4">
             Моля, въведете вашите данни за вписване
           </h4>
-          <h4 className="mb-5">в админ панела</h4>
+          <h4 className={`${isMobile ? '' : 'mb-5'}`}>в админ панела</h4>
         </Col>
         }
       </Row>
-      <Row className={`d-flex align-items-center justify-content-center ${isMobile ? 'mb-5' : ''}`}>
+      <Row className={`d-flex align-items-center justify-content-center ${isMobile ? '' : 'mb-5'}`}>
         <Col md="4">
           <Form onSubmit={handleLogin} method="POST">
             <FormGroup className="text-start mb-2">
@@ -74,7 +74,7 @@ const Login = ({ hideMain, setError, setVisible, setMessage, error, message, vis
               <Input type="password" onChange={e => setPassword(e.target.value)} name="password" value={password} invalid={hasPasswordError} />
               {hasPasswordError && <FormFeedback>Моля, въведете парола</FormFeedback>}
             </FormGroup>
-            <div className="d-flex align-items-center justify-content-end mt-4 mb-5">
+            <div className={`d-flex align-items-center justify-content-end ${isMobile ? '' : 'mt-4 mb-5'}`}>
               <Button
                 type="submit"
                 className={`fw-bold bc-dark-blue ${isMobile ? 'btn-sm' : ''}`}>

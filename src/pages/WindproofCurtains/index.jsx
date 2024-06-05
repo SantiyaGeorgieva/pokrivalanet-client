@@ -519,10 +519,10 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
       {isMobile ? <p className="text-wrapper mb-3">
         {t('main_text2')}
       </p>
-        : <p className="text-start mb-5">{t('main_text2')}</p>
+        : <p className="text-justify mb-5">{t('main_text2')}</p>
       }
       <Row className={isMobile ? 'my-4' : 'my-5'}>
-        <h3 className="">{t('offer_windproof_curtain')}</h3>
+        <h1 className="">{t('offer_windproof_curtain')}</h1>
       </Row>
       <Row className="mb-5">
         <Col lg="5" xl="6" className={`${!isMobile ? 'text-start' : ''}`}>
@@ -545,7 +545,7 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
         <Col lg="7" xl="6">
           <Form className={`${isMobile ? 'mt-3' : ''}`} method="POST" id="form" encType="multipart/form-data">
             <h4 className={`${isMobile ? 'mb-3' : 'mb-5'}`}>{t('curtain_data_text')}</h4>
-            <div className={`container ${isMobile ? 'mt-3' : 'mt-5'}`}>
+            <div className={`container ${isMobile ? 'mt-3 p-0' : 'mt-5'}`}>
               <Row>
                 <Col md="6">
                   <FormGroup className="text-start mb-2">

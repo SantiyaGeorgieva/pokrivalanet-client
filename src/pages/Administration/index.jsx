@@ -26,17 +26,17 @@ const Administration = ({ hideMain, isMobile, message, setMessage, setError, vis
       {!hideMain && (
         <>
           {visible ? <Message text={message} isVisible={visible} /> : null}
-          <div className="jumbotron mt-4 me-4">
-            <h1 className="display-6">Здравей, {user?.username}</h1>
-            <p className="fs-6 mb-0">
+          <div className={`jumbotron ${isMobile ? 'mx-3 my-4': 'mt-4 me-4'}`}>
+            <h1 className={`display-6 fw-bold ${isMobile ? 'mb-4' : ''}`}>Здравей, {user?.username}</h1>
+            <p className={`mb-0 ${isMobile ? 'text-wrapper text-justify' : 'fs-6'}`}>
               Добре дошъл в администраторския панел на pokrivala.net.
             </p>
-            <p className="fs-6 mb-0">
+            <p className={`mb-0 ${isMobile ? 'text-wrapper text-justify' : 'fs-6'}`}>
               Избери желаната секция вляво, която желаеш да промениш и
               попълни промените в дясната секция.
             </p>
             <div className="d-flex align-items-center justify-content-end">
-              <hr className="w-96 my-4" />
+              <hr className="w-100 my-4" />
             </div>
             <CountdownTimer
               targetDate={user?.expirationTime}
@@ -54,7 +54,7 @@ const Administration = ({ hideMain, isMobile, message, setMessage, setError, vis
               Изход
             </Button>
           </div>
-          <div className={`${isMobile ? "container text-wrapper" : ""}`}>
+          <div className={`${isMobile ? "container text-wrapper h-100vh" : ""}`}>
             <ResizableLayout isMobile={isMobile} />
           </div>
         </>

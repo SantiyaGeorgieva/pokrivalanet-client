@@ -5,10 +5,16 @@
   margin: 0 50px;
 }
 
-.button-exit {
+.button-edit {
   position: absolute;
   top: 5%;
   right: 0;
+}
+
+.button-edit-sm {
+  position: absolute;
+  bottom: 5%;
+  right: 5%;
 }
 
 .spinner {

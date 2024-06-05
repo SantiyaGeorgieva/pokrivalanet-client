@@ -19,14 +19,14 @@ const NotFound = memo(function NotFound({ hideMain, isMobile }) {
         {isMobile ? <div>
           <img src={NotFoundImage} alt="Not found image" className="w-50 mt-3" />
           <p className="text-wrapper mt-3 mb-0">{t('not_found_text')}</p>
-          <Link to="/truck-covers">
-            <Button className="button-back mt-3">{t('back_button')}</Button>
+          <Link to="/">
+            <Button className="button-back mt-3 btn-sm">{t('back_button')}</Button>
           </Link>
         </div>
           : <div className="d-flex flex-column align-items-center justify-content-center mt-5">
             <img className="w-50" src={NotFoundImage} alt="Not found image" />
             <h5 className="mt-5 mb-0">{t('not_found_text')}</h5>
-            <Link to="/truck-covers">
+            <Link to="/">
               <Button className="button-back mt-5" onClick={scrollToTop}>{t('back_button')}</Button>
             </Link>
           </div>

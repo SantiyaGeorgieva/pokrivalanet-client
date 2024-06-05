@@ -268,17 +268,19 @@ const WindproofCurtainsPanelForm = ({ isMobile }) => {
     (<div className={`${isMobile ? "container text-wrapper" : "w-75 mx-auto"}`}>
       <Row>
         <Col className="d-flex align-items-center">
-          <h5 className={`fw-bold ${isMobile ? "mb-3" : "mt-4 mb-5"}`}>
+          <h5 className={`fw-bold ${isMobile ? "my-3" : "mt-4 mb-5"}`}>
             {mode
               ? `Моля, въведете цени за ветроупорна завеса`
               : `Цени за ветроупорна завеса`}
           </h5>
           {mode ? (
-            <div className="d-flex align-items-center justify-content-end button-exit">
+            <div className={`d-flex align-items-center justify-content-end ${
+              isMobile ? "button-edit-sm btn-sm" : "button-edit me-4"
+            }`}>
               <Button
                 type="submit"
-                className={`btn btn-success ${
-                  isMobile ? "btn-sm me-3" : "me-2"
+                className={`btn btn-success me-2 ${
+                  isMobile ? "btn-sm" : ""
                 }`}
                 onClick={handleSubmit}
               >
@@ -296,8 +298,8 @@ const WindproofCurtainsPanelForm = ({ isMobile }) => {
           ) : (
             <Button
               type="button"
-              className={`button-exit bc-dark-blue ${
-                isMobile ? "btn-sm" : "me-4"
+              className={`bc-dark-blue ${
+                isMobile ? "button-edit-sm btn-sm" : "button-edit me-4"
               }`}
               onClick={handleMode}
             >

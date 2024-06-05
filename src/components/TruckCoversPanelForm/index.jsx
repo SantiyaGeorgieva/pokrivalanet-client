@@ -200,13 +200,13 @@ const TruckCoversPanelForm = ({ isMobile }) => {
     (<div className={`${isMobile ? "container text-wrapper" : "w-75 mx-auto"}`}>
       <Row>
         <Col className="d-flex align-items-center">
-          <h5 className={`fw-bold ${isMobile ? "mb-3" : "mt-4 mb-5"}`}>
+          <h5 className={`fw-bold ${isMobile ? "my-3" : "mt-4 mb-5"}`}>
             {mode
               ? `Моля, въведете новите цени за покривала на камиони`
               : `Цени за покривала на камиони`}
           </h5>
           {mode ? (
-            <div className="d-flex align-items-center justify-content-end button-exit">
+            <div className={`d-flex align-items-center justify-content-end ${isMobile ? 'button-edit-sm' : 'button-edit'}`}>
               <Button
                 type="submit"
                 className={`btn btn-success ${
@@ -228,8 +228,8 @@ const TruckCoversPanelForm = ({ isMobile }) => {
           ) : (
             <Button
               type="button"
-              className={`button-exit bc-dark-blue ${
-                isMobile ? "btn-sm" : "me-4"
+              className={`bc-dark-blue ${
+                isMobile ? "button-edit-sm btn-sm" : "button-edit me-4"
               }`}
               onClick={handleMode}
             >

@@ -34,15 +34,29 @@
 }
 
 @media screen and (max-width: 800px) {
+  .gallery-wrapper {
+    padding: 0 10px;
+  }
   .column {
     flex: 50%;
     max-width: 50%;
+
+    img {
+      margin: 0;
+    }
   }
 }
 
 @media screen and (max-width: 600px) {
+  .gallery-wrapper {
+    padding: 0 10px;
+  }
   .column {
     flex: 100%;
     max-width: 100%;
+
+    img {
+      margin: 0;
+    }
   }
 }

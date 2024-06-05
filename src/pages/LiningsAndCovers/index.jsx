@@ -14,6 +14,7 @@ const LiningsAndCovers = memo(function LiningsAndCovers({ hideMain, isMobile }) 
   return <>
     {!hideMain &&
       <div className={`container ${isMobile ? '' : 'my-4'}`}>
+        <h1 className="text-center pb-3">{t('linings_and_covers_link')}</h1>
         {isMobile ? <p className="text-wrapper mb-1">
           {t('main_text6')}
         </p>

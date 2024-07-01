@@ -6,7 +6,7 @@ import { BlobProvider, PDFDownloadLink, pdf } from "@react-pdf/renderer";
 import { useTranslation } from "react-i18next";
 import { PhoneInput } from 'react-international-phone';
 import { DayPicker } from 'react-day-picker';
-import PageTitle from "../../components/PageTitle";
+import SEO from "../../components/Seo";
 import Offer from "../../components/offers/Offer";
 import Message from "../../components/Message";
 import { useApiFetchOfferPrice } from "../../hooks/useApiFetchOfferPrice";
@@ -75,7 +75,6 @@ const css = `
 const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, isMobile, offerTitle, selectedLanguage }) {
   const { t } = useTranslation();
   const location = useLocation();
-  PageTitle(t('truck_covers_calculator_page_title'));
 
   const [selectedDate, setSelectedDate] = useState(null);
   const lastMonth = new Date();
@@ -540,6 +539,7 @@ const TruckGondolaCalculator = memo(function TruckGondolaCalculator({ hideMain, 
   }
 
   return <>
+    <SEO title={`${t('truck_covers_calculator_page_title')}`} linkHref="gondola-calculator" />
     {!hideMain &&
       <div className={`container ${isMobile ? '' : 'my-4'}`}>
         <Row className="my-5">

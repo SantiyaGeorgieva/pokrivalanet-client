@@ -3,8 +3,8 @@ import { Button, Col, Form, FormFeedback, FormGroup, Input, Label, Row, Spinner 
 import GoogleMapRuse from '../../components/GoogleMapRuse';
 import { useTranslation } from "react-i18next";
 import ReCAPTCHA from 'react-google-recaptcha';
+import SEO from '../../components/Seo';
 import Hr from '../../components/Hr';
-import PageTitle from '../../components/PageTitle';
 import { endpoints, linkUrl, removeSpaces } from '../../utils';
 import Message from '../../components/Message';
 
@@ -12,7 +12,6 @@ import './contact.scss';
 
 const Contact = memo(function Contact({ hideMain, isMobile }) {
   const { t } = useTranslation();
-  PageTitle(t('large_and_covers_page_title'));
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -145,6 +144,7 @@ const Contact = memo(function Contact({ hideMain, isMobile }) {
 
   return (
     <>
+    <SEO title={`${t('contacts_page_title')}`} linkHref="contact" />
       {!hideMain && (
         <>
           <div className={`container ${!isMobile ? "my-5" : ""}`}>

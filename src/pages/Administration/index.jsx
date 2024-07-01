@@ -1,7 +1,7 @@
 import { Button } from "reactstrap";
 import { useSelector } from "react-redux";
 import { authService } from "../../services/authService";
-import PageTitle from "../../components/PageTitle";
+import SEO from "../../components/Seo";
 import Hr from "../../components/Hr";
 import AdminPanelImage from "../../images/admin-panel.png";
 import ResizableLayout from "../../components/ResizableLayout";
@@ -11,18 +11,17 @@ import Message from "../../components/Message";
 import "./administration.scss";
 
 const Administration = ({ hideMain, isMobile, message, setMessage, setError, visible }) => {
-  PageTitle("Админ панел | Покривала НЕТ");
-  
   let { user } = useSelector((state) => state.auth);
   user = user ?? ({ username: localStorage.getItem("username"), expirationTime: localStorage.getItem("expirationTime")});
 
   const handleLogout = async () => {
-    authService.logout(setMessage);
+    authService.logout(setMessage, setError);
     setError(false);
   };
 
   return (
     <>
+      <SEO title="Админ панел | Покривала НЕТ" linkHref="admin-panel" />
       {!hideMain && (
         <>
           {visible ? <Message text={message} isVisible={visible} /> : null}
@@ -31,10 +30,16 @@ const Administration = ({ hideMain, isMobile, message, setMessage, setError, vis
             <p className={`mb-0 ${isMobile ? 'text-wrapper text-justify' : 'fs-6'}`}>
               Добре дошъл в администраторския панел на pokrivala.net.
             </p>
-            <p className={`mb-0 ${isMobile ? 'text-wrapper text-justify' : 'fs-6'}`}>
-              Избери желаната секция вляво, която желаеш да промениш и
-              попълни промените в дясната секция.
+            {isMobile ? 
+              <p className="mb-0 text-wrapper text-justify">
+                Избери желаната секция, маркирана в син цвят, която желаеш да промениш 
+                и попълни промените в секцията под нея.
+              </p>
+            :
+            <p className="mb-0 fs-6">
+              Избери желаната секция вляво, която желаеш да промениш и попълни промените в дясната секция.
             </p>
+            }
             <div className="d-flex align-items-center justify-content-end">
               <hr className="w-100 my-4" />
             </div>

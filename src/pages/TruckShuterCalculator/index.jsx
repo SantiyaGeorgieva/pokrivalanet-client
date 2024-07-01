@@ -16,7 +16,7 @@ import { PDFDownloadLink, pdf, BlobProvider } from "@react-pdf/renderer";
 import { useTranslation } from "react-i18next";
 import { PhoneInput } from 'react-international-phone';
 import { DayPicker } from "react-day-picker";
-import PageTitle from "../../components/PageTitle";
+
 import Offer from "../../components/offers/Offer";
 import Message from "../../components/Message";
 import { useApiFetchOfferPrice } from "../../hooks/useApiFetchOfferPrice";
@@ -35,6 +35,7 @@ import 'react-international-phone/style.css';
 import 'react-day-picker/dist/style.css';
 
 import "./truckShuterCalculator.scss";
+import SEO from "../../components/Seo";
 
 const css = `
 .my-selected:not([disabled]) { 
@@ -58,7 +59,6 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
 }) {
 
   const { t } = useTranslation();
-  PageTitle(t("truck_covers_calculator_page_title"));
   const wrapperRef = useRef(null);
 
   const useOutsideAlerter = (ref) => {
@@ -395,6 +395,7 @@ const TruckShuterCalculator = memo(function TruckShuterCalculator({
 
   return (
     <>
+      <SEO title={`${t('truck_covers_calculator_page_title')}`} linkHref="shutter-calculator" />
       {!hideMain && (
         <div className={`container ${isMobile ? "" : "my-4"}`}>
           <Row className="my-5">

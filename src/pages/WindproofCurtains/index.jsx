@@ -6,9 +6,9 @@ import { useLocation } from "react-router";
 import { useTranslation } from "react-i18next";
 import { PhoneInput } from 'react-international-phone';
 import { DayPicker } from 'react-day-picker';
+import SEO from "../../components/Seo";
 import Gallery from "../../components/Gallery";
 import Hr from "../../components/Hr";
-import PageTitle from "../../components/PageTitle";
 import Offer from "../../components/offers/Offer";
 import Message from "../../components/Message";
 import { thickCount, windproofCurtains, windproofCurtainsOptions } from "../../constants";
@@ -74,7 +74,6 @@ const css = `
 const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, selectedLanguage }) {
   const { t } = useTranslation();
   const location = useLocation();
-  PageTitle(t('windproof_curtains_page_title'));
 
   const [selectedDate, setSelectedDate] = useState(null);
   const lastMonth = new Date();
@@ -514,7 +513,9 @@ const WindproofCurtains = memo(function WindproofCurtains({ hideMain, isMobile, 
     }
   };
 
-  return <>{!hideMain &&
+  return <>
+    <SEO title={`${t('windproof_curtains_page_title')}`} linkHref="windproof-curtains" />
+    {!hideMain &&
     <div className={`container ${isMobile ? '' : 'my-4'}`}>
       {isMobile ? <p className="text-wrapper mb-3">
         {t('main_text2')}

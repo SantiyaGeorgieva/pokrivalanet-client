@@ -1,12 +1,10 @@
 import { useTranslation } from 'react-i18next';
-import PageTitle from "../../components/PageTitle";
 import Hr from "../../components/Hr";
 import Rectangle from "../../components/Rectangle";
 import BackgroundBlob from "../../components/BackgroundBlob";
 
 function Home({ hideMain, isMobile }) {
   const { t } = useTranslation();
-  PageTitle(t('home_page_title'));
 
   return <>
     {!hideMain && (

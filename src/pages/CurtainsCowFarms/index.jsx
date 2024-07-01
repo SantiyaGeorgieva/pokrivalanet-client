@@ -1,8 +1,8 @@
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
+import SEO from "../../components/Seo";
 import Gallery from "../../components/Gallery";
 import Hr from "../../components/Hr";
-import PageTitle from "../../components/PageTitle";
 import { curtainsCowFarmsImages } from "../../constants";
 
 import './curtainsCowFarmsImages.scss';
@@ -10,9 +10,9 @@ import './curtainsCowFarmsImages.scss';
 
 const CurtainsCowFarms = memo(function CurtainsCowFarms({ hideMain, isMobile }) {
   const { t } = useTranslation();
-  PageTitle(t('curtains_cow_farms_page_title'));
 
   return <>
+    <SEO title={`${t('curtains_cow_farms_page_title')}`} linkHref="curtains-for-cow-farms" />
     {!hideMain &&
       <div className={`container ${isMobile ? '' : 'my-4'}`}>
         <h1 className="pb-3">{t('curtains_for_cow_farms_link')}</h1>

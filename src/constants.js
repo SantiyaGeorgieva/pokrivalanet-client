@@ -303,7 +303,7 @@ export const liningsAndCoversImages = [
 
 export const wagonCoversImages = [{ image: Image61 }];
 
-export const cardslItems = [
+export const cardsItems = [
   {
     src: TavanShtora,
     altText: "Slide 1",

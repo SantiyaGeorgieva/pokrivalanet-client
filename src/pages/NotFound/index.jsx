@@ -2,7 +2,7 @@ import { Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
-import PageTitle from "../../components/PageTitle";
+import SEO from "../../components/Seo";
 import Hr from "../../components/Hr";
 import NotFoundImage from "../../images/404.png";
 import { scrollToTop } from "../../utils";
@@ -11,9 +11,9 @@ import './notFound.scss';
 
 const NotFound = memo(function NotFound({ hideMain, isMobile }) {
   const { t } = useTranslation();
-  PageTitle(t('not_found_page_title'));
 
   return <>
+    <SEO title={`${t('not_found_page_title')}`} linkHref="not-found" />
     {!hideMain &&
       <div className={`container ${isMobile ? '' : 'my-3'}`}>
         {isMobile ? <div>

@@ -41,7 +41,7 @@ const CardsCover = ({ cards, prices, handleCardTitle, isMobile }) => {
                 {!row?.src ? <Spinner className="m-5" color="primary" /> :
                   <>
                     {t(`${row?.subtitle}`) === t('card_text_subtitle7') ?
-                      <Link className="text-decoration-none" to="/truck-covers/gondola-calculator" onClick={(e) => handleCardTitle(e, row?.title)}>
+                      <Link className="text-decoration-none" to="/gondola-calculator" onClick={(e) => handleCardTitle(e, row?.title)}>
                         <Card className="h-100">
                           <img src={row?.src} className="card-image" />
                           <CardBody>
@@ -82,7 +82,7 @@ const CardsCover = ({ cards, prices, handleCardTitle, isMobile }) => {
                 {!row?.src ? <Spinner className="m-5" color="primary" /> :
                   <>
                     {t(`${row?.subtitle}`) === t('card_text_subtitle7') ?
-                      <Link className="text-decoration-none" to="/truck-covers/shutter-calculator" onClick={(e) => handleCardTitle(e, row?.title)}>
+                      <Link className="text-decoration-none" to="/shutter-calculator" onClick={(e) => handleCardTitle(e, row?.title)}>
                         <Card className="h-100">
                           <img src={row?.src} className="card-image" />
                           <CardBody>
@@ -209,7 +209,7 @@ const CardsCover = ({ cards, prices, handleCardTitle, isMobile }) => {
                 {!row?.src ? <Spinner className="m-5" color="primary" /> :
                   <>
                     {t(`${row?.subtitle}`) === t('card_text_subtitle7') ?
-                      <Link className="text-decoration-none" to="/truck-covers/gondola-calculator" onClick={(e) => handleCardTitle(e, row?.title)}>
+                      <Link className="text-decoration-none" to="/gondola-calculator" onClick={(e) => handleCardTitle(e, row?.title)}>
                         <Card className="h-100">
                           <img src={row?.src} className="card-image" />
                           <CardBody>
@@ -250,7 +250,7 @@ const CardsCover = ({ cards, prices, handleCardTitle, isMobile }) => {
                 {!row?.src ? <Spinner className="m-5" color="primary" /> :
                   <>
                     {t(`${row?.subtitle}`) === t('card_text_subtitle7') ?
-                      <Link className="text-decoration-none" to="/truck-covers/shutter-calculator" onClick={(e) => handleCardTitle(e, row?.title)}>
+                      <Link className="text-decoration-none" to="/shutter-calculator" onClick={(e) => handleCardTitle(e, row?.title)}>
                         <Card className="h-100">
                           <img src={row?.src} className="card-image" />
                           <CardBody>

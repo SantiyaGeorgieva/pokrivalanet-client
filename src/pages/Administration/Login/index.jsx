@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Button, Col, FormFeedback, FormGroup, Input, Label, Row, Form } from "reactstrap";
 import { authService } from "../../../services/authService";
+import SEO from "../../../components/Seo";
 import Hr from "../../../components/Hr";
 import Message from "../../../components/Message";
-import PageTitle from "../../../components/PageTitle";
 import AdminPanelImage from '../../../images/admin-panel.png';
 
 import './login.scss';
@@ -13,8 +13,6 @@ const Login = ({ hideMain, setError, setVisible, setMessage, error, message, vis
   const [password, setPassword] = useState('');
   const [hasUsernameError, setUsernameError] = useState(false);
   const [hasPasswordError, setPasswordError] = useState(false);
-
-  PageTitle('Вписване в админ панела | Покривала НЕТ');
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -33,8 +31,10 @@ const Login = ({ hideMain, setError, setVisible, setMessage, error, message, vis
 
     try {
       let loginData = { username, password };
-      await authService.login(loginData, setMessage);
+      console.log('loginData', loginData);
+      await authService.login(loginData, setMessage, setError);
     } catch (error) {
+      console.log('error', error);
       setError(true);
       setVisible(true);
       setTimeout(() => {
@@ -44,6 +44,7 @@ const Login = ({ hideMain, setError, setVisible, setMessage, error, message, vis
   };
 
   return <>
+    <SEO title="Вписване в админ панела | Покривала НЕТ" linkHref="login" />
     {visible && message.length > 0 ? <Message error={error} text={message} isVisible={visible} /> : null}
     {!hideMain &&
     <div className={`container ${isMobile ? '' : 'my-4'}`}>

@@ -1,8 +1,8 @@
 import { Suspense, lazy, memo, useEffect } from "react";
 import { Spinner } from "reactstrap";
 import { useTranslation } from "react-i18next";
-import PageTitle from "../../components/PageTitle";
-import { cardslItems } from "../../constants";
+import SEO from "../../components/Seo";
+import { cardsItems } from "../../constants";
 import { useApiFetchPrice } from "../../hooks/useApiFetchPrice";
 import { endpoints } from "../../utils";
 
@@ -18,17 +18,16 @@ const TruckCovers = memo(function TruckCovers({
   const { t } = useTranslation();
   const { pricedFetch, fetchPrice } = useApiFetchPrice();
 
-  PageTitle(t("truck_covers_page_title"));
-
   useEffect(() => {
     fetchPrice(`${endpoints.truckCoversPricesUrl}`);
   }, []);
 
   return (
     <>
+     <SEO title={`${t('truck_covers_page_title')}`} linkHref="" />
       {!hideMain && (
         <div className={`container ${isMobile ? "" : "my-4"}`}>
-          <h1 className="pb-3">{t('truck_cover_link')}</h1>
+          <h1 className="pb-3">{t("truck_cover_link")}</h1>
           {isMobile ? (
             <p className="text-wrapper mb-1">{t("main_text1")}</p>
           ) : (
@@ -40,7 +39,7 @@ const TruckCovers = memo(function TruckCovers({
             {pricedFetch ? (
               <CardsCover
                 handleCardTitle={handleCardTitle}
-                cards={cardslItems}
+                cards={cardsItems}
                 prices={pricedFetch}
                 isMobile={isMobile}
               />

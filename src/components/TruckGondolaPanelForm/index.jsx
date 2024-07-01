@@ -171,7 +171,7 @@ const TruckGondolaPanelForm = ({ isMobile }) => {
     (<div className={`${isMobile ? "container text-wrapper" : "w-75 mx-auto"}`}>
       <Row>
         <Col className="d-flex align-items-center">
-          <h5 className={`fw-bold ${isMobile ? "my-3" : "mt-4 mb-5"}`}>
+          <h5 className={`fw-bold ${isMobile ? "my-3 fs-6" : "mt-4 mb-5"}`}>
             {mode
               ? `Моля, въведете новите цени на покривало за зърновоз или гондола`
               : `Цени на покривало за зърновоз или гондола`}
@@ -215,7 +215,7 @@ const TruckGondolaPanelForm = ({ isMobile }) => {
         <Row>
           <Col>
             <Form method="POST" id="form" encType="multipart/form-data">
-              <FormGroup className="d-flex align-items-center text-start mb-2">
+              <FormGroup noMargin className={`d-flex align-items-center text-start ${isMobile ? 'mb-2' : 'mb-3'}`}>
                 <Label for="longitudinal_pocket_price" className="w-65">Надлъжен джоб</Label>
                 <div className="d-flex align-items-center">
                   <Input
@@ -227,14 +227,14 @@ const TruckGondolaPanelForm = ({ isMobile }) => {
                     onKeyDown={validateNumbersInput}
                     value={longitudinal_pocket_price}
                     invalid={hasPocketPriceError}
-                    className="w-35 me-2"
+                    className={`w-35 me-2 ${isMobile ? 'form-control-sm' : ''}`}
                   />
                   {hasPocketPriceError && (
                     <FormFeedback>Моля, въведете цена за надлъжен джоб</FormFeedback>
                   )}
                 </div>
               </FormGroup>
-              <FormGroup className="d-flex align-items-center text-start mb-2">
+              <FormGroup noMargin className={`d-flex align-items-center text-start ${isMobile ? 'mb-2' : 'mb-3'}`}>
                 <Label for="fitting_price" className="w-65">Обков вляво/вдясно</Label>
                 <div className="d-flex align-items-center">
                   <Input
@@ -245,14 +245,14 @@ const TruckGondolaPanelForm = ({ isMobile }) => {
                     onKeyDown={validateNumbersInput}
                     value={fitting_price}
                     invalid={hasFittingPriceError}
-                    className="w-35 me-2"
+                    className={`w-35 me-2 ${isMobile ? 'form-control-sm' : ''}`}
                   />
                   {hasFittingPriceError && (
                     <FormFeedback>Моля, въведете цена за обков вляво/вдясно</FormFeedback>
                   )}
                 </div>
               </FormGroup>
-              <FormGroup className="d-flex align-items-center text-start mb-2">
+              <FormGroup noMargin className={`d-flex align-items-center text-start ${isMobile ? 'mb-2' : 'mb-3'}`}>
                 <Label for="assembly_price" className="w-65">Монтаж</Label>
                 <div className="d-flex align-items-center">
                   <Input
@@ -263,14 +263,14 @@ const TruckGondolaPanelForm = ({ isMobile }) => {
                     onKeyDown={validateNumbersInput}
                     value={assembly_price}
                     invalid={hasAssemblyPriceError}
-                    className="w-35 me-2"
+                    className={`w-35 me-2 ${isMobile ? 'form-control-sm' : ''}`}
                   />
                   {hasAssemblyPriceError && (
                     <FormFeedback>Моля, въведете цена за монтаж</FormFeedback>
                   )}
                 </div>
               </FormGroup>
-              <FormGroup className="d-flex align-items-center text-start mb-2">
+              <FormGroup noMargin className={`d-flex align-items-center text-start ${isMobile ? 'mb-2' : 'mb-3'}`}>
                 <Label for="tarpaulin_price_1" className="w-65">
                   Вид на брезента от 680гр/кв.м
                 </Label>
@@ -283,14 +283,14 @@ const TruckGondolaPanelForm = ({ isMobile }) => {
                     onKeyDown={validateNumbersInput}
                     value={tarpaulin_price_1}
                     invalid={hasTarpaulinPriceFirstError}
-                    className="w-35 me-2"
+                    className={`w-35 me-2 ${isMobile ? 'form-control-sm' : ''}`}
                   />
                   {hasTarpaulinPriceFirstError && (
                     <FormFeedback>Моля, въведете цена за вид на брезента от 680гр/кв.м</FormFeedback>
                   )}
                 </div>
               </FormGroup>
-              <FormGroup className="d-flex align-items-center text-start mb-2">
+              <FormGroup noMargin className={`d-flex align-items-center text-start ${isMobile ? 'mb-2' : 'mb-3'}`}>
                 <Label for="tarpaulin_price_2" className="w-65">
                   Вид на брезента от 900гр/кв.м
                 </Label>
@@ -303,7 +303,7 @@ const TruckGondolaPanelForm = ({ isMobile }) => {
                     onKeyDown={validateNumbersInput}
                     value={tarpaulin_price_2}
                     invalid={hasTarpaulinPriceSecondError}
-                    className="w-35 me-2"
+                    className={`w-35 me-2 ${isMobile ? 'form-control-sm' : ''}`}
                   />
                   {hasTarpaulinPriceSecondError && (
                     <FormFeedback> Моля, въведете цена за вид на брезента от 900гр/кв.м</FormFeedback>

@@ -199,8 +199,8 @@ const TruckCoversPanelForm = ({ isMobile }) => {
   return !isPending && !isError && !loadingComparedFiles ?
     (<div className={`${isMobile ? "container text-wrapper" : "w-75 mx-auto"}`}>
       <Row>
-        <Col className="d-flex align-items-center">
-          <h5 className={`fw-bold ${isMobile ? "my-3" : "mt-4 mb-5"}`}>
+        <Col className={`d-flex align-items-center ${isMobile ? 'justify-content-center' : ''}`}>
+          <h5 className={`fw-bold ${isMobile ? "my-3 fs-6" : "mt-4 mb-5"}`}>
             {mode
               ? `Моля, въведете новите цени за покривала на камиони`
               : `Цени за покривала на камиони`}
@@ -209,8 +209,8 @@ const TruckCoversPanelForm = ({ isMobile }) => {
             <div className={`d-flex align-items-center justify-content-end ${isMobile ? 'button-edit-sm' : 'button-edit'}`}>
               <Button
                 type="submit"
-                className={`btn btn-success ${
-                  isMobile ? "btn-sm me-3" : "me-2"
+                className={`btn btn-success me-2 ${
+                  isMobile ? "btn-sm" : ""
                 }`}
                 onClick={handleSubmit}
               >
@@ -242,7 +242,7 @@ const TruckCoversPanelForm = ({ isMobile }) => {
         <Row>
           <Col>
             <Form method="POST" id="form" encType="multipart/form-data">
-              <FormGroup className="d-flex align-items-center text-start mb-2">
+              <FormGroup noMargin className={`d-flex align-items-center text-start ${isMobile ? 'mb-2' : 'mb-3'}`}>
                 <Label for="shade_ceiling" className="w-65">
                   Таван на щора за полуремарке
                 </Label>
@@ -256,8 +256,8 @@ const TruckCoversPanelForm = ({ isMobile }) => {
                     onKeyDown={validateNumbersInput}
                     value={shade_ceiling}
                     invalid={hasShadeCeilingPriceError}
-                    className="w-35 me-2"
-                  />
+                    className={`w-35 me-2 ${isMobile ? 'form-control-sm' : ''}`}
+                  /> 
                   {hasShadeCeilingPriceError && (
                     <FormFeedback>
                       Моля, въведете цена за таван на щора за полуремарке
@@ -265,7 +265,7 @@ const TruckCoversPanelForm = ({ isMobile }) => {
                   )}
                 </div>
               </FormGroup>
-              <FormGroup className="d-flex align-items-center text-start mb-2">
+              <FormGroup noMargin className={`d-flex align-items-center text-start ${isMobile ? 'mb-2' : 'mb-3'}`}>
                 <Label for="semi_trailer" className="w-65">
                   Страници на щора за полуремарке - комплект от две
                 </Label>
@@ -279,7 +279,7 @@ const TruckCoversPanelForm = ({ isMobile }) => {
                     onKeyDown={validateNumbersInput}
                     value={semi_trailer}
                     invalid={hasSemiTrailerPriceError}
-                    className="w-35 me-2"
+                    className={`w-35 me-2 ${isMobile ? 'form-control-sm' : ''}`}
                   />
                   {hasSemiTrailerPriceError && (
                     <FormFeedback>
@@ -289,7 +289,7 @@ const TruckCoversPanelForm = ({ isMobile }) => {
                   )}
                 </div>
               </FormGroup>
-              <FormGroup className="d-flex align-items-center text-start mb-2">
+              <FormGroup noMargin className={`d-flex align-items-center text-start ${isMobile ? 'mb-2' : 'mb-3'}`}>
                 <Label for="semi_trailer_with_covers" className="w-65">
                   Страници на щора за полуремарке с капаци - комплект от две
                 </Label>
@@ -303,7 +303,7 @@ const TruckCoversPanelForm = ({ isMobile }) => {
                     onKeyDown={validateNumbersInput}
                     value={semi_trailer_with_covers}
                     invalid={hasSemiTrailerWithCoversPriceError}
-                    className="w-35 me-2"
+                    className={`w-35 me-2 ${isMobile ? 'form-control-sm' : ''}`}
                   />
                   {hasSemiTrailerWithCoversPriceError && (
                     <FormFeedback>
@@ -313,7 +313,7 @@ const TruckCoversPanelForm = ({ isMobile }) => {
                   )}
                 </div>
               </FormGroup>
-              <FormGroup className="d-flex align-items-center text-start mb-2">
+              <FormGroup noMargin className={`d-flex align-items-center text-start ${isMobile ? 'mb-2' : 'mb-3'}`}>
                 <Label for="semi_trailer_three_way" className="w-65">
                   Тристранна щора за полуремарке
                 </Label>
@@ -327,7 +327,7 @@ const TruckCoversPanelForm = ({ isMobile }) => {
                     onKeyDown={validateNumbersInput}
                     value={semi_trailer_three_way}
                     invalid={hasSemiTrailerThreeWayError}
-                    className="w-35 me-2"
+                    className={`w-35 me-2 ${isMobile ? 'form-control-sm' : ''}`}
                   />
                   {hasSemiTrailerThreeWayError && (
                     <FormFeedback>
@@ -336,7 +336,7 @@ const TruckCoversPanelForm = ({ isMobile }) => {
                   )}
                 </div>
               </FormGroup>
-              <FormGroup className="d-flex align-items-center text-start mb-2">
+              <FormGroup noMargin className={`d-flex align-items-center text-start ${isMobile ? 'mb-2' : 'mb-3'}`}>
                 <Label for="ratchet_cover" className="w-65">
                   Обикновено покривало за тресачка
                 </Label>
@@ -350,7 +350,7 @@ const TruckCoversPanelForm = ({ isMobile }) => {
                     onKeyDown={validateNumbersInput}
                     value={ratchet_cover}
                     invalid={hasRatchetCoverError}
-                    className="w-35 me-2"
+                    className={`w-35 me-2 ${isMobile ? 'form-control-sm' : ''}`}
                   />
                   {hasRatchetCoverError && (
                     <FormFeedback>
@@ -359,7 +359,7 @@ const TruckCoversPanelForm = ({ isMobile }) => {
                   )}
                 </div>
               </FormGroup>
-              <FormGroup className="d-flex align-items-center text-start mb-2">
+              <FormGroup noMargin className={`d-flex align-items-center text-start ${isMobile ? 'mb-2' : 'mb-3'}`}>
                 <Label for="simple_trailer_cover" className="w-65">
                   Обикновено покривало за камион или ремарке
                 </Label>
@@ -373,7 +373,7 @@ const TruckCoversPanelForm = ({ isMobile }) => {
                     onKeyDown={validateNumbersInput}
                     value={simple_trailer_cover}
                     invalid={hasSimpleTrailerCoverError}
-                    className="w-35 me-2"
+                    className={`w-35 me-2 ${isMobile ? 'form-control-sm' : ''}`}
                   />
                   {hasSimpleTrailerCoverError && (
                     <FormFeedback>

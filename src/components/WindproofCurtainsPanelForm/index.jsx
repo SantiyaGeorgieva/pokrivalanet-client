@@ -267,8 +267,8 @@ const WindproofCurtainsPanelForm = ({ isMobile }) => {
   return !isPending && !isError && !loadingComparedFiles ?
     (<div className={`${isMobile ? "container text-wrapper" : "w-75 mx-auto"}`}>
       <Row>
-        <Col className="d-flex align-items-center">
-          <h5 className={`fw-bold ${isMobile ? "my-3" : "mt-4 mb-5"}`}>
+        <Col className={`d-flex align-items-center ${isMobile ? 'justify-content-center' : ''}`}>
+          <h5 className={`fw-bold ${isMobile ? "my-3 fs-6" : "mt-4 mb-5"}`}>
             {mode
               ? `Моля, въведете цени за ветроупорна завеса`
               : `Цени за ветроупорна завеса`}
@@ -312,7 +312,7 @@ const WindproofCurtainsPanelForm = ({ isMobile }) => {
         <Row>
           <Col>
             <Form method="POST" id="form" encType="multipart/form-data">
-              <FormGroup className="d-flex align-items-center text-start mb-2">
+              <FormGroup noMargin className={`d-flex align-items-center text-start ${isMobile ? 'mb-2' : 'mb-3'}`}>
                 <Label for="price_thick_1" className="w-65">Дебелина с 0.8 мм</Label>
                 <div className="d-flex align-items-center">
                   <Input
@@ -324,14 +324,14 @@ const WindproofCurtainsPanelForm = ({ isMobile }) => {
                     onKeyDown={validateNumbersInput}
                     value={price_thick_1}
                     invalid={hasThickFirstPriceError}
-                    className="w-35 me-2"
+                    className={`w-35 me-2 ${isMobile ? 'form-control-sm' : ''}`}
                   />
                   {hasThickFirstPriceError && (
                     <FormFeedback>Моля, въведете цена за дебелина с 0.8 мм</FormFeedback>
                   )}
                 </div>
               </FormGroup>
-              <FormGroup className="d-flex align-items-center text-start mb-2">
+              <FormGroup noMargin className={`d-flex align-items-center text-start ${isMobile ? 'mb-2' : 'mb-3'}`}>
                 <Label for="price_thick_2" className="w-65">Дебелина с 0.6 мм</Label>
                 <div className="d-flex align-items-center">
                   <Input
@@ -343,14 +343,14 @@ const WindproofCurtainsPanelForm = ({ isMobile }) => {
                     onKeyDown={validateNumbersInput}
                     value={price_thick_2}
                     invalid={hasThickSecondPriceError}
-                    className="w-35 me-2"
+                    className={`w-35 me-2 ${isMobile ? 'form-control-sm' : ''}`}
                   />
                   {hasThickSecondPriceError && (
                     <FormFeedback>Моля, въведете цена за дебелина с 0.6 мм</FormFeedback>
                   )}
                 </div>
               </FormGroup>
-              <FormGroup className="d-flex align-items-center text-start mb-2">
+              <FormGroup noMargin className={`d-flex align-items-center text-start ${isMobile ? 'mb-2' : 'mb-3'}`}>
                 <Label for="price_plastic_knobs" className="w-65">Пластмасови въртящи копчета</Label>
                 <div className="d-flex align-items-center">
                   <Input
@@ -362,14 +362,14 @@ const WindproofCurtainsPanelForm = ({ isMobile }) => {
                     onKeyDown={validateNumbersInput}
                     value={price_plastic_knobs}
                     invalid={hasPlasticKnobsPriceError}
-                    className="w-35 me-2"
+                    className={`w-35 me-2 ${isMobile ? 'form-control-sm' : ''}`}
                   />
                   {hasPlasticKnobsPriceError && (
                     <FormFeedback>Моля, въведете цена за пластмасови въртящи копчета</FormFeedback>
                   )}
                 </div>
               </FormGroup>
-              <FormGroup className="d-flex align-items-center text-start mb-2">
+              <FormGroup noMargin className={`d-flex align-items-center text-start ${isMobile ? 'mb-2' : 'mb-3'}`}>
                 <Label for="price_metal_knobs" className="w-65">Кръгов обков</Label>
                 <div className="d-flex align-items-center">
                   <Input
@@ -381,14 +381,14 @@ const WindproofCurtainsPanelForm = ({ isMobile }) => {
                     onKeyDown={validateNumbersInput}
                     value={price_metal_knobs}
                     invalid={hasMetalKnobsPriceError}
-                    className="w-35 me-2"
+                    className={`w-35 me-2 ${isMobile ? 'form-control-sm' : ''}`}
                   />
                   {hasMetalKnobsPriceError && (
                     <FormFeedback>Моля, въведете цена за кръгов обкове</FormFeedback>
                   )}
                 </div>
               </FormGroup>
-              <FormGroup className="d-flex align-items-center text-start mb-2">
+              <FormGroup noMargin className={`d-flex align-items-center text-start ${isMobile ? 'mb-2' : 'mb-3'}`}>
                 <Label for="price_strap_plates" className="w-65">Каишка с П-образни планки</Label>
                 <div className="d-flex align-items-center">
                   <Input
@@ -400,14 +400,14 @@ const WindproofCurtainsPanelForm = ({ isMobile }) => {
                     onKeyDown={validateNumbersInput}
                     value={price_strap_plates}
                     invalid={hasStrapPlatesPriceError}
-                    className="w-35 me-2"
+                    className={`w-35 me-2 ${isMobile ? 'form-control-sm' : ''}`}
                   />
                   {hasStrapPlatesPriceError && (
                     <FormFeedback>Моля, въведете цена за каишка с П-образни планки</FormFeedback>
                   )}
                 </div>
               </FormGroup>
-              <FormGroup className="d-flex align-items-center text-start mb-2">
+              <FormGroup noMargin className={`d-flex align-items-center text-start ${isMobile ? 'mb-2' : 'mb-3'}`}>
                 <Label for="price_pockets" className="w-65">Капси Ф12</Label>
                 <div className="d-flex align-items-center">
                   <Input
@@ -419,14 +419,14 @@ const WindproofCurtainsPanelForm = ({ isMobile }) => {
                     onKeyDown={validateNumbersInput}
                     value={price_pockets}
                     invalid={hasPocketsPriceError}
-                    className="w-35 me-2"
+                    className={`w-35 me-2 ${isMobile ? 'form-control-sm' : ''}`}
                   />
                   {hasPocketsPriceError && (
                     <FormFeedback>Моля, въведете цена за капси Ф12</FormFeedback>
                   )}
                 </div>
               </FormGroup>
-              <FormGroup className="d-flex align-items-center text-start mb-2">
+              <FormGroup noMargin className={`d-flex align-items-center text-start ${isMobile ? 'mb-2' : 'mb-3'}`}>
                 <Label for="price_zip" className="w-65">Цена на цип</Label>
                 <div className="d-flex align-items-center">
                   <Input
@@ -438,14 +438,14 @@ const WindproofCurtainsPanelForm = ({ isMobile }) => {
                     onKeyDown={validateNumbersInput}
                     value={price_zip}
                     invalid={hasZipPriceError}
-                    className="w-35 me-2"
+                    className={`w-35 me-2 ${isMobile ? 'form-control-sm' : ''}`}
                   />
                   {hasZipPriceError && (
                     <FormFeedback>Моля, въведете цена за цип</FormFeedback>
                   )}
                 </div>
               </FormGroup>
-              <FormGroup className="d-flex align-items-center text-start mb-2">
+              <FormGroup noMargin className={`d-flex align-items-center text-start ${isMobile ? 'mb-2' : 'mb-3'}`}>
                 <Label for="price_knobs" className="w-65">Колани</Label>
                 <div className="d-flex align-items-center">
                   <Input
@@ -457,14 +457,14 @@ const WindproofCurtainsPanelForm = ({ isMobile }) => {
                     onKeyDown={validateNumbersInput}
                     value={price_knobs}
                     invalid={hasKnobsPriceError}
-                    className="w-35 me-2"
+                    className={`w-35 me-2 ${isMobile ? 'form-control-sm' : ''}`}
                   />
                   {hasKnobsPriceError && (
                     <FormFeedback> Моля, въведете цена за колани</FormFeedback>
                   )}
                 </div>
               </FormGroup>
-              <FormGroup className="d-flex align-items-center text-start mb-2">
+              <FormGroup noMargin className={`d-flex align-items-center text-start ${isMobile ? 'mb-2' : 'mb-3'}`}>
                 <Label for="price_curtain" className="w-65">Единична завеса</Label>
                 <div className="d-flex align-items-center">
                   <Input
@@ -476,7 +476,7 @@ const WindproofCurtainsPanelForm = ({ isMobile }) => {
                     onKeyDown={validateNumbersInput}
                     value={price_curtain}
                     invalid={hasCurtainPriceError}
-                    className="w-35 me-2"
+                    className={`w-35 me-2 ${isMobile ? 'form-control-sm' : ''}`}
                   />
                   {hasCurtainPriceError && (
                     <FormFeedback>Моля, въведете цена за единична завеса</FormFeedback>

@@ -55,7 +55,7 @@ const TruckWithoutShutterPanelForm = ({ isMobile }) => {
     (<div className={`${isMobile ? "container text-wrapper" : "w-75 mx-auto"}`}>
       <Row>
         <Col className="d-flex align-items-center">
-          <h5 className={`fw-bold ${isMobile ? "my-3" : "mt-4 mb-5"}`}>
+          <h5 className={`fw-bold ${isMobile ? "my-3 fs-6" : "mt-4 mb-5"}`}>
             {mode
               ? `Моля, въведете новата цена на страници на щора без капаци комплект от две`
               : `Цена на страници на щора без капаци комплект от две`}
@@ -99,7 +99,7 @@ const TruckWithoutShutterPanelForm = ({ isMobile }) => {
         <Row>
           <Col>
             <Form id="form" method="POST" encType="multipart/form-data" > 
-              <FormGroup className="d-flex align-items-center text-start mb-2">
+              <FormGroup noMargin className={`d-flex align-items-center text-start ${isMobile ? 'mb-2' : 'mb-3'}`}>
                 <Label for="pricePlasticButtons" className="w-65 mb-0">Брезент</Label>
                 <div className="d-flex align-items-center">
                   <Input
@@ -109,7 +109,7 @@ const TruckWithoutShutterPanelForm = ({ isMobile }) => {
                     onKeyDown={validateNumbersInput}
                     value={price.without_shutters_price}
                     invalid={hasPriceError}
-                    className="w-35 me-2"
+                    className={`w-35 me-2 ${isMobile ? 'form-control-sm' : ''}`}
                   />
                   {hasPriceError && (
                     <FormFeedback>

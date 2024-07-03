@@ -31,10 +31,8 @@ const Login = ({ hideMain, setError, setVisible, setMessage, error, message, vis
 
     try {
       let loginData = { username, password };
-      console.log('loginData', loginData);
       await authService.login(loginData, setMessage, setError);
     } catch (error) {
-      console.log('error', error);
       setError(true);
       setVisible(true);
       setTimeout(() => {

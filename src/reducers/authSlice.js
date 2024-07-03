@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isAuthenticated: false,
   user: null,
+  redirectUrl: false,
 };
 
 export const authSlice = createSlice({
@@ -18,6 +19,7 @@ export const authSlice = createSlice({
     },
     logout: (state, action) => {
       state.isAuthenticated = false;
+      state.redirectUrl = true;
       state.user = { ...action.payload };
     },
   },
